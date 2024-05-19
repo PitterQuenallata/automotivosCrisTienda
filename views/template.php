@@ -3,6 +3,9 @@
 ob_start();
 session_start();
 
+
+
+
 //ruta
 $path = TemplateController::path();
 
@@ -14,6 +17,7 @@ foreach ($routesArray as $key => $value) {
     
 }
 
+//pagina
 include "modules/header.php";
 //Page Container 
 

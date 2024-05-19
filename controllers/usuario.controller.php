@@ -13,8 +13,8 @@ class ControladorUsuarios
 		if (isset($_POST["ingUsuario"])) {
 			echo '<script>
 
-			fncMatPreloader("on");
-			fncSweetAlert("loading", "", "");
+			//fncMatPreloader("on");
+			//fncSweetAlert("loading", "", "");
 
 		</script>';
 
