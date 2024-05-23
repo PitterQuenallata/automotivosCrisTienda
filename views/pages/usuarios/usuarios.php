@@ -17,4 +17,4 @@
 
 </div>
 <script src="<?php echo $path ?>views/assets/js/tables/tables.js"></script>
-<script src="<?php echo $path ?>views/assets/js/forms/formss.js"></script>
+<script src="<?php echo $path ?>views/assets/js/forms/forms.js"></script>

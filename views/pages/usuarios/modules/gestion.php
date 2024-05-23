@@ -105,7 +105,7 @@ if(isset($_GET["user"])){
                   
                   id="user_admin"
                   name="user_admin"
-                  onchange="validateJS(event,'text')"
+                  onchange="validateJS(event,'complete')"
                   required
                   value="<?php if (!empty($user)): ?><?php echo $user->user_admin ?><?php endif ?>"
                   autocomplete="useruser"
@@ -179,10 +179,10 @@ if(isset($_GET["user"])){
                     
                         <div class="input-group d-flex align-items-center">
                             <div class="me-3">
-                                <input class="form-control" type="file" id="example-file-input" style="width: 300px">
+                                <input class="form-control nuevaFoto" name="nuevaFoto" type="file" id="example-file-input" style="width: 300px">
                             </div>
                             <div class="ms-4 mt-2">
-                                <img class="img-avatar" src="<?php echo $path ?>views/assets/media/avatars/avatar8.jpg" alt="">
+                                <img class="img-avatar previsualizar" src="<?php echo $path ?>views/assets/media/avatars/avatar8.jpg" alt="">
                             </div>
                             <div class="valid-feedback">Válido.</div>
                             <div class="invalid-feedback">Por favor llena este campo correctamente.</div>

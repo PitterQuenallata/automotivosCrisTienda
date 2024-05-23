@@ -1,7 +1,9 @@
 <?php
 
+
 class ControladorUsuarios
 {
+	
 
 	/*=============================================
 	INGRESO DE USUARIO
@@ -10,11 +12,12 @@ class ControladorUsuarios
 	static public function ctrIngresoUsuario()
 	{
 
+
 		if (isset($_POST["ingUsuario"])) {
 			echo '<script>
 
-			//fncMatPreloader("on");
-			//fncSweetAlert("loading", "", "");
+			fncMatPreloader("on");
+			fncSweetAlert("loading", "", "");
 
 		</script>';
 
@@ -67,6 +70,7 @@ class ControladorUsuarios
 	Crear Usuario
 	=============================================*/
 	static public function ctrCrearUsuario(){
+		
 		if (isset($_POST["user_admin"])){
 
 			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["user_admin"]) &&
@@ -74,32 +78,47 @@ class ControladorUsuarios
 				preg_match('/^[.a-zA-Z0-9_]+([.][.a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $_POST["email_admin"])
 			){
 
-				$tabla = "admins";
-				$datos = array("name_admin" => $_POST["name_admin"],
-								"user_admin" => $_POST["user_admin"],
-								"password_admin" => $_POST["password_admin"],
-								"email_admin" => $_POST["email_admin"],
-								"rol_admin" => $_POST["rol_admin"]
-								);
+			  /*=============================================
+				VALIDAR IMAGEN
+				=============================================*/
+				//ruta
+				$path = TemplateController::path();
+				$ruta = "";
 
-				$respuesta = ModeloUsuarios::mdlIngresarUsuario($tabla, $datos);
+				if(isset($_FILES["nuevaFoto"]["tmp_name"])){
 
-				if($respuesta == "ok"){
 					echo '<script>
-						//toastr["success"]("Usuario guardado correctamente", "/usuarios");
-						fncSweetAlert("success", "Usuario guardado correctamente", "/usuarios");
-					</script>';
-				}else{
-					echo '<script>
-						fncSweetAlert("error", "Error al guardar el usuario");
-					</script>';
+				 		fncSweetAlert("error", "Error foto");
+				 	</script>';
 				}
+				
+
+				// $tabla = "admins";
+				// $datos = array("name_admin" => $_POST["name_admin"],
+				// 				"user_admin" => $_POST["user_admin"],
+				// 				"password_admin" => $_POST["password_admin"],
+				// 				"email_admin" => $_POST["email_admin"],
+				// 				"rol_admin" => $_POST["rol_admin"]
+				// 				);
+					
+				// $respuesta = ModeloUsuarios::mdlIngresarUsuario($tabla, $datos);
+
+				// if($respuesta == "ok"){
+				// 	echo '<script>
+				// 		//toastr["success"]("Usuario guardado correctamente", "/usuarios");
+				// 		fncSweetAlert("success", "Usuario guardado correctamente", "/usuarios");
+				// 	</script>';
+				// }else{
+				// 	echo '<script>
+				// 		fncSweetAlert("error", "Error al guardar el usuario");
+				// 	</script>';
+				// }
 
 			}else{
-				echo '<script>
-					fncSweetAlert("error", "El usuario no debe estar vacio o llevar caracteres especiales");
-					fncFormatInputs();
-				</script>';
+				// echo '<script>
+				// 	fncSweetAlert("error", "El usuario no debe estar vacio o llevar caracteres especiales");
+				// 	fncFormatInputs();
+				// </script>';
 			}
 
 		}

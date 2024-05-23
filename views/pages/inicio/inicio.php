@@ -1,7 +1,7 @@
 <?php
-    echo '<pre>';
-				print_r($_SESSION["users"]);
-				echo '</pre>';
+    // echo '<pre>';
+		// 		print_r($_SESSION["users"]);
+		// 		echo '</pre>';
 
 ?>
 

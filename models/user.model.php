@@ -32,15 +32,15 @@ class ModeloUsuarios{
 
 	static public function mdlIngresarUsuario($tabla, $datos){
 
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(name_admin, user_admin, password_admin, email_admin, rol_admin) VALUES (:name_admin, :user_admin, :password_admin, :email_admin, :rol_admin)");
-
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(foto_admin, name_admin, user_admin, password_admin, email_admin, rol_admin) VALUES (:foto_admin, :name_admin, :user_admin, :password_admin, :email_admin, :rol_admin)");
+		
+		$stmt->bindParam(":foto_admin", $datos["foto_admin"], PDO::PARAM_STR);
 		$stmt->bindParam(":name_admin", $datos["name_admin"], PDO::PARAM_STR);
 		$stmt->bindParam(":user_admin", $datos["user_admin"], PDO::PARAM_STR);
 		$stmt->bindParam(":password_admin", $datos["password_admin"], PDO::PARAM_STR);
 		$stmt->bindParam(":email_admin", $datos["email_admin"], PDO::PARAM_STR);
 		$stmt->bindParam(":rol_admin", $datos["rol_admin"], PDO::PARAM_STR);
 		
-		// $stmt->bindParam(":foto", $datos["foto"], PDO::PARAM_STR);
 
 		if($stmt->execute()){
 
