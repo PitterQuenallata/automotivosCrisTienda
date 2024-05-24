@@ -313,3 +313,62 @@ VALUES
     (300.25, '2024-05-03 10:00:00', 'transferencia', 3, 3),
     (150.75, '2024-05-04 14:30:00', 'cheque', 4, 4),
     (200.00, '2024-05-05 16:30:00', 'tarjeta', 5, 5);
+
+
+
+/********************************************************************/
+/* consultas*/
+
+-- Compras completadas:
+SELECT * FROM compras WHERE estado_compra = 'completada';
+
+-- Detalle de compras de un usuario específico:
+SELECT * FROM detalleCompra WHERE id_compra IN (SELECT id_compra FROM compras WHERE id_usuario = 1);
+
+-- Autopartes activas:
+SELECT * FROM autoPartes WHERE estado_autoPart = 'activo';
+
+-- Categorías activas:
+SELECT * FROM categorias WHERE estado_categoria = 'activo';
+
+-- Modelos de una marca específica:
+SELECT * FROM modelos WHERE id_marca = 1;
+
+-- Repuestos de un modelo específico:
+SELECT * FROM modeloRepuestos WHERE id_modelo = 1;
+
+-- Marcas activas:
+SELECT * FROM marcas WHERE estado_marca = 'activo';
+
+-- Clientes activos:
+SELECT * FROM clientes WHERE estado_cliente = 'activo';
+
+-- Ventas completadas:
+SELECT * FROM ventas WHERE estado_venta = 'completada';
+
+-- Detalle de ventas de una venta específica:
+SELECT * FROM detalleVentas WHERE id_venta = 1;
+
+-- Pagos de una venta específica:
+SELECT * FROM pagos WHERE id_venta = 1;
+
+-- Compras de un proveedor específico:
+SELECT * FROM compras WHERE proveedor_compra = 'AutoParts S.A.';
+
+-- Autopartes por categoría:
+SELECT * FROM autoPartes WHERE id_categoria = 1;
+
+-- Modelos activos:
+SELECT * FROM modelos WHERE estado_modelo = 'activo';
+
+-- Usuarios con rol de administrador:
+SELECT * FROM usuarios WHERE rol_usuario = 'administrador';
+
+-- Detalle de ventas de un autoparte específico:
+SELECT * FROM detalleVentas WHERE id_autoPart = 1;
+
+-- Ventas por cliente:
+SELECT * FROM ventas WHERE id_cliente = 1;
+
+-- Compras por estado:
+SELECT estado_compra, COUNT(*) AS total FROM compras GROUP BY estado_compra;
