@@ -1,38 +1,6 @@
  
  <?php 
 
-if(isset($_GET["user"])){
-
-	$select = "id_admin,name_admin,email_admin,password_admin,rol_admin,state_admin";
-	$url = "admins?linkTo=id_admin&equalTo=".base64_decode($_GET["user"])."&select=".$select;
-	$method = "GET";
-	$fields = array();
-
-	//$user = CurlController::request($url, $method, $fields);
-  // echo "<pre>";
-  // print_r($_POST);
-  // echo "</pre>";
-	if($user->status == 200){
-
-		$user = $user->results[0];
-
-	}else{
-
-		$user = null;
-
-	}
-
-}else{
-
-	$user = null;
-}
-
-
-// $url ="admins?select=name_admin&equalTo=".urlencode($_POST["name_admin"])."&linkTo=name_admin";
-// $method = "GET";
-// $fields = array();
-
-// $dataname = CurlController::request($url, $method, $fields);
 
 
  ?>
@@ -75,8 +43,8 @@ if(isset($_GET["user"])){
             <?php if (!empty($user)): ?>
             
             
-            <input type="hidden" name="idUser" value="<?php echo base64_encode($user->id_admin) ?>">
-            <input type="hidden" name="oldPassword" value="<?php echo $user->password_admin ?>">
+            <input type="hidden" name="idUser" value="<?php echo base64_encode($user->id_usuario) ?>">
+            <input type="hidden" name="oldPassword" value="<?php echo $user->password_usuario ?>">
 
             <?php endif ?>
               <div class="mb-4">
@@ -86,11 +54,11 @@ if(isset($_GET["user"])){
                   </span>
                   <input type="text" class="form-control"  
                   
-                  id="name_admin"
-                  name="name_admin"
+                  id="nombre_usuario"
+                  name="nombre_usuario"
                   onchange="validateJS(event,'text')"
                   required
-                  value="<?php if (!empty($user)): ?><?php echo $user->name_admin ?><?php endif ?>"
+                  value="<?php if (!empty($user)): ?><?php echo $user->nombre_usuario ?><?php endif ?>"
                   autocomplete="username"
                   >
                   <div class="valid-feedback">Válido.</div>
@@ -100,19 +68,37 @@ if(isset($_GET["user"])){
 
               <div class="mb-4">
                 <div class="input-group ">
-
+                  <span class="input-group-text btn btn-outline-primary">
+                    Apellido
+                  </span>
                   <input type="text" class="form-control"  
                   
-                  id="user_admin"
-                  name="user_admin"
-                  onchange="validateJS(event,'complete')"
+                  id="apellido_usuario"
+                  name="apellido_usuario"
+                  onchange="validateJS(event,'text')"
                   required
-                  value="<?php if (!empty($user)): ?><?php echo $user->user_admin ?><?php endif ?>"
-                  autocomplete="useruser"
+                  value="<?php if (!empty($user)): ?><?php echo $user->apellido_usuario ?><?php endif ?>"
+                  autocomplete="userapellido"
                   >
+                  <div class="valid-feedback">Válido.</div>
+ 									<div class="invalid-feedback">Por favor llena este campo correctamente.</div>
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <div class="input-group ">
                   <span class="input-group-text btn btn-outline-primary">
                     Usuario
                   </span>
+                  <input type="text" class="form-control"  
+                  id="user_usuario"
+                  name="user_usuario"
+                  onchange="validateJS(event,'complete')"
+                  required
+                  value="<?php if (!empty($user)): ?><?php echo $user->user_usuario ?><?php endif ?>"
+                  autocomplete="useruser"
+                  >
+
                   <div class="valid-feedback">Válido.</div>
  									<div class="invalid-feedback">Por favor llena este campo correctamente.</div>
                 </div>
@@ -125,11 +111,11 @@ if(isset($_GET["user"])){
                     Email
                   </span>
                   <input type="email" class="form-control" 
-                  id="email_admin" 
-                  name="email_admin" 
+                  id="email_usuario" 
+                  name="email_usuario" 
                   onchange="validateJS(event,'email')"
                   required
-                  value="<?php if (!empty($user)): ?><?php echo $user->email_admin ?><?php endif ?>"
+                  value="<?php if (!empty($user)): ?><?php echo $user->email_usuario ?><?php endif ?>"
                   autocomplete="email"
                   >
 
@@ -140,16 +126,15 @@ if(isset($_GET["user"])){
 
               <div class=" mb-4">
                     <div class="input-group ">
-                      
+                    <span class="input-group-text btn btn-outline-primary">Contraseña</span>
                         <input type="password" class="form-control" 
-                        id="password_admin"
-                        name="password_admin"
+                        id="password_usuario"
+                        name="password_usuario"
                         onchange="validateJS(event,'password')"
                         <?php if (empty($user)): ?> required <?php endif ?>
                         autocomplete="current-password"
                         >
 
-                        <span class="input-group-text btn btn-outline-primary">Contraseña</span>
                         <div class="valid-feedback">Válido.</div>
                         <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
                     </div>
@@ -160,12 +145,12 @@ if(isset($_GET["user"])){
                   <span class="input-group-text btn btn-outline-primary">
                     Rol
                     </span>
-                    <select class="form-select" name="rol_admin" id="rol_admin" required>
+                    <select class="form-select" name="rol_usuario" id="rol_usuario" required>
                       <option selected="">Elije un rol</option>
-                      <option value="administrador"<?php if (!empty($user) && $user->rol_admin == "administrador"): ?> selected <?php endif ?>>Administrador</option>
-                      <option value="caja"<?php if (!empty($user) && $user->rol_admin == "caja"): ?> selected <?php endif ?>>Caja</option>
-                      <option value="ventas"<?php if (!empty($user) && $user->rol_admin == "ventas"): ?> selected <?php endif ?>>Ventas</option>
-                      <option value="envio"<?php if (!empty($user) && $user->rol_admin == "envio"): ?> selected <?php endif ?>>Envios</option>
+                      <option value="administrador"<?php if (!empty($user) && $user->rol_usuario == "administrador"): ?> selected <?php endif ?>>administrador</option>
+                      <option value="caja"<?php if (!empty($user) && $user->rol_usuario == "caja"): ?> selected <?php endif ?>>Caja</option>
+                      <option value="ventas"<?php if (!empty($user) && $user->rol_usuario == "ventas"): ?> selected <?php endif ?>>Ventas</option>
+                      <option value="envio"<?php if (!empty($user) && $user->rol_usuario == "envio"): ?> selected <?php endif ?>>Envios</option>
 
                     </select>
 
@@ -182,7 +167,7 @@ if(isset($_GET["user"])){
                                 <input class="form-control nuevaFoto" name="nuevaFoto" type="file" id="example-file-input" style="width: 300px">
                             </div>
                             <div class="ms-4 mt-2">
-                                <img class="img-avatar previsualizar" src="<?php echo $path ?>views/assets/media/avatars/avatar8.jpg" alt="">
+                                <img class="img-avatar previsualizar" src="<?php echo $path ?>views/assets/media/avatars/avatar8.jpg" alt="fotoUser">
                             </div>
                             <div class="valid-feedback">Válido.</div>
                             <div class="invalid-feedback">Por favor llena este campo correctamente.</div>

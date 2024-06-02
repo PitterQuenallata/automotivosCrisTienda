@@ -49,8 +49,8 @@
                 <a class="img-link" href="be_pages_generic_profile.html">
                   <img class="img-avatar" src="<?php echo $path ?>views/assets/media/avatars/avatar15.jpg" alt="">
                 </a>
-                <div class="fw-semibold mb-1"><?php echo $_SESSION["users"]["name_admin"] ?></div>
-                <div class="fs-sm text-muted"><?php echo $_SESSION["users"]["rol_admin"] ?></div>
+                <div class="fw-semibold mb-1"><?php echo $_SESSION["users"]["nombre_usuario"] ?></div>
+                <div class="fs-sm text-muted"><?php echo $_SESSION["users"]["rol_usuario"] ?></div>
                 <ul class="list-inline mt-3 mb-0">
                   
                   <li class="list-inline-item">
@@ -85,7 +85,7 @@
                 </li>
 
                 <li class="nav-main-heading">Tienda</li>
-                <?php if($_SESSION["users"]["rol_admin"] == "administrador"){
+                <?php if($_SESSION["users"]["rol_usuario"] == "administrador"){
                 
                   echo '<li class="nav-main-item">
                   <a class="nav-main-link" href="/usuarios">
