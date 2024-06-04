@@ -1,12 +1,6 @@
- 
- <?php 
-
-
-
- ?>
-
 
 <!-- Main Container -->
+
 <main id="main-container">
   <!-- Page Content -->
   <div class="content">
@@ -17,10 +11,7 @@
           <!-- <h1 class="h3 fw-extrabold mb-1">
             Usuarios
           </h1> -->
-          <h2 class="h4 fw-extrabold  mb-0">
-            <?php echo $user != null ? "EDITAR USUARIO" : "AGREGAR USUARIOS " ?>
-            
-          </h2>
+          <h2 class="h4 fw-extrabold  mb-0">AGREGAR USUARIOS</h2>
         </div>
       </div>
     </div>
@@ -31,22 +22,9 @@
 
       <div class="block-content">
         <div class="row">
-          <div class="col-lg-8 col-xl-5 mx-auto  ">
-          <?php 
-
-            // require_once "controllers/users.controller.php";
-            // $manage = new UsersControllers();
-            // $manage -> userManage();
-            
-            ?>
-            <form  method="post"  class="needs-validation"  novalidate>
-            <?php if (!empty($user)): ?>
-            
-            
-            <input type="hidden" name="idUser" value="<?php echo base64_encode($user->id_usuario) ?>">
-            <input type="hidden" name="oldPassword" value="<?php echo $user->password_usuario ?>">
-
-            <?php endif ?>
+          <div class="col-lg-8 col-xl-5 mx-auto">
+          
+            <form  method="post" enctype="multipart/form-data" class="needs-validation"  novalidate>
               <div class="mb-4">
                 <div class="input-group ">
                   <span class="input-group-text btn btn-outline-primary">
@@ -58,7 +36,7 @@
                   name="nombre_usuario"
                   onchange="validateJS(event,'text')"
                   required
-                  value="<?php if (!empty($user)): ?><?php echo $user->nombre_usuario ?><?php endif ?>"
+                  
                   autocomplete="username"
                   >
                   <div class="valid-feedback">Válido.</div>
@@ -77,7 +55,7 @@
                   name="apellido_usuario"
                   onchange="validateJS(event,'text')"
                   required
-                  value="<?php if (!empty($user)): ?><?php echo $user->apellido_usuario ?><?php endif ?>"
+                 
                   autocomplete="userapellido"
                   >
                   <div class="valid-feedback">Válido.</div>
@@ -86,23 +64,22 @@
               </div>
 
               <div class="mb-4">
-                <div class="input-group ">
+                <div class="input-group">
                   <span class="input-group-text btn btn-outline-primary">
                     Usuario
                   </span>
                   <input type="text" class="form-control"  
-                  id="user_usuario"
-                  name="user_usuario"
-                  onchange="validateJS(event,'complete')"
-                  required
-                  value="<?php if (!empty($user)): ?><?php echo $user->user_usuario ?><?php endif ?>"
-                  autocomplete="useruser"
-                  >
+                        id="nuevoUsuario"
+                        name="user_usuario"
+                        onchange="validateJS(event,'complete')"
+                        required
+                        >
 
                   <div class="valid-feedback">Válido.</div>
- 									<div class="invalid-feedback">Por favor llena este campo correctamente.</div>
+                  <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
                 </div>
               </div>
+
 
 
               <div class="mb-4">
@@ -131,7 +108,7 @@
                         id="password_usuario"
                         name="password_usuario"
                         onchange="validateJS(event,'password')"
-                        <?php if (empty($user)): ?> required <?php endif ?>
+                        required
                         autocomplete="current-password"
                         >
 
@@ -147,10 +124,11 @@
                     </span>
                     <select class="form-select" name="rol_usuario" id="rol_usuario" required>
                       <option selected="">Elije un rol</option>
-                      <option value="administrador"<?php if (!empty($user) && $user->rol_usuario == "administrador"): ?> selected <?php endif ?>>administrador</option>
-                      <option value="caja"<?php if (!empty($user) && $user->rol_usuario == "caja"): ?> selected <?php endif ?>>Caja</option>
-                      <option value="ventas"<?php if (!empty($user) && $user->rol_usuario == "ventas"): ?> selected <?php endif ?>>Ventas</option>
-                      <option value="envio"<?php if (!empty($user) && $user->rol_usuario == "envio"): ?> selected <?php endif ?>>Envios</option>
+                      <option value="administrador">administrador</option>
+                      <option value="caja">Caja</option>
+                      <option value="venta">Ventas</option>
+                      <option value="envio">Envios</option>
+                      <option value="publicidad">Publicidad</option>
 
                     </select>
 
@@ -158,12 +136,13 @@
                     <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
                   </div>
                 </div>
-
+                
                 <div class="mb-4">
                     <label class="form-label" for="example-file-input">Seleccionar Foto</label>
                     
                         <div class="input-group d-flex align-items-center">
                             <div class="me-3">
+                                
                                 <input class="form-control nuevaFoto" name="nuevaFoto" type="file" id="example-file-input" style="width: 300px">
                             </div>
                             <div class="ms-4 mt-2">

@@ -24,69 +24,7 @@ Validación Bootstrap 5
 Función para validar datos repetidos
 =============================================*/
 
-function validateDataRepeat(event, type){
 
-  if(type == "category"){
-
-    var table = "categories";
-    var linkTo = "name_category";
-
-  }
-
-  if(type == "subcategory"){
-
-    var table = "subcategories";
-    var linkTo = "name_subcategory";
-
-  }
-
-  if(type == "product"){
-
-    var table = "products";
-    var linkTo = "name_product";
-
-  }
-
-  var value = event.target.value;
-
-  var data = new FormData();
-  data.append("table", table);
-  data.append("equalTo", value);
-  data.append("linkTo",linkTo);
-
-  $.ajax({
-
-    url: "/ajax/forms.ajax.php",
-    method: "POST",
-    data: data,
-    contentType: false,
-    cache: false,
-    processData: false,
-    success: function (response){  
-      
-      if(response == 404){
-
-          validateJS(event, "complete");
-  
-          createUrl(event, "url_"+type);
-
-          $(".metaTitle").html(value);
-
-      }else{
-
-        $(event.target).parent().addClass("was-validated");
-        $(event.target).parent().children(".invalid-feedback").html("Este nombre ya existe en la base de datos");
-
-         event.target.value = "";
-
-        return;
-      }
-
-    }
-
-  })
-
-}
 
 /*=============================================
 Función para validar formularios

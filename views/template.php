@@ -27,7 +27,7 @@ echo '<input type="hidden" id="urlPath" value="' . $path . '">';
 // Modificamos la función para aceptar $path como un argumento
 function loadPage($route, $path,$routesArray) {
   // Ahora $path está disponible dentro de esta función
-  echo '<div id="page-container" class="sidebar-o  enable-page-overlay side-scroll page-header-modern main-content-boxed">';
+  echo '<div id="page-container" class="sidebar-o  enable-page-overlay side-scroll page-header-modern main-content-narrow">';
   include "modules/sidebar.php";
   include "modules/navbar.php";
   include("pages/{$route}/{$route}.php");

@@ -40,14 +40,14 @@
             <div class="content-side content-side-user px-0 py-0">
               <!-- Visible only in mini mode -->
               <div class="smini-visible-block animated fadeIn px-3">
-                <img class="img-avatar img-avatar32" src="<?php echo $path ?>views/assets/media/avatars/avatar15.jpg" alt="">
+                <img class="img-avatar img-avatar32" src="<?php echo $path .$_SESSION["users"]["foto_usuario"]?>" alt="">
               </div>
               <!-- END Visible only in mini mode -->
 
               <!-- Visible only in normal mode -->
               <div class="smini-hidden text-center mx-auto">
                 <a class="img-link" href="be_pages_generic_profile.html">
-                  <img class="img-avatar" src="<?php echo $path ?>views/assets/media/avatars/avatar15.jpg" alt="">
+                  <img class="img-avatar" src="<?php echo $path .$_SESSION["users"]["foto_usuario"]?>" alt="">
                 </a>
                 <div class="fw-semibold mb-1"><?php echo $_SESSION["users"]["nombre_usuario"] ?></div>
                 <div class="fs-sm text-muted"><?php echo $_SESSION["users"]["rol_usuario"] ?></div>

@@ -126,9 +126,11 @@ function fncSweetAlert(type, text, url){
                     cancelButtonText: 'No',
                     confirmButtonText: 'Si, continuar!'
 		 		}).then(function(result){
-         
-                    resolve(result.value);
-               
+					if (result.value){ 
+
+					window.open(url, "_top");
+
+				}
                 })
 
 		 	})
