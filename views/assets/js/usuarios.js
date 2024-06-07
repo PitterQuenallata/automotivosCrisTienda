@@ -47,7 +47,7 @@ $(document).on("click", ".btnEditarUsuario", function(){
       processData: false,
       dataType: "json",
       success: function(respuesta){
-        console.log(respuesta);
+        
           
         $("#editarNombre").val(respuesta["nombre_usuario"]);
         $("#editarApellido").val(respuesta["apellido_usuario"]);
@@ -166,7 +166,18 @@ $(document).on("click", ".btnElininarUsuario", function () {
   var idUsuario = $(this).attr("idUsuario");
   var fotoUsuario = $(this).attr("fotoUsuario");
   var usuario = $(this).attr("usuario");
-  fncSweetAlert("confirm", "¡Está seguro de borrar el usuario?", "usuarios&idUsuario=" + idUsuario + "&usuario=" + usuario + "&fotoUsuario=" + fotoUsuario);
+  
+  //fncSweetAlert("confirm", "¡Está seguro de borrar el usuario?", "/usuarios?&idUsuario=" + idUsuario + "&usuario=" + usuario + "&fotoUsuario=" + fotoUsuario);
+  // Construir la URL correcta para la eliminación del usuario
+  var baseURL = "usuarios?ruta=usuarios&idUsuario=" + idUsuario;
+  var queryParams = "&usuario=" + encodeURIComponent(usuario) + "&fotoUsuario=" + encodeURIComponent(fotoUsuario);
+
+  // Llamar a la función personalizada de SweetAlert
+  fncSweetAlert("confirm", "¡Está seguro de borrar el usuario", baseURL + queryParams);
+  
+  
+  
+  //fncSweetAlert("confirm", "¡Está seguro de borrar el usuario?", "usuarios&idUsuario=" + idUsuario + "&usuario=" + usuario + "&fotoUsuario=" + fotoUsuario);
   // swal({
   //   title: "¿Está seguro de borrar el usuario?",
   //   text: "¡Si no lo está puede cancelar la accíón!",

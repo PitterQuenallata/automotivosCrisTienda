@@ -72,7 +72,7 @@
                           <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled btnEditarUsuario" idUsuario="' . $value["id_usuario"] . '" data-bs-target="#modal-large" data-bs-toggle="modal" aria-label="Edit" data-bs-original-title="Edit">
                               <i class="fa fa-pencil-alt"></i>
                           </button>
-                          <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled btnElininarUsuario" idUsuario="' . $value["id_usuario"] . '" fotoUsuario="' . $value["foto_usuario"] . '" data-bs-toggle="tooltip" aria-label="Delete" data-bs-original-title="Delete">
+                          <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled btnElininarUsuario" idUsuario="' . $value["id_usuario"] . '" fotoUsuario="' . $value["foto_usuario"] . '" usuario="'.$value["user_usuario"].'" data-bs-toggle="tooltip" aria-label="Delete" data-bs-original-title="Delete">
                               <i class="fa fa-times"></i>
                           </button>
                       </div>
@@ -101,7 +101,7 @@
               </div>
             </div>
             <div class="block-content fs-sm">
-              <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+              <form method="post" enctype="multipart/form-data" class="needs-validation">
                 <div class="mb-4">
                   <div class="input-group">
                     <span class="input-group-text btn btn-outline-primary">Nombre</span>
@@ -168,9 +168,10 @@
                   <div class="input-group d-flex align-items-center">
                     <div class="me-3">
                       <input class="form-control nuevaFoto" name="nuevaFoto" type="file" id="example-file-input" style="width: 300px">
+                      <input class="form-control" type="hidden" name="defaultFoto" value="views/assets/media/avatars/avatar0.jpg">
                     </div>
                     <div class="ms-4 mt-2">
-                      <img class="img-avatar previsualizar" src="<?php echo $path ?>views/assets/media/avatars/avatar8.jpg" alt="fotoUser">
+                      <img class="img-avatar previsualizar" src="<?php echo $path ?>views/assets/media/avatars/avatar0.jpg" alt="fotoUser">
                     </div>
                     <div class="valid-feedback">Válido.</div>
                     <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
@@ -314,3 +315,6 @@
     
   </div>
 </main>
+<?php
+$eliminarUsuario = new ControladorUsuarios();
+$eliminarUsuario->ctrBorrarUsuario();

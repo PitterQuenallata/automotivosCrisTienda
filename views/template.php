@@ -15,39 +15,47 @@ array_shift($routesArray);
 foreach ($routesArray as $key => $value) {
     $routesArray[$key] = explode("?", $value)[0];
     
+    
 }
 
-//pagina
+// Incluye la cabecera
 include "modules/header.php";
-//Page Container 
 
-// para el jquery 
+// Página contenedora
 echo '<input type="hidden" id="urlPath" value="' . $path . '">';
 
-// Modificamos la función para aceptar $path como un argumento
-function loadPage($route, $path,$routesArray) {
-  // Ahora $path está disponible dentro de esta función
-  echo '<div id="page-container" class="sidebar-o  enable-page-overlay side-scroll page-header-modern main-content-narrow">';
-  include "modules/sidebar.php";
-  include "modules/navbar.php";
-  include("pages/{$route}/{$route}.php");
-  echo '</div>';
-
+// Modificar la función para cargar directamente desde `pages`
+function loadPage($route, $path, $routesArray) {
+    // Contenedor principal
+    echo '<div id="page-container" class="sidebar-o enable-page-overlay side-scroll page-header-modern main-content-narrow">';
+    
+    // Incluye el menú lateral y la barra de navegación
+    include "modules/sidebar.php";
+    include "modules/navbar.php";
+    
+    // Incluye la página solicitada
+    include("pages/{$route}.php");
+    
+    // Cierra el contenedor principal
+    echo '</div>';
 }
 
-if (isset($_SESSION["users"])){
-  $route = !empty($routesArray[0]) ? $routesArray[0] : "inicio";
-  $validRoutes = ["inicio","usuarios", "inventario", "salir"]; // Añadir rutas válidas aquí
+// Verifica si el usuario está en sesión
+if (isset($_SESSION["users"])) {
+    // Determina la ruta solicitada
+    $route = !empty($routesArray[0]) ? $routesArray[0] : "inicio";
+    $validRoutes = ["inicio", "usuarios", "categorias","marcas","vehiculos", "modelos", "salir"]; // Añadir rutas válidas aquí
 
-  if (in_array($route, $validRoutes)) {
-    loadPage($route, $path,$routesArray); // Pasamos $path como un argumento aquí
-  } else {
-      include('pages/404/404.php');
-  }
-
-}else{
-  include "pages/login/login.php";
+    // Verifica si la ruta es válida y carga la página correspondiente
+    if (in_array($route, $validRoutes)) {
+        loadPage($route, $path, $routesArray); // Llama a la función `loadPage`
+    } else {
+        include('pages/404.php'); // Página de error 404
+    }
+} else {
+    include "pages/login.php"; // Página de login
 }
+
 
 
 
