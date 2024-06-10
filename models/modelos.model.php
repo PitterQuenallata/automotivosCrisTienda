@@ -5,28 +5,28 @@ require_once "conexion.php";
 class ModeloModelos
 {
 
-	/*=============================================
-	CREAR Modelo
-	=============================================*/
+/*=============================================
+CREAR MODELO
+=============================================*/
 
-	static public function mdlIngresarModelo($tabla, $datos)
-	{
+static public function mdlIngresarModelo($tabla, $datos)
+{
+    $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(nombre_modelo, id_marca, version_modelo, anio_inicio_modelo, anio_fin_modelo) VALUES (:nombre_modelo, :id_marca, :version_modelo, :anio_inicio_modelo, :anio_fin_modelo)");
 
- 		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(nombre_modelo,id_marca_modelo) VALUES (:nombre_modelo, :id_marca_modelo)");
+    $stmt->bindParam(":nombre_modelo", $datos["nombre_modelo"], PDO::PARAM_STR);
+    $stmt->bindParam(":id_marca", $datos["id_marca"], PDO::PARAM_INT);
+    $stmt->bindParam(":version_modelo", $datos["version_modelo"], PDO::PARAM_STR);
+    $stmt->bindParam(":anio_inicio_modelo", $datos["anio_inicio_modelo"], PDO::PARAM_INT);
+    $stmt->bindParam(":anio_fin_modelo", $datos["anio_fin_modelo"], PDO::PARAM_INT);
 
-		$stmt->bindParam(":nombre_modelo", $datos["nombre_modelo"], PDO::PARAM_STR);
-		$stmt->bindParam(":id_marca_modelo", $datos["id_marca_modelo"], PDO::PARAM_STR);
-		if ($stmt->execute()) {
+    if ($stmt->execute()) {
+        return "ok";
+    } else {
+        return "error";
+    }
 
-			return "ok";
-		} else {
-
-			return "error";
-		}
-
-
-		$stmt = null;
-	}
+    $stmt = null;
+}
 
 	/*=============================================
 	MOSTRAR ModeloS
@@ -34,35 +34,39 @@ class ModeloModelos
 
 	static public function mdlMostrarModelos($tabla, $item, $valor) {
 		if ($item != null) {
-				$stmt = Conexion::conectar()->prepare("SELECT m.*, ma.nombre_marca FROM $tabla m JOIN marcas ma ON m.id_marca_modelo = ma.id_marca WHERE m.$item = :$item");
+				$stmt = Conexion::conectar()->prepare("SELECT m.*, ma.nombre_marca FROM $tabla m JOIN marcas ma ON m.id_marca = ma.id_marca WHERE m.$item = :$item");
 				$stmt->bindParam(":" . $item, $valor, PDO::PARAM_STR);
 		} else {
-				$stmt = Conexion::conectar()->prepare("SELECT m.*, ma.nombre_marca FROM $tabla m JOIN marcas ma ON m.id_marca_modelo = ma.id_marca");
+				$stmt = Conexion::conectar()->prepare("SELECT m.*, ma.nombre_marca FROM $tabla m JOIN marcas ma ON m.id_marca = ma.id_marca");
 		}
 		$stmt->execute();
 		return $item != null ? $stmt->fetch() : $stmt->fetchAll();
 }
 
 /*=============================================
-  EDITAR MODELO
-  =============================================*/
+EDITAR MODELO
+=============================================*/
 
-  static public function mdlEditarModelo($tabla, $datos) {
+static public function mdlEditarModelo($tabla, $datos) {
 
-    $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET nombre_modelo = :nombre_modelo, id_marca_modelo = :id_marca_modelo WHERE id_modelo = :id_modelo");
+  $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET nombre_modelo = :nombre_modelo, id_marca = :id_marca, version_modelo = :version_modelo, anio_inicio_modelo = :anio_inicio_modelo, anio_fin_modelo = :anio_fin_modelo WHERE id_modelo = :id_modelo");
 
-    $stmt->bindParam(":nombre_modelo", $datos["nombre_modelo"], PDO::PARAM_STR);
-    $stmt->bindParam(":id_modelo", $datos["id_modelo"], PDO::PARAM_INT);
-    $stmt->bindParam(":id_marca_modelo", $datos["id_marca_modelo"], PDO::PARAM_INT);
+  $stmt->bindParam(":nombre_modelo", $datos["nombre_modelo"], PDO::PARAM_STR);
+  $stmt->bindParam(":id_marca", $datos["id_marca"], PDO::PARAM_INT);
+  $stmt->bindParam(":version_modelo", $datos["version_modelo"], PDO::PARAM_STR);
+  $stmt->bindParam(":anio_inicio_modelo", $datos["anio_inicio_modelo"], PDO::PARAM_INT);
+  $stmt->bindParam(":anio_fin_modelo", $datos["anio_fin_modelo"], PDO::PARAM_INT);
+  $stmt->bindParam(":id_modelo", $datos["id_modelo"], PDO::PARAM_INT);
 
-    if ($stmt->execute()) {
-      return "ok";
-    } else {
-      return "error";
-    }
-
-    $stmt = null;
+  if ($stmt->execute()) {
+    return "ok";
+  } else {
+    return "error";
   }
+
+  $stmt = null;
+}
+
 
 /*=============================================
   BORRAR MODELO

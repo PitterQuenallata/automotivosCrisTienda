@@ -2,44 +2,39 @@
 
 class ControladorModelos
 {
-  /*=============================================
-	CREAR ModeloS
-	=============================================*/
-
-  static public function ctrCrearModelo()
-  {
-
-    if (isset($_POST["nuevoModelo"])) {
-
-      if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevoModelo"])) {
-
-        echo '<script> alert("'.$_POST["nuevoModelo"].'"); </script>';
-        echo '<script> alert("'.$_POST["marcaSelec"].'"); </script>';
-        $tabla = "modelos";
-        $datos = array(
-          "nombre_modelo" => $_POST["nuevoModelo"],
-          "id_marca_modelo" => $_POST["marcaSelect"]
-
+/*=============================================
+CREAR MODELO
+=============================================*/
+static public function ctrCrearModelo()
+{
+  if (isset($_POST["nuevoModelo"])) {
+    if (
+      preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevoModelo"]) &&
+      preg_match('/^[0-9]+$/', $_POST["anioInicio"]) &&
+      ($_POST["anioFin"] == '' || preg_match('/^[0-9]+$/', $_POST["anioFin"]))
+    ) {
+      $tabla = "modelos";
+      $datos = array(
+        "id_marca" => $_POST["marcaSelect"],
+        "nombre_modelo" => strtolower($_POST["nuevoModelo"]),
+        "version_modelo" => strtolower($_POST["nuevaVersion"]),
+        "anio_inicio_modelo" => $_POST["anioInicio"],
+        "anio_fin_modelo" => $_POST["anioFin"]
       );
-
-        
-
-        $respuesta = ModeloModelos::mdlIngresarModelo($tabla, $datos);
-
-        if ($respuesta == "ok") {
-
-          echo '<script>
-          fncSweetAlert("success", "El Modelo ha sido guardada correctamente", "/modelos");
-          </script>';
-        }
-      } else {
+      $respuesta = ModeloModelos::mdlIngresarModelo($tabla, $datos);
+      if ($respuesta == "ok") {
         echo '<script>
-        fncSweetAlert("error", "¡El Modelo no puede ir vacía o llevar caracteres especiales!", "/modelos");
-        fncFormatInputs();
+        fncSweetAlert("success", "El modelo ha sido guardado correctamente", "/modelos");
         </script>';
       }
+    } else {
+      echo '<script>
+      fncSweetAlert("error", "¡El modelo no puede llevar caracteres especiales y los años deben ser numéricos!");
+      fncFormatInputs();
+      </script>';
     }
   }
+}
   /*=============================================
 	MOSTRAR ModeloS
 	=============================================*/
@@ -55,50 +50,54 @@ class ControladorModelos
   }
 
 /*=============================================
-  EDITAR MODELO
-  =============================================*/
+EDITAR MODELO
+=============================================*/
 
-  static public function ctrEditarModelo() {
+static public function ctrEditarModelo() {
 
-    if (isset($_POST["editarModelo"])) {
+  if (isset($_POST["editarModelo"])) {
 
-      if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editarModelo"])) {
+    if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editarModelo"])) {
 
-        $_POST["editarModelo"] = strtolower($_POST["editarModelo"]);
+      $_POST["editarModelo"] = strtolower($_POST["editarModelo"]);
 
-        $tabla = "modelos"; // Asegúrate de que el nombre de la tabla esté en minúsculas si así está en la base de datos
+      $tabla = "modelos";
 
-        $datos = array(
-          "nombre_modelo" => $_POST["editarModelo"], // Corrige el nombre de la clave para que coincida con el nombre en la base de datos
-          "id_modelo" => $_POST["idModelo"], // Corrige el nombre de la clave para que coincida con el nombre en la base de datos
-          "id_marca_modelo" => $_POST["marcaSelectEditar"] // Asegúrate de agregar el ID de la marca si es necesario
-        );
+      $datos = array(
+        "nombre_modelo" => $_POST["editarModelo"],
+        "id_modelo" => $_POST["idModelo"],
+        "id_marca" => $_POST["marcaSelectEditar"],
+        "version_modelo" => $_POST["editarVersion"],
+        "anio_inicio_modelo" => $_POST["editarAnioInicio"],
+        "anio_fin_modelo" => $_POST["editarAnioFin"]
+      );
 
-        $respuesta = ModeloModelos::mdlEditarModelo($tabla, $datos);
+      $respuesta = ModeloModelos::mdlEditarModelo($tabla, $datos);
 
-        if ($respuesta == "ok") {
+      if ($respuesta == "ok") {
 
-          echo '<script>
-          fncSweetAlert("success", "El modelo ha sido actualizado correctamente", "/modelos");
-          </script>';
-
-        } else {
-
-          echo '<script>
-          fncSweetAlert("error", "Error al actualizar el modelo", "");
-          fncFormatInputs();
-          </script>';
-        }
+        echo '<script>
+        fncSweetAlert("success", "El modelo ha sido actualizado correctamente", "/modelos");
+        </script>';
 
       } else {
 
         echo '<script>
-        fncSweetAlert("error", "El nombre del modelo no puede ir vacío o llevar caracteres especiales", "");
+        fncSweetAlert("error", "Error al actualizar el modelo", "");
         fncFormatInputs();
         </script>';
       }
+
+    } else {
+
+      echo '<script>
+      fncSweetAlert("error", "El nombre del modelo no puede ir vacío o llevar caracteres especiales", "");
+      fncFormatInputs();
+      </script>';
     }
   }
+}
+
   /*=============================================
   BORRAR MODELO
   =============================================*/

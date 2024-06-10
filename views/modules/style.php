@@ -8,6 +8,9 @@
 <!-- Codebase framework -->
 <link rel="stylesheet" id="css-main" href="<?php echo $path ?>views/assets/css/codebase.min.css">
 
+<!-- Page JS Plugins CSS -->
+<link rel="stylesheet" href="<?php echo $path ?>views/assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css">
+
 <!-- DataTables -->
 <link rel="stylesheet" href="<?php echo $path ?>views/assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
 <link rel="stylesheet" href="<?php echo $path ?>views/assets/bower_components/datatables.net-bs/css/responsive.bootstrap.min.css">
@@ -31,5 +34,8 @@
 <script src="<?php echo $path ?>views/assets/js/plugins/sweetalert2/sweetalert.min.js"></script>
 <script src="<?php echo $path ?>views/assets/js/plugins/notie/notie.min.js"></script>
 <script src="<?php echo $path ?>views/assets/js/alerts/alerts.js"></script>
+
+<script src="<?php echo $path ?>views/assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+
 
 </head>

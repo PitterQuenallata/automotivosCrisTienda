@@ -8,31 +8,36 @@ class ControladorCategorias
 
   static public function ctrCrearCategoria()
   {
-
-    if (isset($_POST["nuevaCategoria"])) {
-
-      if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevaCategoria"])) {
-        $_POST["editarCategoria"]=strtolower($_POST["editarCategoria"]);
-        $tabla = "categorias";
-
-        $datos = $_POST["nuevaCategoria"];
-
-        $respuesta = ModeloCategorias::mdlIngresarCategoria($tabla, $datos);
-
-        if ($respuesta == "ok") {
-
-          echo '<script>
-          fncSweetAlert("success", "La categoría ha sido guardada correctamente", "/categorias");
-          </script>';
-        }
-      } else {
-        echo '<script>
-        fncSweetAlert("error", "¡La categoría no puede ir vacía o llevar caracteres especiales!", "/categorias");
-        fncFormatInputs();
-        </script>';
+      if (isset($_POST["nuevaCategoria"])) {
+          
+          // Convertir a minúsculas antes de validar
+          $_POST["nuevaCategoria"] = strtolower($_POST["nuevaCategoria"]);
+  
+          // Validar que no contiene caracteres especiales no permitidos
+          if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevaCategoria"])) {
+  
+              $tabla = "categorias";
+              $datos = $_POST["nuevaCategoria"];
+  
+              $respuesta = ModeloCategorias::mdlIngresarCategoria($tabla, $datos);
+  
+              if ($respuesta == "ok") {
+                  echo '<script>
+                  fncSweetAlert("success", "La categoría ha sido guardada correctamente", "/categorias");
+                  </script>';
+              }
+          } else {
+              echo '<script>
+              fncSweetAlert("error", "¡La categoría no puede ir vacía o llevar caracteres especiales!");
+             
+              fncFormatInputs();
+              </script>';
+              return; // Asegúrate de que el script no sigue ejecutándose
+          }
       }
-    }
   }
+  
+
   /*=============================================
 	MOSTRAR CATEGORIAS
 	=============================================*/
@@ -57,9 +62,9 @@ class ControladorCategorias
     if (isset($_POST["editarCategoria"])) {
 
       if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editarCategoria"])) {
-        $_POST["editarCategoria"]=strtolower($_POST["editarCategoria"]);
+        $_POST["editarCategoria"] = strtolower($_POST["editarCategoria"]);
         $tabla = "categorias";
-       
+
         $datos = array(
           "nombre_categoria" => $_POST["editarCategoria"],
           "id_categoria" => $_POST["idCategoria"]
@@ -73,14 +78,14 @@ class ControladorCategorias
           fncSweetAlert("success", "La categoría ha sido cambiada correctamente", "/categorias");
           </script>';
         } else {
-          
+
           echo '<script>
           
         fncSweetAlert("error", "¡La categoría no puede ir vacía o llevar caracteres especiales!");
         fncFormatInputs();
         </script>';
         }
-      }else{
+      } else {
         echo '<script>
         fncSweetAlert("error", "¡La categoría no puede ir vacía o llevar caracteres especiales!");
         fncFormatInputs();
@@ -107,12 +112,11 @@ class ControladorCategorias
         echo '<script>
 				fncSweetAlert("success", "La categoria ha sido borrado correctamente", "/categorias");
 				</script>';
-
-			}else {
-				echo '<script>
+      } else {
+        echo '<script>
 						fncSweetAlert("error", "Error al borrar la categoria", "");
 				</script>';
-			}		
+      }
     }
   }
 }

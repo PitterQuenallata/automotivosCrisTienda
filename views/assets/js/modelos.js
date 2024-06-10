@@ -19,12 +19,13 @@ $(".btnEditarModelo").click(function () {
       console.log("respuesta", respuesta);
       $("#editarModelo").val(respuesta["nombre_modelo"]);
       $("#idModelo").val(respuesta["id_modelo"]);
-      $("#marcaSelecEditar").val(respuesta["id_marca_modelo"]);
+      $("#marcaSelecEditar").val(respuesta["id_marca"]);
+      $("#editarVersion").val(respuesta["version_modelo"]);
+      $("#editarAnioInicio").val(respuesta["anio_inicio_modelo"]);
+      $("#editarAnioFin").val(respuesta["anio_fin_modelo"]);
     },
   });
 });
-
-
 
 /*=============================================
 ELIMINAR Modelo
@@ -34,7 +35,6 @@ $(".btnElininarModelo").click(function () {
   
   var baseURL = "modelos?ruta=&idModelo=" + idModelo;
 
-
   // Llamar a la función personalizada de SweetAlert
-  fncSweetAlert("confirm", "¡Está seguro de borrar la Modelo", baseURL);
+  fncSweetAlert("confirm", "¡Está seguro de borrar el modelo?", baseURL);
 });
