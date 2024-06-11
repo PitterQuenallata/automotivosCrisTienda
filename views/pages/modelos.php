@@ -23,8 +23,9 @@
               </button>
             </div>
 
-            <div class="block-content">
-              <table id="tablass" class="table table-vcenter">
+            <div class="block-content block-content-full overflow-x-auto">
+            <div class="">
+            <table id="" class="table table-sm table-striped table-vcenter js-dataTable-responsive">
                 <thead>
                   <tr>
                     <th class="text-center" style="width: 50px;"></th>
@@ -49,8 +50,8 @@
                     <th class="text-center" scope="row">' . ($key + 1) . '</th>
                     <td class="text-uppercase">' . $value["nombre_modelo"] . '</td>
                     <td class="text-uppercase">' . $value["version_modelo"] . '</td>
-                    <td class="text-uppercase">' . $value["anio_inicio_modelo"] . '</td>
-                    <td class="text-uppercase">' . $value["anio_fin_modelo"] . '</td>
+                    <td>' . $value["anio_inicio_modelo"] . '</td>
+                    <td>' . $value["anio_fin_modelo"] . '</td>
                     <td class="text-uppercase">' . $value["nombre_marca"] . '</td>';
 
                     if ($value["estado_modelo"] != 0) {
@@ -81,10 +82,13 @@
                   ?>
                 </tbody>
               </table>
+            </div>
+
 
             </div>
           </div>
-
+          
+          
         </div>
       </div>
     </div>

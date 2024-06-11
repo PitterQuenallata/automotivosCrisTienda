@@ -18,5 +18,6 @@
     <meta property="og:url" content="">
     <meta property="og:image" content=""> -->
 <?php include "style.php"; ?>
+</head>
 <body>
   

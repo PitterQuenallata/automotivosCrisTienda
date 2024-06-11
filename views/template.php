@@ -14,8 +14,6 @@ $routesArray = explode("/", $_SERVER["REQUEST_URI"]);
 array_shift($routesArray);
 foreach ($routesArray as $key => $value) {
     $routesArray[$key] = explode("?", $value)[0];
-    
-    
 }
 
 // Incluye la cabecera
@@ -25,17 +23,18 @@ include "modules/header.php";
 echo '<input type="hidden" id="urlPath" value="' . $path . '">';
 
 // Modificar la función para cargar directamente desde `pages`
-function loadPage($route, $path, $routesArray) {
+function loadPage($route, $path, $routesArray)
+{
     // Contenedor principal
     echo '<div id="page-container" class="sidebar-o enable-page-overlay side-scroll page-header-modern main-content-narrow">';
-    
+
     // Incluye el menú lateral y la barra de navegación
     include "modules/sidebar.php";
     include "modules/navbar.php";
-    
+
     // Incluye la página solicitada
     include("pages/{$route}.php");
-    
+
     // Cierra el contenedor principal
     echo '</div>';
 }
@@ -44,7 +43,7 @@ function loadPage($route, $path, $routesArray) {
 if (isset($_SESSION["users"])) {
     // Determina la ruta solicitada
     $route = !empty($routesArray[0]) ? $routesArray[0] : "inicio";
-    $validRoutes = ["inicio", "usuarios", "categorias","marcas","vehiculos", "modelos","motores", "proveedores", "compras", "salir"]; // Añadir rutas válidas aquí
+    $validRoutes = ["inicio", "usuarios", "categorias", "marcas", "vehiculos", "modelos", "motores", "proveedores", "lista-compras","crear-compras","crear-ventas", "salir"]; // Añadir rutas válidas aquí
 
     // Verifica si la ruta es válida y carga la página correspondiente
     if (in_array($route, $validRoutes)) {
@@ -64,6 +63,5 @@ if (isset($_SESSION["users"])) {
 
 
 
-include "modules/scripts.php"; 
-include "modules/footerEnd.php"
-?>
+include "modules/scripts.php";
+include "modules/footerEnd.php";

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 10-06-2024 a las 09:32:36
+-- Tiempo de generación: 11-06-2024 a las 10:16:49
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -85,6 +85,20 @@ CREATE TABLE `compras` (
   `date_updated_compra` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `compras`
+--
+
+INSERT INTO `compras` (`id_compra`, `fecha_compra`, `monto_total_compra`, `id_proveedor`, `id_usuario`, `date_created_compra`, `date_updated_compra`) VALUES
+(20, '2024-06-11', 5500.00, 5, 1, '2024-06-11 07:40:26', '2024-06-11 07:40:26'),
+(21, '2024-06-11', 1200.00, 2, 1, '2024-06-11 07:50:47', '2024-06-11 07:50:47'),
+(22, '2024-06-11', 16000.40, 2, 1, '2024-06-11 07:55:17', '2024-06-11 07:55:17'),
+(23, '2024-06-11', 52000.00, 5, 1, '2024-06-11 07:56:48', '2024-06-11 07:56:48'),
+(24, '2024-07-06', 50.00, 2, 1, '2024-06-11 08:04:43', '2024-06-11 08:08:57'),
+(25, '2024-06-11', 2500.00, 2, 1, '2024-06-11 08:05:56', '2024-06-11 08:05:56'),
+(26, '2024-07-06', 97294.23, 2, 1, '2024-06-11 08:07:35', '2024-06-11 08:07:35'),
+(27, '2024-07-06', 10530.00, 2, 1, '2024-06-11 08:08:27', '2024-06-11 08:08:27');
+
 -- --------------------------------------------------------
 
 --
@@ -101,6 +115,19 @@ CREATE TABLE `detalles_compras` (
   `date_created_detalle_compra` timestamp NOT NULL DEFAULT current_timestamp(),
   `date_updated_detalle_compra` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `detalles_compras`
+--
+
+INSERT INTO `detalles_compras` (`id_detalle_compra`, `id_compra`, `id_repuesto`, `cantidad_detalleCompra`, `codigo_compra`, `precio_unitario`, `date_created_detalle_compra`, `date_updated_detalle_compra`) VALUES
+(13, 20, 5, 20, '6667ff6a96', 20.00, '2024-06-11 07:40:26', '2024-06-11 07:54:58'),
+(15, 21, 2, 20, '666801d78c', 20.00, '2024-06-11 07:50:47', '2024-06-11 07:50:47'),
+(16, 21, 2, 20, '666801d78d', 0.00, '2024-06-11 07:50:47', '2024-06-11 07:54:42'),
+(17, 22, 4, 40, '666802e5c9', 400.01, '2024-06-11 07:55:17', '2024-06-11 07:55:17'),
+(18, 23, 4, 1000, '666803401f', 52.00, '2024-06-11 07:56:48', '2024-06-11 07:56:48'),
+(19, 26, 2, 423, '666805c740', 230.01, '2024-06-11 08:07:35', '2024-06-11 08:07:35'),
+(20, 27, 1, 234, '666805fbd4', 45.00, '2024-06-11 08:08:27', '2024-06-11 08:08:27');
 
 -- --------------------------------------------------------
 
@@ -278,16 +305,27 @@ CREATE TABLE `repuestos` (
   `id_repuesto` int(11) NOT NULL,
   `id_categoria` int(11) DEFAULT NULL,
   `nombre_repuesto` varchar(255) NOT NULL,
-  `OEM` varchar(255) DEFAULT NULL,
-  `codigo_tienda` varchar(255) DEFAULT NULL,
+  `oem_repuesto` varchar(255) DEFAULT NULL,
+  `codigo_tienda_repuesto` varchar(255) DEFAULT NULL,
   `stock_repuesto` int(11) DEFAULT NULL,
-  `precio_venta` decimal(10,2) DEFAULT NULL,
-  `precio_por_cantidad` decimal(10,2) DEFAULT NULL,
+  `precio_repuesto` decimal(10,2) DEFAULT NULL,
+  `precio_cantidad_repuesto` decimal(10,2) DEFAULT NULL,
   `marca_repuesto` varchar(255) DEFAULT NULL,
   `estado_repuesto` tinyint(4) DEFAULT 1,
   `date_created_repuesto` timestamp NOT NULL DEFAULT current_timestamp(),
   `date_updated_repuesto` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `repuestos`
+--
+
+INSERT INTO `repuestos` (`id_repuesto`, `id_categoria`, `nombre_repuesto`, `oem_repuesto`, `codigo_tienda_repuesto`, `stock_repuesto`, `precio_repuesto`, `precio_cantidad_repuesto`, `marca_repuesto`, `estado_repuesto`, `date_created_repuesto`, `date_updated_repuesto`) VALUES
+(1, 1, 'Filtro de aceite', 'OEM12345', 'COD001', 100, 15.00, 14.50, 'Marca A', 1, '2024-06-11 00:52:50', '2024-06-11 00:52:50'),
+(2, 2, 'Bujía de encendido', 'OEM67890', 'COD002', 200, 10.00, 9.50, 'Marca B', 1, '2024-06-11 00:52:50', '2024-06-11 00:52:50'),
+(3, 3, 'Amortiguador delantero', 'OEM54321', 'COD003', 150, 45.00, 43.00, 'Marca C', 1, '2024-06-11 00:52:50', '2024-06-11 00:52:50'),
+(4, 4, 'Pastillas de freno', 'OEM98765', 'COD004', 250, 20.00, 19.00, 'Marca D', 1, '2024-06-11 00:52:50', '2024-06-11 00:52:50'),
+(5, 5, 'Filtro de aire', 'OEM11223', 'COD005', 300, 12.00, 11.50, 'Marca E', 1, '2024-06-11 00:52:50', '2024-06-11 00:52:50');
 
 -- --------------------------------------------------------
 
@@ -314,7 +352,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `user_usuario`, `foto_usuario`, `email_usuario`, `password_usuario`, `rol_usuario`, `estado_usuario`, `date_created_usuario`, `date_updated_usuario`) VALUES
-(1, 'benjamin', 'canaviri', 'benjo1234', 'views/assets/media/avatars/usuarios/benjo1234/713.jpg', 'benjo@gmail.com', '$2a$07$azybxcags23425sdg23sdem1CFT2u/A.0JOm/IXWxebxaQOkjS85C', 'administrador', 1, '2024-06-09 15:27:08', '2024-06-10 01:48:35');
+(1, 'benjamin', 'canaviri', 'benjo1234', 'views/assets/media/avatars/usuarios/benjo1234/713.jpg', 'benjo@gmail.com', '$2a$07$azybxcags23425sdg23sdem1CFT2u/A.0JOm/IXWxebxaQOkjS85C', 'administrador', 1, '2024-06-09 15:27:08', '2024-06-11 03:34:55');
 
 -- --------------------------------------------------------
 
@@ -458,13 +496,13 @@ ALTER TABLE `clientes`
 -- AUTO_INCREMENT de la tabla `compras`
 --
 ALTER TABLE `compras`
-  MODIFY `id_compra` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `detalles_compras`
 --
 ALTER TABLE `detalles_compras`
-  MODIFY `id_detalle_compra` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detalle_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `detalles_ventas`
@@ -500,7 +538,7 @@ ALTER TABLE `proveedores`
 -- AUTO_INCREMENT de la tabla `repuestos`
 --
 ALTER TABLE `repuestos`
-  MODIFY `id_repuesto` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_repuesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`

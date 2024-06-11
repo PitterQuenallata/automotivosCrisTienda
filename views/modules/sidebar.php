@@ -93,7 +93,7 @@
                   </a></li>';
 
             echo '<li class="nav-main-item">
-                  <a class="nav-main-link" href="/compras">
+                  <a class="nav-main-link" href="/crear-ventas">
                     <i class="nav-main-link-icon fa fa-baht-sign"></i>
                     <span class="nav-main-link-name">Compra</span>
                   </a></li>';
@@ -144,6 +144,30 @@
             </ul>
           </li>
 
+          <li class="nav-main-item">
+            <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
+              <i class="nav-main-link-icon fa fa-baht-sign"></i>
+              <span class="nav-main-link-name">Compras</span>
+            </a>
+            <ul class="nav-main-submenu">
+              <li class="nav-main-item">
+                <a class="nav-main-link" href="/lista-compras">
+                  <span class="nav-main-link-name">Lista Compras</span>
+                </a>
+              </li>
+              <li class="nav-main-item">
+                <a class="nav-main-link" href="/crear-compras">
+                  <span class="nav-main-link-name">Crear Compra</span>
+                </a>
+              </li>
+              <li class="nav-main-item">
+                <a class="nav-main-link" href="be_forms_input_groups.html">
+                  <span class="nav-main-link-name">Input Groups</span>
+                </a>
+              </li>
+
+            </ul>
+          </li>
 
           <li class="nav-main-item">
             <a class="nav-main-link nav-main-link-submenu" data-toggle="submenu" aria-haspopup="true" aria-expanded="false" href="#">
@@ -152,8 +176,8 @@
             </a>
             <ul class="nav-main-submenu">
               <li class="nav-main-item">
-                <a class="nav-main-link" href="be_forms_elements.html">
-                  <span class="nav-main-link-name">Elements</span>
+                <a class="nav-main-link" href="/crear-ventas">
+                  <span class="nav-main-link-name">Crear Ventas</span>
                 </a>
               </li>
               <li class="nav-main-item">

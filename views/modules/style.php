@@ -8,21 +8,10 @@
 <!-- Codebase framework -->
 <link rel="stylesheet" id="css-main" href="<?php echo $path ?>views/assets/css/codebase.min.css">
 
-<!-- Page JS Plugins CSS -->
-<link rel="stylesheet" href="<?php echo $path ?>views/assets/js/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css">
 
-<!-- DataTables -->
-<link rel="stylesheet" href="<?php echo $path ?>views/assets/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css">
-<link rel="stylesheet" href="<?php echo $path ?>views/assets/bower_components/datatables.net-bs/css/responsive.bootstrap.min.css">
-
-  <!-- jQuery 3 -->
+<!-- jQuery 3 -->
 <script src="<?php echo $path ?>views/assets/bower_components/jquery/dist/jquery.min.js"></script>
 
-<!-- DataTables -->
-<script src="<?php echo $path ?>views/assets/bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-  <script src="<?php echo $path ?>views/assets/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
-  <script src="<?php echo $path ?>views/assets/bower_components/datatables.net-bs/js/dataTables.responsive.min.js"></script>
-  <script src="<?php echo $path ?>views/assets/bower_components/datatables.net-bs/js/responsive.bootstrap.min.js"></script>
 
 <!-- alerts -->
 <link rel="stylesheet" type="text/css" href="<?php echo $path ?>views/assets/css/plugins/notie/notie.min.css">
@@ -35,7 +24,10 @@
 <script src="<?php echo $path ?>views/assets/js/plugins/notie/notie.min.js"></script>
 <script src="<?php echo $path ?>views/assets/js/alerts/alerts.js"></script>
 
-<script src="<?php echo $path ?>views/assets/js/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 
 
-</head>
+
+<!-- Page JS Plugins CSS -->
+<link rel="stylesheet" href="<?php echo $path ?>views/assets/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="<?php echo $path ?>views/assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css">
+<link rel="stylesheet" href="<?php echo $path ?>views/assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css">

@@ -10,7 +10,7 @@
             <div class="block-content block-content-full">
               <div class="text-center">
                 <h2 class="h4 fw-extrabold mb-0">
-                  Usuarios
+                  Compras
                 </h2>
               </div>
             </div>
@@ -19,17 +19,17 @@
           <div class="block block-rounded">
             <div class="block-header block-header-default">
               <button type="button" class="btn btn-success me-1 mb-1" data-bs-toggle="modal" data-bs-target="#modal-Compras">
-                <i class="fa fa-plus opacity-50 me-1"></i> Añadir Usuario
+                <i class="fa fa-plus opacity-50 me-1"></i> Añadir Compra
               </button>
             </div>
 
-            <div class="block-content">
-              <table id="tablass" class="table table-vcenter">
+            <div class="block-content block-content-full overflow-x-auto">
+              <table  class="table table-sm table-striped table-vcenter js-dataTable-responsive">
                 <thead>
                   <tr>
                     <th class="text-center" style="width: 50px;"></th>
-                    <th>Código</th>
-                    <th>Fecha de Usuario</th>
+                    <th>Código Compra</th>
+                    <th>Fecha Compra</th>
                     <th>Proveedor</th>
                     <th>Usuario</th>
                     <th class="text-center" style="width: 100px;">Actions</th>
@@ -43,9 +43,10 @@
 
                   foreach ($Usuarios as $key => $value) {
                     // Obtener nombre del proveedor
-                    $itemProveedor = "id_proveedor";
-                    $valorProveedor = $value["id_proveedor"];
+                    $itemProveedor = null;
+                    $valorProveedor = null;
                     $proveedor = ControladorProveedores::ctrMostrarProveedores($itemProveedor, $valorProveedor);
+                    echo '<script>console.log(' . json_encode($proveedor) . ')</script>';
 
                     // Obtener nombre del usuario
                     $itemUsuario = "id_usuario";
@@ -55,13 +56,13 @@
                     echo '
                 <tr>
                     <th class="text-center" scope="row">' . ($key + 1) . '</th>
-                    <td>' . $value["codigo_Usuario"] . '</td>
-                    <td>' . $value["fecha_Usuario"] . '</td>
+                    <td>' . $value["codigo_compra"] . '</td>
+                    <td>' . $value["fecha_compra"] . '</td>
                     <td>' . $proveedor["nombre_proveedor"] . '</td>
                     <td>' . $usuario["nombre_usuario"] . '</td>
                     <td class="text-center">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled btnDetalleUsuario" idUsuario="' . $value["id_Usuario"] . '" data-bs-target="#modalDetalleUsuario" data-bs-toggle="modal" aria-label="Detail" data-bs-original-title="Detail">
+                            <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled btnDetalleUsuario" idUsuario="' . $value["id_isuario"] . '" data-bs-target="#modalDetalleUsuario" data-bs-toggle="modal" aria-label="Detail" data-bs-original-title="Detail">
                                 <i class="fa fa-eye"></i>
                             </button>
                             <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled btnEditarUsuario" idUsuario="' . $value["id_Usuario"] . '" data-bs-target="#modalEditarUsuario" data-bs-toggle="modal" aria-label="Edit" data-bs-original-title="Edit">

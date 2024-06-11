@@ -5,84 +5,86 @@ class ControladorUsuarios
 {
 
 
-    /*=============================================
-	INGRESO DE USUARIO
-	=============================================*/
+/*=============================================
+INGRESO DE USUARIO
+=============================================*/
 
-    static public function ctrIngresoUsuario()
-    {
-        if (isset($_POST["ingUsuario"])) {
-            echo '<script>
-            fncMatPreloader("on");
-            fncSweetAlert("loading", "", "");
-        </script>';
+static public function ctrIngresoUsuario()
+{
+    if (isset($_POST["ingUsuario"])) {
+        echo '<script>
+        fncMatPreloader("on");
+        fncSweetAlert("loading", "", "");
+    </script>';
 
-            if (
-                preg_match('/^[a-zA-Z0-9]+$/', $_POST["ingUsuario"]) &&
-                preg_match('/^[a-zA-Z0-9]+$/', $_POST["ingPassword"])
-            ) {
-                $crypt = crypt($_POST["ingPassword"], '$2a$07$azybxcags23425sdg23sdfhsd$');
+        if (
+            preg_match('/^[a-zA-Z0-9]+$/', $_POST["ingUsuario"]) &&
+            preg_match('/^[a-zA-Z0-9]+$/', $_POST["ingPassword"])
+        ) {
+            $crypt = crypt($_POST["ingPassword"], '$2a$07$azybxcags23425sdg23sdfhsd$');
 
-                $tabla = "usuarios";
-                $item = "user_usuario";
-                $valor = $_POST["ingUsuario"];
+            $tabla = "usuarios";
+            $item = "user_usuario";
+            $valor = $_POST["ingUsuario"];
 
-                $respuesta = ModeloUsuarios::MdlMostrarUsuarios($tabla, $item, $valor);
+            $respuesta = ModeloUsuarios::MdlMostrarUsuarios($tabla, $item, $valor);
 
+            if (is_array($respuesta) && isset($respuesta["user_usuario"]) && isset($respuesta["password_usuario"])) {
+                if ($respuesta["user_usuario"] == $_POST["ingUsuario"] && $respuesta["password_usuario"] == $crypt) {
+                    if ($respuesta["estado_usuario"] == 1) { // Verificar si el usuario está activo
 
-                if (is_array($respuesta) && isset($respuesta["user_usuario"]) && isset($respuesta["password_usuario"])) {
-                    if ($respuesta["user_usuario"] == $_POST["ingUsuario"] && $respuesta["password_usuario"] == $crypt) {
-                        if ($respuesta["estado_usuario"] == 1) { // Verificar si el usuario está activo
+                        date_default_timezone_set('America/La_Paz');
 
-                            date_default_timezone_set('America/La_Paz');
+                        $fecha = date('Y-m-d');
+                        $hora = date('H:i:s');
 
+                        $fechaActual = $fecha . ' ' . $hora;
 
-                            $fecha = date('Y-m-d');
-                            $hora = date('H:i:s');
+                        $item1 = "date_updated_usuario";
+                        $valor1 = $fechaActual;
 
-                            $fechaActual = $fecha . ' ' . $hora;
+                        $item2 = "id_usuario";
+                        $valor2 = $respuesta["id_usuario"];
 
-                            $item1 = "date_updated_usuario";
-                            $valor1 = $fechaActual;
+                        $ultimoLogin = ModeloUsuarios::mdlActualizarUsuario($tabla, $item1, $valor1, $item2, $valor2);
 
-                            $item2 = "id_usuario";
-                            $valor2 = $respuesta["id_usuario"];
+                        if ($ultimoLogin == "ok") {
+                            // Usar el ID real del usuario autenticado
+                            $_SESSION['id_usuario'] = $respuesta["id_usuario"];
+                            $_SESSION["users"] = $respuesta;
 
-                            $ultimoLogin = ModeloUsuarios::mdlActualizarUsuario($tabla, $item1, $valor1, $item2, $valor2);
-
-                            if ($ultimoLogin == "ok") {
-                                $_SESSION["users"] = $respuesta;
-                                echo '<script>
-															window.location = "inicio";
-											</script>';
-                            }
-                        } else {
-                            echo '<div class="alert alert-danger mt-3">El usuario está inactivo</div>
+                            echo '<script>
+                                window.location = "inicio";
+                            </script>';
+                        }
+                    } else {
+                        echo '<div class="alert alert-danger mt-3">El usuario está inactivo</div>
                         <script>
                             fncToastr("error", "El usuario está inactivo");
                             fncMatPreloader("off");
                             fncFormatInputs();
                         </script>';
-                        }
-                    } else {
-                        echo '<div class="alert alert-danger mt-3">Usuario y contraseña incorrectos</div>
+                    }
+                } else {
+                    echo '<div class="alert alert-danger mt-3">Usuario y contraseña incorrectos</div>
                     <script>
                         fncToastr("error", "Usuario y contraseña incorrectos");
                         fncMatPreloader("off");
                         fncFormatInputs();
                     </script>';
-                    }
-                } else {
-                    echo '<div class="alert alert-danger mt-3">Usuario y contraseña incorrectos</div>
+                }
+            } else {
+                echo '<div class="alert alert-danger mt-3">Usuario y contraseña incorrectos</div>
                 <script>
                     fncToastr("error", "Usuario y contraseña incorrectos");
                     fncMatPreloader("off");
                     fncFormatInputs();
                 </script>';
-                }
             }
         }
     }
+}
+
 
 
     /*=============================================
@@ -198,7 +200,7 @@ Crear Usuario
                 fncFormatInputs();
             </script>';
             }
-        } 
+        }
     }
 
 
