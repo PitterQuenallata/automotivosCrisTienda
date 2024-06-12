@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-06-2024 a las 10:16:49
+-- Tiempo de generación: 12-06-2024 a las 11:31:28
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -90,14 +90,7 @@ CREATE TABLE `compras` (
 --
 
 INSERT INTO `compras` (`id_compra`, `fecha_compra`, `monto_total_compra`, `id_proveedor`, `id_usuario`, `date_created_compra`, `date_updated_compra`) VALUES
-(20, '2024-06-11', 5500.00, 5, 1, '2024-06-11 07:40:26', '2024-06-11 07:40:26'),
-(21, '2024-06-11', 1200.00, 2, 1, '2024-06-11 07:50:47', '2024-06-11 07:50:47'),
-(22, '2024-06-11', 16000.40, 2, 1, '2024-06-11 07:55:17', '2024-06-11 07:55:17'),
-(23, '2024-06-11', 52000.00, 5, 1, '2024-06-11 07:56:48', '2024-06-11 07:56:48'),
-(24, '2024-07-06', 50.00, 2, 1, '2024-06-11 08:04:43', '2024-06-11 08:08:57'),
-(25, '2024-06-11', 2500.00, 2, 1, '2024-06-11 08:05:56', '2024-06-11 08:05:56'),
-(26, '2024-07-06', 97294.23, 2, 1, '2024-06-11 08:07:35', '2024-06-11 08:07:35'),
-(27, '2024-07-06', 10530.00, 2, 1, '2024-06-11 08:08:27', '2024-06-11 08:08:27');
+(38, '2024-06-14', 400.00, 5, 1, '2024-06-11 19:49:57', '2024-06-11 20:28:31');
 
 -- --------------------------------------------------------
 
@@ -121,13 +114,7 @@ CREATE TABLE `detalles_compras` (
 --
 
 INSERT INTO `detalles_compras` (`id_detalle_compra`, `id_compra`, `id_repuesto`, `cantidad_detalleCompra`, `codigo_compra`, `precio_unitario`, `date_created_detalle_compra`, `date_updated_detalle_compra`) VALUES
-(13, 20, 5, 20, '6667ff6a96', 20.00, '2024-06-11 07:40:26', '2024-06-11 07:54:58'),
-(15, 21, 2, 20, '666801d78c', 20.00, '2024-06-11 07:50:47', '2024-06-11 07:50:47'),
-(16, 21, 2, 20, '666801d78d', 0.00, '2024-06-11 07:50:47', '2024-06-11 07:54:42'),
-(17, 22, 4, 40, '666802e5c9', 400.01, '2024-06-11 07:55:17', '2024-06-11 07:55:17'),
-(18, 23, 4, 1000, '666803401f', 52.00, '2024-06-11 07:56:48', '2024-06-11 07:56:48'),
-(19, 26, 2, 423, '666805c740', 230.01, '2024-06-11 08:07:35', '2024-06-11 08:07:35'),
-(20, 27, 1, 234, '666805fbd4', 45.00, '2024-06-11 08:08:27', '2024-06-11 08:08:27');
+(43, 38, 3, 2, '6668aa6593', 200.00, '2024-06-11 19:49:57', '2024-06-11 19:49:57');
 
 -- --------------------------------------------------------
 
@@ -352,7 +339,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `user_usuario`, `foto_usuario`, `email_usuario`, `password_usuario`, `rol_usuario`, `estado_usuario`, `date_created_usuario`, `date_updated_usuario`) VALUES
-(1, 'benjamin', 'canaviri', 'benjo1234', 'views/assets/media/avatars/usuarios/benjo1234/713.jpg', 'benjo@gmail.com', '$2a$07$azybxcags23425sdg23sdem1CFT2u/A.0JOm/IXWxebxaQOkjS85C', 'administrador', 1, '2024-06-09 15:27:08', '2024-06-11 03:34:55');
+(1, 'benjamin', 'canaviri', 'benjo1234', 'views/assets/media/avatars/usuarios/benjo1234/713.jpg', 'benjo@gmail.com', '$2a$07$azybxcags23425sdg23sdem1CFT2u/A.0JOm/IXWxebxaQOkjS85C', 'administrador', 1, '2024-06-09 15:27:08', '2024-06-11 21:42:55');
 
 -- --------------------------------------------------------
 
@@ -496,13 +483,13 @@ ALTER TABLE `clientes`
 -- AUTO_INCREMENT de la tabla `compras`
 --
 ALTER TABLE `compras`
-  MODIFY `id_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT de la tabla `detalles_compras`
 --
 ALTER TABLE `detalles_compras`
-  MODIFY `id_detalle_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id_detalle_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
 
 --
 -- AUTO_INCREMENT de la tabla `detalles_ventas`

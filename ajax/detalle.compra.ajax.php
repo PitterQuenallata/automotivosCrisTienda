@@ -5,14 +5,12 @@ ini_set('display_errors', 1);
 session_start(); // Asegúrate de iniciar la sesión
 
 require_once "../controllers/compras.controller.php";
-require_once "../controllers/proveedores.controller.php"; // Asegúrate de incluir este controlador
+require_once "../controllers/repuestos.controller.php";
 require_once "../models/compras.model.php";
-require_once "../models/proveedores.model.php";
+require_once "../models/repuestos.model.php";
 require_once "../models/detalles_compras.model.php";
+require_once "../models/proveedores.model.php"; // Asegúrate de incluir este modelo 
 
-/*=============================================
-Acciones para la gestión de detalles de compras
-=============================================*/
 if (isset($_POST['action'])) {
     switch ($_POST['action']) {
         case 'getDetallesCompra':
@@ -24,17 +22,24 @@ if (isset($_POST['action'])) {
             } else {
                 echo json_encode(['success' => false, 'error' => 'No se encontraron detalles']);
             }
-            exit;
+            break;
 
         case 'updateDetalleCompra':
-            $respuesta = ControladorCompras::ctrActualizarDetalleCompra();
+            // Recuperar id_compra del detalle
+            $idDetalle = $_POST['id_detalle_compra'];
+            $detalle = ModeloDetallesCompras::mdlMostrarDetalleCompraPorId("detalles_compras", $idDetalle);
+            if ($detalle) {
+                $_POST['id_compra'] = $detalle['id_compra'];
+            }
+
+            $respuesta = ControladorCompras::ctrActualizarDetalleCompra($_POST);
             header('Content-Type: application/json');
             if ($respuesta == 'ok') {
                 echo json_encode(['success' => true]);
             } else {
                 echo json_encode(['success' => false, 'error' => 'Error al actualizar el detalle']);
             }
-            exit;
+            break;
 
         case 'deleteDetalleCompra':
             $idDetalle = $_POST['idDetalle'];
@@ -45,7 +50,25 @@ if (isset($_POST['action'])) {
             } else {
                 echo json_encode(['success' => false, 'error' => 'Error al eliminar el detalle']);
             }
-            exit;
+            break;
+
+        case 'getRepuestos':
+            $repuestos = ControladorRepuestos::ctrMostrarRepuestos(null, null);
+            header('Content-Type: application/json');
+            if ($repuestos) {
+                echo json_encode(['success' => true, 'data' => $repuestos]);
+            } else {
+                echo json_encode(['success' => false, 'error' => 'No se encontraron repuestos']);
+            }
+            break;
+
+        default:
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'error' => 'Acción no válida']);
+            break;
     }
+    exit;
 }
-?>
+
+header('Content-Type: application/json');
+echo json_encode(['success' => false, 'error' => 'No se especificó ninguna acción']);

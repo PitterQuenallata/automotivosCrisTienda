@@ -26,119 +26,91 @@ function fncNotie(type, text){
 
 }
 
-/*=============================================
-Alerta SweetAlert
-=============================================*/
-
-function fncSweetAlert(type, text, url){
-
+function fncSweetAlert(type, text, url) {
 	switch (type) {
 
-		case "error":
+			case "error":
+					if (url == "") {
+							Swal.fire({
+									icon: "error",
+									title: "Error",
+									text: text
+							});
+					} else {
+							Swal.fire({
+									icon: "error",
+									title: "Error",
+									text: text
+							}).then((result) => {
+									if (result.value) {
+											window.open(url, "_top");
+									}
+							});
+					}
+					break;
 
-		if(url == ""){
+			case "success":
+					if (url == "") {
+							Swal.fire({
+									icon: "success",
+									title: "Correcto",
+									text: text
+							});
+					} else {
+							Swal.fire({
+									icon: "success",
+									title: "Correcto",
+									text: text
+							}).then((result) => {
+									if (result.value) {
+											window.open(url, "_top");
+									}
+							});
+					}
+					break;
 
-			Swal.fire({
+			case "loading":
+					Swal.fire({
+							allowOutsideClick: false,
+							icon: 'info',
+							text: text
+					});
+					Swal.showLoading();
+					break;
 
-				icon: "error",
-				title: "Error",
-				text: text
-
-			})
-
-		}else{
-
-			Swal.fire({
-
-				icon: "error",
-				title: "Error",
-				text: text
-
-			}).then((result) =>{
-
-				if (result.value){ 
-
-					window.open(url, "_top");
-
-				}
-			
-			})
-
-		}
-
-		break;
-
-		case "success":
-
-		if(url == ""){
-
-			Swal.fire({
-
-				icon: "success",
-				title: "Correcto",
-				text: text
-
-			})
-
-		}else{
-
-			Swal.fire({
-
-				icon: "success",
-				title: "Correcto",
-				text: text
-
-			}).then((result) =>{
-
-				if (result.value){ 
-
-					window.open(url, "_top");
-
-				}
-			
-			})
-
-		}
-
-		break;
-
-		case "loading":
-
-			Swal.fire({
-            	allowOutsideClick: false,
-            	icon: 'info',
-            	text:text
-          	})
-          	Swal.showLoading()
-
-		break;
-
-		case "confirm":
-
-			return new Promise(resolve=>{ 
-
-		 		Swal.fire({
-		 			text: text,
+			case "confirm":
+					return new Promise(resolve => {
+							Swal.fire({
+									text: text,
+									icon: 'warning',
+									showCancelButton: true,
+									confirmButtonColor: '#3085d6',
+									cancelButtonColor: '#d33',
+									cancelButtonText: 'No',
+									confirmButtonText: 'Sí, continuar!'
+							}).then(function(result) {
+									resolve(result);
+							});
+					});
+					break;
+					case "delete":
+            return new Promise(resolve => {
+                Swal.fire({
+                    text: text,
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     cancelButtonText: 'No',
-                    confirmButtonText: 'Si, continuar!'
-		 		}).then(function(result){
-					if (result.value){ 
-
-					window.open(url, "_top");
-
-				}
-                })
-
-		 	})
-		break;
-
+                    confirmButtonText: 'Sí, eliminar!'
+                }).then(function(result) {
+                    resolve(result.isConfirmed);
+                });
+            });
+            break;
 	}
-
 }
+
 
 /*=============================================
 Alerta Toast

@@ -147,19 +147,19 @@ $(document).ready(function() {
 });
 
 
-//Editar Compra
 $(document).ready(function() {
   // Función para llenar el modal de edición con los datos de la compra
   function mostrarEditarCompra(idCompra) {
+    console.log('ID de compra para editar:', idCompra);
     $.ajax({
       url: 'ajax/compras.ajax.php',
       method: 'POST',
       data: { action: 'getCompra', idCompra: idCompra },
       dataType: 'json',
       success: function(response) {
-        console.log('Datos recibidos:', response); // Log para verificar los datos recibidos
+        console.log('Datos recibidosss:', response); // Log para verificar los datos recibidos
         if (response.success) {
-          $('#editIdCompra').val(response.data.id_compra);
+          $('#editIdCompraF').val(response.data.id_compra);
           $('#editFechaCompra').val(response.data.fecha_compra);
           $('#editMontoTotal').val(response.data.monto_total_compra);
 
@@ -189,6 +189,8 @@ $(document).ready(function() {
   // Evento para abrir el modal de edición de la compra
   $(document).on('click', '.btnEditarCompra', function() {
     var idCompra = $(this).attr('idCompra');
+    console.log('ID de compra al hacer clic para editar:', idCompra);
+
     mostrarEditarCompra(idCompra);
   });
 
@@ -196,8 +198,17 @@ $(document).ready(function() {
   $('#formEditarCompra').on('submit', function(event) {
     event.preventDefault();
 
+    var idCompra = $('#editIdCompraF').val();
+    if (!idCompra) {
+      console.error('ID de compra no está presente en el formulario');
+      fncSweetAlert('error', 'ID de compra no está presente en el formulario');
+      return;
+    }
+
     var formData = $(this).serialize();
     formData += '&action=updateCompra';
+    console.log("ID de compra a enviar:", idCompra);
+    console.log("Datos de formulario enviados para actualización:", formData);
 
     $.ajax({
       url: 'ajax/compras.ajax.php',
@@ -205,21 +216,91 @@ $(document).ready(function() {
       data: formData,
       dataType: 'json',
       success: function(response) {
+        console.log("Respuesta del servidor:", response);
         if (response.success) {
           $('#modalEditarCompra').modal('hide');
           fncSweetAlert('success', 'Compra actualizada con éxito', '/lista-compras');
         } else {
+          console.error('Error al actualizar la compra:', response.error);
           fncSweetAlert('error', 'Error al actualizar la compra: ' + response.error);
         }
       },
-      error: function(error) {
+      error: function(xhr, status, error) {
         console.error('Error al enviar los datos de la compra:', error);
+        console.error('Estado:', status);
+        console.error('Respuesta del servidor:', xhr.responseText);
         fncSweetAlert('error', 'Error al enviar los datos de la compra');
+      }
+    });
+  });
+
+  // Manejar la eliminación de una compra
+  $(document).on('click', '.btnEliminarCompra', function() {
+    var idCompra = $(this).attr('idCompra');
+    console.log('ID de la compra a eliminar:', idCompra);
+    // Llamar a la función personalizada de SweetAlert
+    fncSweetAlert("delete", "¿Está seguro que desea eliminar esta compra?").then(function(confirmed) {
+      if (confirmed) {
+        $.ajax({
+          url: 'ajax/compras.ajax.php',
+          method: 'POST',
+          data: { action: 'deleteCompra', idCompra: idCompra },
+          dataType: 'json',
+          success: function(response) {
+            if (response.success) {
+              fncSweetAlert('success', 'La compra ha sido eliminada', '/lista-compras');
+            } else {
+              fncSweetAlert('error', 'Error al eliminar la compra: ' + response.error);
+            }
+          },
+          error: function(error) {
+            console.error('Error al eliminar la compra:', error);
+            fncSweetAlert('error', 'Error al eliminar la compra');
+          }
+        });
       }
     });
   });
 });
 
+
+
+
+
+
+
+
+//eliminar compra
+$(document).ready(function () {
+  // Manejar la eliminación de una compra y sus detalles
+  $(document).on('click', '.btnEliminarCompra', function() {
+      var idCompra = $(this).attr('idCompra');
+      console.log('ID de la compra a eliminar:', idCompra);
+
+      // Llamar a la función personalizada de SweetAlert
+      fncSweetAlert("delete", "¿Está seguro que desea eliminar esta compra y todos sus detalles?").then(function(confirmed) {
+          if (confirmed) {
+              $.ajax({
+                  url: 'ajax/compras.ajax.php',
+                  method: 'POST',
+                  data: { action: 'deleteCompra', idCompra: idCompra },
+                  dataType: 'json',
+                  success: function(response) {
+                      if (response.success) {
+                          fncSweetAlert('success', 'La compra y todos sus detalles han sido eliminados', "/lista-compras");
+                      } else {
+                          fncSweetAlert('error', 'Error al eliminar la compra: ' + response.error);
+                      }
+                  },
+                  error: function(error) {
+                      console.error('Error al eliminar la compra:', error);
+                      fncSweetAlert('error', 'Error al eliminar la compra');
+                  }
+              });
+          }
+      });
+  });
+});
 
 
 

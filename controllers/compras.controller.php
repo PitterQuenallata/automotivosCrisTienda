@@ -15,10 +15,16 @@ class ControladorCompras
     /*=============================================
     MOSTRAR DETALLES DE COMPRA
     =============================================*/
-    static public function ctrMostrarDetallesCompra($idCompra) {
-      $tabla = "detalles_compras";
-      $respuesta = ModeloDetallesCompras::mdlObtenerDetallesCompra($tabla, $idCompra);
-      return $respuesta;
+    public static function ctrMostrarDetallesCompra($idCompra) {
+      $detalles = ModeloDetallesCompras::mdlMostrarDetallesCompra("detalles_compras", $idCompra);
+
+      // Obtener el nombre del repuesto para cada detalle de compra
+      foreach ($detalles as &$detalle) {
+          $repuesto = ModeloRepuestos::mdlMostrarRepuestos("repuestos", "id_repuesto", $detalle["id_repuesto"]);
+          $detalle["nombre_repuesto"] = $repuesto["nombre_repuesto"];
+      }
+
+      return $detalles;
   }
   /*=============================================
 	Mostrar Compras
@@ -30,63 +36,51 @@ class ControladorCompras
     return $respuesta;
   }
 
-  /*=============================================
+    /*=============================================
     ACTUALIZAR DETALLE DE COMPRA
     =============================================*/
-  static public function ctrActualizarDetalleCompra()
-  {
-    if (isset($_POST["id_detalle_compra"])) {
-      $tabla = "detalles_compras";
-      $datos = array(
-        "id_detalle_compra" => $_POST["id_detalle_compra"],
-        "cantidad_detalleCompra" => $_POST["cantidad_detalleCompra"],
-        "precio_unitario" => $_POST["precio_unitario"]
-      );
-
-      $respuesta = ModeloDetallesCompras::mdlActualizarDetalleCompra($tabla, $datos);
-
+    static public function ctrActualizarDetalleCompra($datos) {
+      $respuesta = ModeloDetallesCompras::mdlActualizarDetalleCompra("detalles_compras", $datos);
+      
       if ($respuesta == "ok") {
-        echo json_encode(array("success" => true));
+          // Actualizar monto total de la compra
+          $actualizacionMonto = self::ctrActualizarMontoTotalCompra($datos["id_compra"]);
+          if ($actualizacionMonto == "ok") {
+              return "ok";
+          } else {
+              return $actualizacionMonto;
+          }
       } else {
-        echo json_encode(array("success" => false, "error" => $respuesta));
+          return $respuesta;
       }
-    }
-  }
-  /*=============================================
-    OBTENER DETALLES DE COMPRA
-    =============================================*/
-  static public function ctrObtenerDetallesCompra($idCompra)
-  {
-    if ($idCompra) {
-      $tabla = "detalles_compras";
-      $respuesta = ModeloDetallesCompras::mdlObtenerDetallesCompra($tabla, $idCompra);
-
-      if (!empty($respuesta)) {
-        echo json_encode(array("success" => true, "data" => $respuesta));
-      } else {
-        echo json_encode(array("success" => false, "error" => "No se encontraron detalles"));
-      }
-    }
   }
 
-/*=============================================
+
+    /*=============================================
     ELIMINAR DETALLE DE COMPRA
     =============================================*/
-    static public function ctrEliminarDetalleCompra() {
-      if (isset($_POST["idDetalle"])) {
-          $tabla = "detalles_compras";
-          $idDetalle = $_POST["idDetalle"];
-          
-          $respuesta = ModeloDetallesCompras::mdlEliminarDetalleCompra($tabla, $idDetalle);
-
+    static public function ctrEliminarDetalleCompra($idDetalle) {
+      $detalle = ModeloDetallesCompras::mdlMostrarDetalleCompraPorId("detalles_compras", $idDetalle);
+      if ($detalle) {
+          $idCompra = $detalle["id_compra"];
+          $respuesta = ModeloDetallesCompras::mdlEliminarDetalleCompra("detalles_compras", $idDetalle);
           if ($respuesta == "ok") {
-              echo json_encode(array("success" => true));
+              // Actualizar monto total de la compra
+              return self::ctrActualizarMontoTotalCompra($idCompra);
           } else {
-              echo json_encode(array("success" => false, "error" => $respuesta));
+              return $respuesta;
           }
+      } else {
+          return "error";
       }
   }
-
+    /*=============================================
+    ACTUALIZAR MONTO TOTAL DE COMPRA
+    =============================================*/
+    static public function ctrActualizarMontoTotalCompra($idCompra) {
+      $montoTotal = ModeloDetallesCompras::mdlCalcularMontoTotalCompra($idCompra);
+      return ModeloCompras::mdlActualizarMontoTotalCompra("compras", $idCompra, $montoTotal);
+  }
   /*=============================================
 	Registrar Compras
 	=============================================*/
@@ -119,5 +113,19 @@ class ControladorCompras
     } else {
       return "Error al registrar la compra.";
     }
+  }
+      /*=============================================
+    ELIMINAR COMPRA Y SUS DETALLES
+    =============================================*/
+    static public function ctrEliminarCompra($idCompra) {
+      // Eliminar detalles de la compra
+      $respuestaDetalles = ModeloDetallesCompras::mdlEliminarDetallesPorCompra("detalles_compras", $idCompra);
+      if ($respuestaDetalles == "ok") {
+          // Eliminar la compra
+          $respuestaCompra = ModeloCompras::mdlEliminarCompra("compras", $idCompra);
+          return $respuestaCompra;
+      } else {
+          return "error";
+      }
   }
 }

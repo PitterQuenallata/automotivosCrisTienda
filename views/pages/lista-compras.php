@@ -55,6 +55,7 @@
                     $valorUsuario = $compra["id_usuario"];
                     $usuario = ControladorUsuarios::ctrMostrarUsuarios($itemUsuario, $valorUsuario);
 
+
                     echo '
                 <tr>
                     <th class="text-center" scope="row">' . ($key + 1) . '</th>
@@ -146,6 +147,7 @@
                 <div class="block-content fs-sm">
                     <form id="formEditarDetalleCompra">
                         <input type="hidden" id="editIdDetalle" name="id_detalle_compra">
+                        <input type="hidden" id="editIdCompra" name="id_compra"> <!-- Campo oculto para id_compra -->
                         <div class="form-group">
                             <label for="editCantidadDetalle">Cantidad</label>
                             <input type="number" class="form-control" id="editCantidadDetalle" name="cantidad_detalleCompra" required>
@@ -153,6 +155,12 @@
                         <div class="form-group">
                             <label for="editPrecioUnitarioDetalle">Precio Unitario</label>
                             <input type="number" class="form-control" id="editPrecioUnitarioDetalle" name="precio_unitario" step="0.01" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editRepuestoSelect">Repuesto</label>
+                            <select class="form-control" id="editRepuestoSelect" name="id_repuesto" required>
+                                <!-- Opciones de repuestos llenadas dinámicamente -->
+                            </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                     </form>
@@ -162,53 +170,53 @@
     </div>
 </div>
 
-    <!-- Modal Editar Compra -->
-    <div class="modal" id="modalEditarCompra" tabindex="-1" role="dialog" aria-labelledby="modal-normal" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="block block-rounded shadow-none mb-0">
-            <div class="block-header block-header-default">
-              <h3 class="block-title">Editar Compra</h3>
-              <div class="block-options">
-                <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                  <i class="fa fa-times"></i>
-                </button>
-              </div>
-            </div>
-            <div class="block-content fs-sm">
-              <form id="formEditarCompra">
-                <input type="hidden" id="editIdCompra" name="id_compra">
-                <div class="form-group">
-                  <label for="editFechaCompra">Fecha Compra</label>
-                  <input type="date" class="form-control" id="editFechaCompra" name="fecha_compra" required>
-                </div>
-                <div class="form-group">
-                  <label for="editProveedorSelect">Proveedor</label>
-                  <select class="form-control" id="editProveedorSelect" name="id_proveedor" required>
-                    <!-- Opciones de proveedores llenadas dinámicamente -->
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="editMontoTotal">Monto Total</label>
-                  <input type="number" step="0.01" class="form-control" id="editMontoTotal" name="monto_total_compra" required>
-                </div>
-                <div class="form-group text-end">
-                  <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                </div>
-              </form>
-            </div>
+
+
+
+
+<!-- Modal Editar Compra -->
+<div class="modal" id="modalEditarCompra" tabindex="-1" role="dialog" aria-labelledby="modal-normal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="block block-rounded shadow-none mb-0">
+        <div class="block-header block-header-default">
+          <h3 class="block-title">Editar Compra</h3>
+          <div class="block-options">
+            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+              <i class="fa fa-times"></i>
+            </button>
           </div>
+        </div>
+        <div class="block-content fs-sm">
+          <form id="formEditarCompra">
+            <input type="hidden" id="editIdCompraF" name="id_compra" value="">
+            <div class="form-group">
+              <label for="editFechaCompra">Fecha Compra</label>
+              <input type="date" class="form-control" id="editFechaCompra" name="fecha_compra" required>
+            </div>
+            <div class="form-group">
+              <label for="editProveedorSelect">Proveedor</label>
+              <select class="form-control" id="editProveedorSelect" name="id_proveedor" required>
+                <!-- Opciones de proveedores llenadas dinámicamente -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editMontoTotal">Monto Total</label>
+              <input type="number" step="0.01" class="form-control" id="editMontoTotal" name="monto_total_compra" required>
+            </div>
+            <div class="form-group text-end">
+              <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
+  </div>
+</div>
+
 
 
 
   </div>
 </main>
 
-
-<?php
-// $borrarUsuario = new ControladorUsuarios();
-// $borrarUsuario->ctrBorrarUsuario();
-?>

@@ -3,6 +3,9 @@ require_once "conexion.php";
 
 class ModeloDetallesCompras
 {
+  /*=============================================
+    REGISTRAR DETALLE DE COMPRA
+    =============================================*/
   public static function mdlRegistrarDetalleCompra($idCompra, $idRepuesto, $cantidad, $codigoCompra, $precioUnitario)
   {
     try {
@@ -26,67 +29,111 @@ class ModeloDetallesCompras
 
     $stmt = null;
   }
-
-  public static function mdlMostrarDetallesCompra($tabla, $idCompra)
+  /*=============================================
+    MOSTRAR DETALLES DE COMPRA
+    =============================================*/
+  static public function mdlMostrarDetallesCompra($tabla, $idCompra)
   {
-    $stmt = Conexion::conectar()->prepare("SELECT dc.id_detalle_compra, dc.codigo_compra, r.nombre_repuesto, dc.cantidad_detalleCompra, dc.precio_unitario
-    FROM $tabla dc
-    JOIN repuestos r ON dc.id_repuesto = r.id_repuesto
-    WHERE dc.id_compra = :id_compra");
+    $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE id_compra = :id_compra");
     $stmt->bindParam(":id_compra", $idCompra, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll();
   }
 
 
-  public static function mdlEliminarDetalleCompra($tabla, $idDetalle)
-  {
-    $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_detalle_compra = :id_detalle");
-    $stmt->bindParam(":id_detalle", $idDetalle, PDO::PARAM_INT);
-
-    if ($stmt->execute()) {
-      return "ok";
-    } else {
-      return "error";
-    }
-
-    $stmt = null;
-  }
-
-  /*=============================================
-    ACTUALIZAR DETALLE DE COMPRA
+    /*=============================================
+    ELIMINAR DETALLE DE COMPRA
     =============================================*/
-  static public function mdlActualizarDetalleCompra($tabla, $datos)
-  {
-    try {
-      $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET cantidad_detalleCompra = :cantidad_detalleCompra, precio_unitario = :precio_unitario WHERE id_detalle_compra = :id_detalle_compra");
-
-      $stmt->bindParam(":cantidad_detalleCompra", $datos["cantidad_detalleCompra"], PDO::PARAM_INT);
-      $stmt->bindParam(":precio_unitario", $datos["precio_unitario"], PDO::PARAM_STR);
-      $stmt->bindParam(":id_detalle_compra", $datos["id_detalle_compra"], PDO::PARAM_INT);
+    static public function mdlEliminarDetalleCompra($tabla, $idDetalle) {
+      $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_detalle_compra = :id_detalle_compra");
+      $stmt->bindParam(":id_detalle_compra", $idDetalle, PDO::PARAM_INT);
 
       if ($stmt->execute()) {
-        return "ok";
+          return "ok";
       } else {
-        return "error";
+          return "error";
       }
 
       $stmt = null;
-    } catch (PDOException $e) {
-      return "error: " . $e->getMessage();
-    }
   }
-      /*=============================================
-    OBTENER DETALLES DE COMPRA
+
+   /*=============================================
+    ACTUALIZAR DETALLE DE COMPRA EN EL MODELO
     =============================================*/
-    static public function mdlObtenerDetallesCompra($tabla, $idCompra) {
-      try {
-          $stmt = Conexion::conectar()->prepare("SELECT dc.*, r.nombre_repuesto FROM $tabla dc INNER JOIN repuestos r ON dc.id_repuesto = r.id_repuesto WHERE dc.id_compra = :id_compra");
-          $stmt->bindParam(":id_compra", $idCompra, PDO::PARAM_INT);
-          $stmt->execute();
-          return $stmt->fetchAll(PDO::FETCH_ASSOC);
-      } catch (PDOException $e) {
-          return "error: " . $e->getMessage();
+    static public function mdlActualizarDetalleCompra($tabla, $datos) {
+      $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET cantidad_detalleCompra = :cantidad_detalleCompra, precio_unitario = :precio_unitario, id_repuesto = :id_repuesto WHERE id_detalle_compra = :id_detalle_compra");
+      $stmt->bindParam(":cantidad_detalleCompra", $datos["cantidad_detalleCompra"], PDO::PARAM_INT);
+      $stmt->bindParam(":precio_unitario", $datos["precio_unitario"], PDO::PARAM_STR);
+      $stmt->bindParam(":id_repuesto", $datos["id_repuesto"], PDO::PARAM_INT);
+      $stmt->bindParam(":id_detalle_compra", $datos["id_detalle_compra"], PDO::PARAM_INT);
+
+      if ($stmt->execute()) {
+          return "ok";
+      } else {
+          return "error";
       }
+
+      $stmt = null;
+  }
+
+  /*=============================================
+OBTENER ID DE COMPRA
+=============================================*/
+  static public function mdlObtenerIdCompra($idDetalle)
+  {
+    $stmt = Conexion::conectar()->prepare("SELECT id_compra FROM detalles_compras WHERE id_detalle_compra = :id_detalle_compra");
+    $stmt->bindParam(":id_detalle_compra", $idDetalle, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_COLUMN);
+  }
+
+    /*=============================================
+    CALCULAR MONTO TOTAL DE COMPRA
+    =============================================*/
+    static public function mdlCalcularMontoTotalCompra($idCompra) {
+      $stmt = Conexion::conectar()->prepare("SELECT SUM(cantidad_detalleCompra * precio_unitario) as total FROM detalles_compras WHERE id_compra = :id_compra");
+      $stmt->bindParam(":id_compra", $idCompra, PDO::PARAM_INT);
+      $stmt->execute();
+      return $stmt->fetch(PDO::FETCH_COLUMN);
+  }
+    /*=============================================
+    MOSTRAR DETALLE DE COMPRA POR ID
+    =============================================*/
+    static public function mdlMostrarDetalleCompraPorId($tabla, $idDetalle) {
+      $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE id_detalle_compra = :id_detalle_compra");
+      $stmt->bindParam(":id_detalle_compra", $idDetalle, PDO::PARAM_INT);
+      $stmt->execute();
+      return $stmt->fetch();
+  }
+
+  /*=============================================
+    ELIMINAR COMPRA
+    =============================================*/
+    static public function mdlEliminarCompra($tabla, $idCompra) {
+        $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_compra = :id_compra");
+        $stmt->bindParam(":id_compra", $idCompra, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+
+        $stmt = null;
+    }
+        /*=============================================
+    ELIMINAR DETALLES POR COMPRA
+    =============================================*/
+    static public function mdlEliminarDetallesPorCompra($tabla, $idCompra) {
+      $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_compra = :id_compra");
+      $stmt->bindParam(":id_compra", $idCompra, PDO::PARAM_INT);
+
+      if ($stmt->execute()) {
+          return "ok";
+      } else {
+          return "error";
+      }
+
+      $stmt = null;
   }
 }
