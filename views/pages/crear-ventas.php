@@ -16,64 +16,55 @@
 					<div class="col-md-5">
 						<div class="block block-rounded block-bordered">
 							<div class="block-content">
-
-								<form id="formIniciarVenta">
+								<form id="formIniciarVenta" class="formularioVenta">
 									<div class="mb-4">
 										<div class="input-group">
-											<span class="input-group-text">
-												Usuario
-											</span>
-											<input type="text" class="form-control" id="nuevoVendedor" name="nuevoVendedor" value="UsuarioAdministrador" readonly>
+											<span class="input-group-text">Usuario</span>
+											<input type="text" class="form-control" id="nuevoVendedor" name="nuevoVendedor" value="<?php echo $_SESSION["users"]["nombre_usuario"] ?>" readonly>
+											<input type="hidden" id="idVendedor" name="idVendedor" value="<?php echo $_SESSION["users"]["id_usuario"] ?>">
 										</div>
 									</div>
-
 									<div class="mb-4">
 										<div class="input-group">
-											<span class="input-group-text">
-												Código Venta
-											</span>
-											<input type="text" class="form-control" id="codigoVenta" name="codigoVenta" value="1000" readonly>
+											<span class="input-group-text">Código Venta</span>
+											<?php
+											$item = null;
+											$valor = null;
+											$ventas = ControladorVentas::ctrMostrarVentas($item, $valor);
+											if (!$ventas) {
+												echo '<input type="text" class="form-control" id="codigoVenta" name="codigoVenta" value="1001" readonly>';
+											} else {
+												$codigo = $ventas[0]["codigo_venta"] + 1;
+												echo '<input type="text" class="form-control" id="codigoVenta" name="codigoVenta" value="' . $codigo . '" readonly>';
+											}
+											?>
 										</div>
 									</div>
-
 									<div class="mb-4">
 										<div class="input-group">
-											<span class="input-group-text">
-												Cliente
-											</span>
-
+											<span class="input-group-text">Cliente</span>
 											<select class="form-select" id="agregarCliente" name="agregarCliente" required>
 												<option selected disabled>Elije un Cliente</option>
-												<!-- Opciones de clientes llenadas dinámicamente -->
+												<?php
+												$item = null;
+												$valor = null;
+												$clientes = ControladorClientes::ctrMostrarClientes($item, $valor);
+												foreach ($clientes as $key => $value) {
+													echo '<option value="' . $value["id_cliente"] . '">' . $value["nombre_cliente"] . ' - DNI: ' . $value["dni_cliente"] . ' - NIT: ' . $value["nit_cliente"] . '</option>';
+												}
+												?>
 											</select>
 											<span class="input-group-text"><button type="button" class="btn btn-sm btn-secondary me-1 mb-1">Agregar</button></span>
 										</div>
 									</div>
-
-									<div class="row form-group mb-3">
-										<div class="col-6 border-end">
-											<div class="input-group">
-												<span class="input-group-text">
-													<button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled">
-														<i class="fa fa-times"></i>
-													</button>
-												</span>
-												<input type="text" class="form-control" id="agregarRepuesto" name="agregarRepuesto" required readonly>
-											</div>
-										</div>
-										<!-- Cantidad -->
-										<div class="col-3">
-											<div class="input-group">
-												<input type="text" class="form-control form-control-alt text-center" id="nuevaCantidadProducto" name="nuevaCantidadProducto">
-												<span class="input-group-text input-group-text-alt">+</span>
-											</div>
-										</div>
-										<!-- Precio total -->
-										<div class="col-3 border-end">
-											<div class="input-group">
-												<input type="text" class="form-control form-control-alt text-center" id="nuevoPrecioRepuesto" name="nuevoPrecioRepuesto" placeholder="00">
-												<span class="input-group-text input-group-text-alt">BS</span>
-											</div>
+									<!-- Repuestos a vender añadidos -->
+									<div class="nuevoRepuesto"></div>
+									<!-- total de toda la venta -->
+									<div class="mb-4 col-7">
+										<div class="input-group">
+											<span class="input-group-text">Monto a pagar</span>
+											<input type="text" class="form-control form-control-alt text-center" id="ventaTotal" name="ventaTotal" readonly>
+											<span class="input-group-text input-group-text-alt">BS</span>
 										</div>
 									</div>
 									<div class="block-content block-content-full block-content-sm text-end border-top">
@@ -84,13 +75,14 @@
 						</div>
 					</div>
 
+
 					<!-- Lado derecho tabla -->
 					<div class="col-md-7">
 						<div class="block block-rounded">
 							<div class="block-content block-content-full">
 								<div class="table-responsive">
 									<h3 class="block-title">Repuestos Disponibles</h3>
-									<table class="table table-sm table-striped table-vcenter js-dataTable-responsive">
+									<table id="tablaVentas" class="table table-sm table-striped table-vcenter js-dataTable-responsive">
 										<thead>
 											<tr>
 												<th class="text-center" style="width: 50px;">N.</th>
@@ -104,30 +96,6 @@
 											</tr>
 										</thead>
 										<tbody>
-											<?php
-											$item = null;
-											$valor = null;
-											$repuestos = ControladorRepuestos::ctrMostrarRepuestos($item, $valor);
-
-											foreach ($repuestos as $key => $value) {
-												echo '
-												<tr>
-												<td class="text-center" scope="row">' . ($key + 1) . '</td>
-												<td class="text-center">' . $value["oem_repuesto"] . '</td>
-												<td>' . $value["nombre_repuesto"] . '</td>
-												<td>' . $value["id_categoria"] . '</td>
-												<td>' . $value["marca_repuesto"] . '</td>
-												<td>' . $value["stock_repuesto"] . '</td>
-												<td>' . $value["precio_repuesto"] . '</td>
-												<td class="text-center">
-                      <div class="btn-group">
-                       <button type="button" class="btn btn-sm btn-secondary me-1 mb-1">Agregar</button>
-                      </div>
-                    </td>
-												</tr>
-												';
-											}
-											?>
 										</tbody>
 									</table>
 								</div>

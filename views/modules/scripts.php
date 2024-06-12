@@ -8,6 +8,7 @@
 <script src="<?php echo $path ?>views/assets/js/proveedores.js"></script>
 <script src="<?php echo $path ?>views/assets/js/compras.js"></script>
 <script src="<?php echo $path ?>views/assets/js/detalle_compra.js"></script>
+<script src="<?php echo $path ?>views/assets/js/ventas.js"></script>
 
 
 <!-- jQuery (required for DataTables plugin) -->

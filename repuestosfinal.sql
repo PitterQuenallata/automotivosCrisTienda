@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 12-06-2024 a las 11:31:28
+-- Tiempo de generación: 13-06-2024 a las 01:13:42
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -69,6 +69,17 @@ CREATE TABLE `clientes` (
   `date_updated_cliente` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `clientes`
+--
+
+INSERT INTO `clientes` (`id_cliente`, `nombre_cliente`, `apellido_cliente`, `direccion_cliente`, `telefono_cliente`, `email_cliente`, `nit_cliente`, `dni_cliente`, `date_created_cliente`, `date_updated_cliente`) VALUES
+(1, 'Juan', 'Pérez', 'Calle Falsa 123', '555-1234', 'juan.perez@example.com', '123456789', '987654321', '2024-06-12 18:51:03', '2024-06-12 18:51:03'),
+(2, 'María', 'González', 'Avenida Siempre Viva 742', '555-5678', 'maria.gonzalez@example.com', '987654321', '123456789', '2024-06-12 18:51:03', '2024-06-12 18:51:03'),
+(3, 'Carlos', 'Ramírez', 'Boulevard Central 456', '555-8765', 'carlos.ramirez@example.com', '111222333', '112233445', '2024-06-12 18:51:03', '2024-06-12 18:51:03'),
+(4, 'Ana', 'Fernández', 'Calle Principal 789', '555-4321', 'ana.fernandez@example.com', '444555666', '667788990', '2024-06-12 18:51:03', '2024-06-12 18:51:03'),
+(5, 'Luis', 'Martínez', 'Avenida Secundaria 101', '555-1357', 'luis.martinez@example.com', '777888999', '998877665', '2024-06-12 18:51:03', '2024-06-12 18:51:03');
+
 -- --------------------------------------------------------
 
 --
@@ -90,7 +101,8 @@ CREATE TABLE `compras` (
 --
 
 INSERT INTO `compras` (`id_compra`, `fecha_compra`, `monto_total_compra`, `id_proveedor`, `id_usuario`, `date_created_compra`, `date_updated_compra`) VALUES
-(38, '2024-06-14', 400.00, 5, 1, '2024-06-11 19:49:57', '2024-06-11 20:28:31');
+(38, '2024-06-14', 1000.00, 5, 1, '2024-06-11 19:49:57', '2024-06-12 14:27:05'),
+(39, '2024-06-12', 100.00, 1, 1, '2024-06-12 14:26:45', '2024-06-12 14:26:45');
 
 -- --------------------------------------------------------
 
@@ -114,7 +126,8 @@ CREATE TABLE `detalles_compras` (
 --
 
 INSERT INTO `detalles_compras` (`id_detalle_compra`, `id_compra`, `id_repuesto`, `cantidad_detalleCompra`, `codigo_compra`, `precio_unitario`, `date_created_detalle_compra`, `date_updated_detalle_compra`) VALUES
-(43, 38, 3, 2, '6668aa6593', 200.00, '2024-06-11 19:49:57', '2024-06-11 19:49:57');
+(43, 38, 5, 2, '6668aa6593', 500.00, '2024-06-11 19:49:57', '2024-06-12 14:27:05'),
+(44, 39, 2, 10, '6669b025ed', 10.00, '2024-06-12 14:26:45', '2024-06-12 14:26:45');
 
 -- --------------------------------------------------------
 
@@ -123,13 +136,13 @@ INSERT INTO `detalles_compras` (`id_detalle_compra`, `id_compra`, `id_repuesto`,
 --
 
 CREATE TABLE `detalles_ventas` (
-  `id_detalle_venta` int(11) NOT NULL,
+  `id_detalleVenta` int(11) NOT NULL,
   `id_venta` int(11) DEFAULT NULL,
   `id_repuesto` int(11) DEFAULT NULL,
   `cantidad_detalleVenta` int(11) DEFAULT NULL,
-  `precio_unitario` decimal(10,2) DEFAULT NULL,
-  `date_created_detalle_venta` timestamp NOT NULL DEFAULT current_timestamp(),
-  `date_updated_detalle_venta` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `precio_unitario_detalleVenta` decimal(10,2) DEFAULT NULL,
+  `date_created_detalleVenta` timestamp NOT NULL DEFAULT current_timestamp(),
+  `date_updated_detalleVenta` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -308,7 +321,7 @@ CREATE TABLE `repuestos` (
 --
 
 INSERT INTO `repuestos` (`id_repuesto`, `id_categoria`, `nombre_repuesto`, `oem_repuesto`, `codigo_tienda_repuesto`, `stock_repuesto`, `precio_repuesto`, `precio_cantidad_repuesto`, `marca_repuesto`, `estado_repuesto`, `date_created_repuesto`, `date_updated_repuesto`) VALUES
-(1, 1, 'Filtro de aceite', 'OEM12345', 'COD001', 100, 15.00, 14.50, 'Marca A', 1, '2024-06-11 00:52:50', '2024-06-11 00:52:50'),
+(1, 1, 'Filtro de aceite', 'OEM12345', 'COD001', 2, 15.00, 14.50, 'Marca A', 1, '2024-06-11 00:52:50', '2024-06-12 20:39:51'),
 (2, 2, 'Bujía de encendido', 'OEM67890', 'COD002', 200, 10.00, 9.50, 'Marca B', 1, '2024-06-11 00:52:50', '2024-06-11 00:52:50'),
 (3, 3, 'Amortiguador delantero', 'OEM54321', 'COD003', 150, 45.00, 43.00, 'Marca C', 1, '2024-06-11 00:52:50', '2024-06-11 00:52:50'),
 (4, 4, 'Pastillas de freno', 'OEM98765', 'COD004', 250, 20.00, 19.00, 'Marca D', 1, '2024-06-11 00:52:50', '2024-06-11 00:52:50'),
@@ -339,7 +352,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `user_usuario`, `foto_usuario`, `email_usuario`, `password_usuario`, `rol_usuario`, `estado_usuario`, `date_created_usuario`, `date_updated_usuario`) VALUES
-(1, 'benjamin', 'canaviri', 'benjo1234', 'views/assets/media/avatars/usuarios/benjo1234/713.jpg', 'benjo@gmail.com', '$2a$07$azybxcags23425sdg23sdem1CFT2u/A.0JOm/IXWxebxaQOkjS85C', 'administrador', 1, '2024-06-09 15:27:08', '2024-06-11 21:42:55');
+(1, 'benjamin', 'canaviri', 'benjo1234', 'views/assets/media/avatars/usuarios/benjo1234/713.jpg', 'benjo@gmail.com', '$2a$07$azybxcags23425sdg23sdem1CFT2u/A.0JOm/IXWxebxaQOkjS85C', 'administrador', 1, '2024-06-09 15:27:08', '2024-06-12 14:22:10');
 
 -- --------------------------------------------------------
 
@@ -349,9 +362,12 @@ INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `use
 
 CREATE TABLE `ventas` (
   `id_venta` int(11) NOT NULL,
+  `codigo_venta` int(11) NOT NULL,
   `fecha_venta` date DEFAULT NULL,
+  `monto_total_venta` int(11) DEFAULT NULL,
   `id_cliente` int(11) DEFAULT NULL,
   `id_usuario` int(11) DEFAULT NULL,
+  `estado_venta` varchar(50) NOT NULL DEFAULT '''pendiente''',
   `date_created_venta` timestamp NOT NULL DEFAULT current_timestamp(),
   `date_updated_venta` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -392,7 +408,7 @@ ALTER TABLE `detalles_compras`
 -- Indices de la tabla `detalles_ventas`
 --
 ALTER TABLE `detalles_ventas`
-  ADD PRIMARY KEY (`id_detalle_venta`),
+  ADD PRIMARY KEY (`id_detalleVenta`),
   ADD KEY `id_venta` (`id_venta`),
   ADD KEY `id_repuesto` (`id_repuesto`);
 
@@ -477,25 +493,25 @@ ALTER TABLE `categorias`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `compras`
 --
 ALTER TABLE `compras`
-  MODIFY `id_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT de la tabla `detalles_compras`
 --
 ALTER TABLE `detalles_compras`
-  MODIFY `id_detalle_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `id_detalle_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT de la tabla `detalles_ventas`
 --
 ALTER TABLE `detalles_ventas`
-  MODIFY `id_detalle_venta` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detalleVenta` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `marcas`
