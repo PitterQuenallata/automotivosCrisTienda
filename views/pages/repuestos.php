@@ -163,8 +163,8 @@
             <button type="submit" class="btn btn-alt-primary">Guardar</button>
           </div>
           <?php
-          $crearCompra = new ControladorCompras();
-          $crearCompra->ctrCrearCompra();
+          // $crearCompra = new ControladorCompras();
+          // $crearCompra->ctrCrearCompra();
           ?>
         </form>
       </div>
