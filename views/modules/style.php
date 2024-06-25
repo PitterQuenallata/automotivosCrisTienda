@@ -24,6 +24,7 @@
 <script src="<?php echo $path ?>views/assets/js/plugins/notie/notie.min.js"></script>
 <script src="<?php echo $path ?>views/assets/js/alerts/alerts.js"></script>
 
+<script src="<?php echo $path ?>views/assets/js/plugins/jqueryNumber/jquerynumber.min.js"></script>
 
 
 
