@@ -78,7 +78,6 @@
   
           if (stock == 0) {
             fncSweetAlert("error", "No hay stock disponible", "");
-         
   
             $("button[idRepuesto='" + idRepuesto + "']").addClass(
               "btn-primary agregarRepuesto"
@@ -112,7 +111,7 @@
               '" nuevoStock="' +
               (stock - 1) +
               '" required>' +
-              '<span class="input-group-text input-group-text-alt">+</span>' +
+              
               "</div>" +
               "</div>" +
               '<div class="col-3">' +
@@ -127,12 +126,12 @@
               "</div>" +
               "</div>"
           );
-  
+          sumarTotalPrecios();
           // Inicializar jqueryNumber
           $(".nuevaCantidadRepuesto").number(true, 0);  // Decimales: 0
           $(".nuevoPrecioRepuesto").number(true, 2);    // Decimales: 2
   
-          // Actualizar el total de precios
+          // Asegurarse de que sumarTotalPrecios se llame inmediatamente
           sumarTotalPrecios();
   
           // Agrupar repuestos en formato JSON
@@ -198,39 +197,38 @@
       listarRepuestos();
     });
   
-    /*=============================================
-    FUNCIONES AUXILIARES
-    =============================================*/
-  
-    function sumarTotalPrecios() {
-      var precioItem = $(".nuevoPrecioRepuesto");
-      var arraySumaPrecio = [];
-      for (var i = 0; i < precioItem.length; i++) {
-          arraySumaPrecio.push(Number($(precioItem[i]).val()));
-      }
-      function sumaArrayPrecios(total, numero) {
-          return total + numero;
-      }
-      var sumaTotalPrecio = arraySumaPrecio.reduce(sumaArrayPrecios, 0);
-      $("#ventaTotal").val(sumaTotalPrecio.toFixed(2)); // Limitar a 2 decimales
+   /*=============================================
+  FUNCIONES AUXILIARES
+  =============================================*/
+
+  function sumarTotalPrecios() {
+    var precioItem = $(".nuevoPrecioRepuesto");
+    var arraySumaPrecio = [];
+    for (var i = 0; i < precioItem.length; i++) {
+        arraySumaPrecio.push(Number($(precioItem[i]).val()));
     }
-  
-    function listarRepuestos() {
-      var listaRepuestos = [];
-      var descripcion = $(".nuevaDescripcionRepuesto");
-      var cantidad = $(".nuevaCantidadRepuesto");
-      var precio = $(".nuevoPrecioRepuesto");
-      for (var i = 0; i < descripcion.length; i++) {
-        listaRepuestos.push({
-          id: $(descripcion[i]).attr("idRepuesto"),
-          descripcion: $(descripcion[i]).val(),
-          cantidad: $(cantidad[i]).val(),
-          stock: $(cantidad[i]).attr("nuevoStock"),
-          precio: $(precio[i]).attr("precioReal"),
-          total: $(precio[i]).val(),
-        });
-      }
-      $("#listaRepuestos").val(JSON.stringify(listaRepuestos));
+    function sumaArrayPrecios(total, numero) {
+        return total + numero;
     }
-  });
-  
+    var sumaTotalPrecio = arraySumaPrecio.reduce(sumaArrayPrecios, 0);
+    $("#ventaTotal").val(sumaTotalPrecio.toFixed(2)); // Limitar a 2 decimales
+  }
+
+  function listarRepuestos() {
+    var listaRepuestos = [];
+    var descripcion = $(".nuevaDescripcionRepuesto");
+    var cantidad = $(".nuevaCantidadRepuesto");
+    var precio = $(".nuevoPrecioRepuesto");
+    for (var i = 0; i < descripcion.length; i++) {
+      listaRepuestos.push({
+        id: $(descripcion[i]).attr("idRepuesto"),
+        descripcion: $(descripcion[i]).val(),
+        cantidad: $(cantidad[i]).val(),
+        stock: $(cantidad[i]).attr("nuevoStock"),
+        precio: $(precio[i]).attr("precioReal"),
+        total: $(precio[i]).val(),
+      });
+    }
+    $("#listaRepuestos").val(JSON.stringify(listaRepuestos));
+  }
+});

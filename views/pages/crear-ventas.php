@@ -60,7 +60,7 @@
 									<!-- Repuestos a vender añadidos -->
 									<div class="nuevoRepuesto"></div>
 									<!-- total de toda la venta -->
-									<div class="mb-4 col-7">
+									<div class="mb-4">
 										<div class="input-group">
 											<span class="input-group-text">Monto a pagar</span>
 											<input type="text" class="form-control form-control-alt text-center" id="ventaTotal" name="ventaTotal" readonly>
