@@ -9,6 +9,7 @@
 <script src="<?php echo $path ?>views/assets/js/compras.js"></script>
 <script src="<?php echo $path ?>views/assets/js/detalle_compra.js"></script>
 <script src="<?php echo $path ?>views/assets/js/ventas.js"></script>
+<script src="<?php echo $path ?>views/assets/js/repuestos.js"></script>
 
 
 <!-- jQuery (required for DataTables plugin) -->
@@ -26,6 +27,8 @@
 <script src="<?php echo $path ?>views/assets/js/plugins/datatables-buttons-pdfmake/vfs_fonts.js"></script>
 <script src="<?php echo $path ?>views/assets/js/plugins/datatables-buttons/buttons.print.min.js"></script>
 <script src="<?php echo $path ?>views/assets/js/plugins/datatables-buttons/buttons.html5.min.js"></script>
+
+
 
 <!-- Page JS Code -->
 <script src="<?php echo $path ?>views/assets/js/pages/be_tables_datatables.min.js"></script>

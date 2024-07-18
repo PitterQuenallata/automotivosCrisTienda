@@ -26,7 +26,9 @@
 
 <script src="<?php echo $path ?>views/assets/js/plugins/jqueryNumber/jquerynumber.min.js"></script>
 
+<!-- Page JS Plugins -->
 
+<!-- <script src="<?php //echo $path ?>views/assets/js/plugins/select2/css/select2.min.css"></script> -->
 
 <!-- Page JS Plugins CSS -->
 <link rel="stylesheet" href="<?php echo $path ?>views/assets/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css">

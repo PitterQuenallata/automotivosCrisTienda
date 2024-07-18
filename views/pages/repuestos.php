@@ -1,229 +1,129 @@
-<!-- Main Container -->
-<main id="main-container">
-  <!-- Page Content -->
-  <div class="content">
-    <div class="row justify-content-center">
-      <div class="col-10">
-        <div class="justify-content-center">
-
-          <div class="block block-rounded">
-            <div class="block-content block-content-full">
-              <div class="text-center">
-                <h2 class="h4 fw-extrabold mb-0">
-                  Compras
-                </h2>
-              </div>
-            </div>
+  <!-- Main Container -->
+  <main id="main-container">
+    <!-- Page Content -->
+    <div class="content">
+      <div class="row justify-content-center">
+        <div class="col-11">
+          <div class="text-center mb-3">
+            <h1 class="h3 fw-extrabold mb-1">Lista de Repuestos</h1>
           </div>
 
-          <div class="block block-rounded">
-            <div class="block-header block-header-default">
-              <button type="button" class="btn btn-success me-1 mb-1" data-bs-toggle="modal" data-bs-target="#modal-Compras">
-                <i class="fa fa-plus opacity-50 me-1"></i> Añadir Compra
-              </button>
+          <div class="row">
+            <!-- Filtros -->
+            <div class="col-lg-3 col-md-12 mb-2">
+              <div class="block block-rounded">
+                <div class="block-header block-header-default mb-0 d-flex justify-content-between align-items-center">
+                  <h3 class="block-title">Filtros</h3>
+                  <button class="btn btn-link text-danger" type="button">
+                    <i class="fa fa-arrow-rotate-left"></i> Resetear Filtro
+                  </button>
+                </div>
+                <div class="block-content pt-1">
+                  <form id="filtros-form">
+                    <div class="mb-4">
+                      <label class="form-label" for="select-marca">Marca</label>
+                      <select class="form-select" id="select-marca" name="select-marca" onchange="updateModelos()">
+                        <option selected="">Seleccionar Marca</option>
+                        <option value="1">Marca 1</option>
+                        <option value="2">Marca 2</option>
+                        <option value="3">Marca 3</option>
+                      </select>
+                    </div>
+                    <div class="mb-4">
+                      <label class="form-label" for="select-modelo">Modelo</label>
+                      <select class="form-select" id="select-modelo" name="select-modelo">
+                        <option selected="">Seleccionar Modelo</option>
+                        <!-- Opciones dinámicas basadas en la marca -->
+                      </select>
+                    </div>
+                    <div class="mb-4">
+                      <label class="form-label" for="select-motor">Motor</label>
+                      <select class="form-select" id="select-motor" name="select-motor">
+                        <option selected="">Seleccionar Motor</option>
+                        <option value="1">Motor 1</option>
+                        <option value="2">Motor 2</option>
+                        <option value="3">Motor 3</option>
+                      </select>
+                    </div>
+                    <div class="mb-4">
+                      <label class="form-label" for="select-estado">Estado</label>
+                      <select class="form-select" id="select-estado" name="select-estado">
+                        <option selected="">Seleccionar Estado</option>
+                        <option value="1">Activo</option>
+                        <option value="2">Desactivado</option>
+                      </select>
+                    </div>
+                  </form>
+                </div>
+              </div>
             </div>
 
-            <div class="block-content block-content-full overflow-x-auto">
-              <table  class="table table-sm table-striped table-vcenter js-dataTable-responsive">
-                <thead>
-                  <tr>
-                    <th class="text-center" style="width: 50px;"></th>
-                    <th>Código Compra</th>
-                    <th>Fecha Compra</th>
-                    <th>Proveedor</th>
-                    <th>Usuario</th>
-                    <th class="text-center" style="width: 100px;">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-                  $item = null;
-                  $valor = null;
-                  $Usuarios = ControladorUsuarios::ctrMostrarUsuarios($item, $valor);
-
-                  foreach ($Usuarios as $key => $value) {
-                    // Obtener nombre del proveedor
-                    $itemProveedor = null;
-                    $valorProveedor = null;
-                    $proveedor = ControladorProveedores::ctrMostrarProveedores($itemProveedor, $valorProveedor);
-                    echo '<script>console.log(' . json_encode($proveedor) . ')</script>';
-
-                    // Obtener nombre del usuario
-                    $itemUsuario = "id_usuario";
-                    $valorUsuario = $value["id_usuario"];
-                    $usuario = ControladorUsuarios::ctrMostrarUsuarios($itemUsuario, $valorUsuario);
-
-                    echo '
-                <tr>
-                    <th class="text-center" scope="row">' . ($key + 1) . '</th>
-                    <td>' . $value["codigo_compra"] . '</td>
-                    <td>' . $value["fecha_compra"] . '</td>
-                    <td>' . $proveedor["nombre_proveedor"] . '</td>
-                    <td>' . $usuario["nombre_usuario"] . '</td>
-                    <td class="text-center">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled btnDetalleUsuario" idUsuario="' . $value["id_isuario"] . '" data-bs-target="#modalDetalleUsuario" data-bs-toggle="modal" aria-label="Detail" data-bs-original-title="Detail">
-                                <i class="fa fa-eye"></i>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled btnEditarUsuario" idUsuario="' . $value["id_Usuario"] . '" data-bs-target="#modalEditarUsuario" data-bs-toggle="modal" aria-label="Edit" data-bs-original-title="Edit">
+            <!-- Tabla de Repuestos -->
+            <div class="col-lg-9 col-md-12">
+              <div class="block block-rounded">
+                <div class="block-content block-content-full overflow-x-auto">
+                  <div class="d-flex align-items-center mb-3">
+                    <a href="/crear-repuestos" class="btn btn-success me-1 mb-1">
+                      <i class="fa fa-plus opacity-50 me-1"></i> Añadir Repuesto
+                    </a>
+                  </div>
+                  <div class="row mt-2 justify-content-between">
+                    <div class="col-md-auto me-auto">
+                      <div class="dt-buttons btn-group flex-wrap">
+                        <button class="btn btn-sm btn-primary buttons-copy buttons-html5" tabindex="0" type="button"><span>Copy</span></button>
+                        <button class="btn btn-sm btn-primary buttons-excel buttons-html5" tabindex="0" type="button"><span>Excel</span></button>
+                        <button class="btn btn-sm btn-primary buttons-csv buttons-html5" tabindex="0" type="button"><span>CSV</span></button>
+                        <button class="btn btn-sm btn-primary buttons-pdf buttons-html5" tabindex="0" type="button"><span>PDF</span></button>
+                        <button class="btn btn-sm btn-primary buttons-print" tabindex="0" type="button"><span>Print</span></button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="table-responsive">
+                    <table id="tablaRepuestos" class="table table-sm table-striped table-vcenter js-dataTable-responsive">
+                      <thead>
+                        <tr>
+                          <th class="text-center" style="width: 50px;">N.</th>
+                          <th class="text-center" style="width: 100px;">COD.</th>
+                          <th>REPUESTO</th>
+                          <th>PRECIO</th>
+                          <th>Marca</th>
+                          <th>Stock</th>
+                          <th>CATEGORIA</th>
+                          <th>ESTADO</th>
+                          <th class="text-center" style="width: 100px;">Acciones</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        
+                        <!-- <tr>
+                          <td class="text-center">1</td>
+                          <td>00001</td>
+                          <td>Alternador</td>
+                          <td>$100.00</td>
+                          <td>Honda</td>
+                          <td>10</td>
+                          <td>01/01/2022</td>
+                          <td><span class="badge bg-success">Activo</span></td>
+                          <td class="text-center">
+                            <div class="btn-group">
+                              <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled" data-bs-toggle="tooltip" aria-label="Edit" data-bs-original-title="Edit">
                                 <i class="fa fa-pencil-alt"></i>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled btnEliminarUsuario" idUsuario="' . $value["id_Usuario"] . '" data-bs-toggle="tooltip" aria-label="Delete" data-bs-original-title="Delete">
+                              </button>
+                              <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled" data-bs-toggle="tooltip" aria-label="Delete" data-bs-original-title="Delete">
                                 <i class="fa fa-times"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>';
-                  }
-                  ?>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-
-        </div>
-      </div>
-    </div>
-
-<!-- Modal Añadir Compra -->
-<div class="modal" id="modal-Compras" tabindex="-1" role="dialog" aria-labelledby="modal-normal" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="block block-rounded shadow-none mb-0">
-        <div class="block-header block-header-default">
-          <h3 class="block-title">Añadir Compra</h3>
-          <div class="block-options">
-            <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-              <i class="fa fa-times"></i>
-            </button>
-          </div>
-        </div>
-        <form method="post" class="needs-validation" novalidate>
-          <div class="block-content fs-sm">
-            <div class="mb-4">
-              <div class="input-group">
-                <span class="input-group-text btn btn-outline-primary">Codigo</span>
-                <input type="text" class="form-control" name="nuevoCodigoCompra" placeholder="Codigo de Compra" autocomplete="off" required>
-                <div class="valid-feedback">Válido.</div>
-                <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
-              </div>
-            </div>
-
-            <div class="mb-4">
-              <div class="input-group">
-                <span class="input-group-text btn btn-outline-primary">Fecha</span>
-                <input type="text" class="form-control js-flatpickr" id="fechaCompra" name="fechaCompra" placeholder="YYYY-MM-DD" autocomplete="off" required>
-                <div class="valid-feedback">Válido.</div>
-                <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
-              </div>
-            </div>
-
-            <div class="mb-4">
-              <div class="input-group">
-                <span class="input-group-text btn btn-outline-primary">Proveedor</span>
-                <select class="form-select" name="proveedorSelect" id="proveedorSelect" required>
-                  <option selected disabled>Elije un Proveedor</option>
-                  <?php
-                  $item = null;
-                  $valor = null;
-                  $proveedores = ControladorProveedores::ctrMostrarProveedores($item, $valor);
-                  foreach ($proveedores as $key => $value) {
-                    echo '<option value="' . $value["id_proveedor"] . '">' . $value["nombre_proveedor"] . '</option>';
-                  }
-                  ?>
-                </select>
-                <div class="valid-feedback">Válido.</div>
-                <div class="invalid-feedback">Por favor selecciona un proveedor.</div>
-              </div>
-            </div>
-
-            <div class="mb-4">
-              <div class="input-group">
-                <span class="input-group-text btn btn-outline-primary">Usuario</span>
-                <select class="form-select" name="usuarioSelect" id="usuarioSelect" required>
-                  <option selected disabled>Elije un Usuario</option>
-                  <?php
-                  $item = null;
-                  $valor = null;
-                  $usuarios = ControladorUsuarios::ctrMostrarUsuarios($item, $valor);
-                  foreach ($usuarios as $key => $value) {
-                    echo '<option value="' . $value["id_usuario"] . '">' . $value["nombre_usuario"] . '</option>';
-                  }
-                  ?>
-                </select>
-                <div class="valid-feedback">Válido.</div>
-                <div class="invalid-feedback">Por favor selecciona un usuario.</div>
-              </div>
-            </div>
-
-          </div>
-          <div class="block-content block-content-full block-content-sm text-end border-top">
-            <button type="button" class="btn btn-alt-secondary" data-bs-dismiss="modal">Salir</button>
-            <button type="submit" class="btn btn-alt-primary">Guardar</button>
-          </div>
-          <?php
-          // $crearCompra = new ControladorCompras();
-          // $crearCompra->ctrCrearCompra();
-          ?>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-    <!-- Modal editar Usuario-->
-    <div class="modal" id="modalEditarUsuario" tabindex="-1" role="dialog" aria-labelledby="modal-normal" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="block block-rounded shadow-none mb-0">
-            <div class="block-header block-header-default">
-              <h3 class="block-title">Editar Usuario</h3>
-              <div class="block-options">
-                <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                  <i class="fa fa-times"></i>
-                </button>
-              </div>
-            </div>
-            <form method="post">
-              <div class="block-content fs-sm">
-                <div class="mb-4">
-                  <div class="input-group">
-                    <span class="input-group-text btn btn-outline-primary">Usuario</span>
-                    <input type="text" class="form-control" id="editarUsuario" name="editarUsuario">
-                    <input type="hidden" name="idUsuario" id="idUsuario" required>
-
+                              </button>
+                            </div>
+                          </td>
+                        </tr> -->
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
-              <div class="block-content block-content-full block-content-sm text-end border-top">
-                <button type="button" class="btn btn-alt-secondary" data-bs-dismiss="modal">
-                  Salir
-                </button>
-                <button type="submit" class="btn btn-alt-primary" data-bs-dismiss="modal">
-                  Guardar Cambios
-                </button>
-              </div>
-              <?php
-              // $editarUsuario = new ControladorUsuarios();
-              // $editarUsuario->ctrEditarUsuario();
-              ?>
-            </form>
-
+            </div>
           </div>
+
         </div>
       </div>
     </div>
-
-</script>
-
-  </div>
-</main>
-
-
-<?php
-// $borrarUsuario = new ControladorUsuarios();
-// $borrarUsuario->ctrBorrarUsuario();
-?>
+  </main>

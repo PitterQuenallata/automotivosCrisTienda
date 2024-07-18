@@ -87,6 +87,7 @@
         </div>
       </div>
     </div>
+    
     <!-- Modal Añadir categoria -->
     <div class="modal" id="modal-categorias" tabindex="-1" role="dialog" aria-labelledby="modal-normal" aria-hidden="true">
       <div class="modal-dialog" role="document">

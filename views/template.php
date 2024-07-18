@@ -26,7 +26,7 @@ echo '<input type="hidden" id="urlPath" value="' . $path . '">';
 function loadPage($route, $path, $routesArray)
 {
     // Contenedor principal
-    echo '<div id="page-container" class="sidebar-o enable-page-overlay side-scroll page-header-modern main-content-narrow">';
+    echo '<div id="page-container" class="sidebar-mini enable-page-overlay side-scroll page-header-modern main-content-narrow sidebar-o side-trans-enabled">';
 
     // Incluye el menú lateral y la barra de navegación
     include "modules/sidebar.php";
@@ -43,7 +43,7 @@ function loadPage($route, $path, $routesArray)
 if (isset($_SESSION["users"])) {
     // Determina la ruta solicitada
     $route = !empty($routesArray[0]) ? $routesArray[0] : "inicio";
-    $validRoutes = ["inicio", "usuarios", "categorias", "marcas", "vehiculos", "modelos", "motores", "proveedores", "lista-compras","crear-compras","crear-ventas", "salir"]; // Añadir rutas válidas aquí
+    $validRoutes = ["inicio", "usuarios", "categorias", "marcas", "vehiculos", "modelos", "motores", "proveedores", "repuestos", "lista-compras","crear-compras","crear-ventas","crear-repuestos", "salir"]; // Añadir rutas válidas aquí
 
     // Verifica si la ruta es válida y carga la página correspondiente
     if (in_array($route, $validRoutes)) {
