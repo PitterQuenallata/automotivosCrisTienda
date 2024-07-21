@@ -1,7 +1,7 @@
 <main id="main-container">
   <div class="content">
     <div class="row justify-content-center">
-      <div class="col-7">
+      <div class="col-xl-7">
         <div class="block block-rounded shadow-none mb-0">
           <div class="block-header block-header-default">
             <h3 class="block-title">Añadir Repuesto</h3>
@@ -11,13 +11,12 @@
               <div class="row">
                 <div class="col-md-4 mb-4">
                   <label class="form-label" for="nuevoCodigoRepuesto">Código</label>
-                  <input type="text" class="form-control" id="nuevoCodigoRepuesto" name="nuevoCodigoRepuesto" placeholder="Código de Repuesto" autocomplete="off" required>
+                  <input type="text" class="form-control" id="nuevoCodigoRepuesto" name="nuevoCodigoRepuesto" placeholder="Código de Repuesto" autocomplete="off" required readonly>
                   <div class="valid-feedback">Válido.</div>
-                  <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
                 </div>
                 <div class="col-md-8 mb-4">
                   <label class="form-label" for="nuevoNombreRepuesto">Nombre</label>
-                  <input type="text" class="form-control" id="nuevoNombreRepuesto" name="nuevoNombreRepuesto" placeholder="Nombre de Repuesto" autocomplete="off" required>
+                  <input type="text" class="form-control" id="nuevoNombreRepuesto" name="nuevoNombreRepuesto" placeholder="Nombre de Repuesto" autocomplete="off" required onchange="validateJS(event, 'complete')">
                   <div class="valid-feedback">Válido.</div>
                   <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
                 </div>
@@ -25,7 +24,7 @@
 
               <div class="mb-4">
                 <label class="form-label" for="nuevaDescripcionRepuesto">Descripción</label>
-                <textarea class="form-control" id="nuevaDescripcionRepuesto" name="nuevaDescripcionRepuesto" placeholder="Descripción del Repuesto" autocomplete="off" required></textarea>
+                <textarea class="form-control" id="nuevaDescripcionRepuesto" name="nuevaDescripcionRepuesto" placeholder="Descripción del Repuesto" autocomplete="off" required onchange="validateJS(event, 'complete')"></textarea>
                 <div class="valid-feedback">Válido.</div>
                 <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
               </div>
@@ -33,7 +32,7 @@
               <div class="row">
                 <div class="col-md-6 mb-4">
                   <label class="form-label" for="nuevaMarcaRepuesto">Marca</label>
-                  <input type="text" class="form-control" id="nuevaMarcaRepuesto" name="nuevaMarcaRepuesto" placeholder="Marca de Repuesto" autocomplete="off" required>
+                  <input type="text" class="form-control" id="nuevaMarcaRepuesto" name="nuevaMarcaRepuesto" placeholder="Marca de Repuesto" autocomplete="off" required onchange="validateJS(event, 'text')">
                   <div class="valid-feedback">Válido.</div>
                   <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
                 </div>
@@ -41,10 +40,15 @@
                   <label class="form-label" for="agregarCategoria">Categoría</label>
                   <div class="input-group">
                     <select class="form-select" id="agregarCategoria" name="agregarCategoria" required>
-                      <option selected disabled>Elije una Categoría</option>
-                      <option value="1">Categoría 1</option>
-                      <option value="2">Categoría 2</option>
-                      <option value="3">Categoría 3</option>
+                      <option selected value="">Elije una Categoría</option>
+                      <?php
+                      $item = null;
+                      $valor = null;
+                      $categorias = ControladorCategorias::ctrMostrarCategorias($item, $valor);
+                      foreach ($categorias as $key => $value) {
+                        echo '<option value="' . $value["id_categoria"] . '">' . $value["nombre_categoria"] . '</option>';
+                      }
+                      ?>
                     </select>
                     <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled" data-bs-toggle="modal" data-bs-target="#modal-categorias" aria-label="Add" data-bs-original-title="Add">
                       <i class="fa fa-plus"></i>
@@ -58,19 +62,19 @@
               <div class="row">
                 <div class="col-md-4 mb-4">
                   <label class="form-label" for="nuevoPrecioCompraRepuesto">Precio Compra</label>
-                  <input type="number" class="form-control" id="nuevoPrecioCompraRepuesto" name="nuevoPrecioCompraRepuesto" placeholder="00.00" autocomplete="off" required>
+                  <input type="number" class="form-control" id="nuevoPrecioCompraRepuesto" name="nuevoPrecioCompraRepuesto" placeholder="00.00" autocomplete="off" required onchange="validateJS(event, 'decimal')">
                   <div class="valid-feedback">Válido.</div>
                   <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
                 </div>
                 <div class="col-md-4 mb-4">
                   <label class="form-label" for="nuevoPrecioVentaRepuesto">Precio Venta</label>
-                  <input type="number" class="form-control" id="nuevoPrecioVentaRepuesto" name="nuevoPrecioVentaRepuesto" placeholder="00.00" autocomplete="off" required>
+                  <input type="number" class="form-control" id="nuevoPrecioVentaRepuesto" name="nuevoPrecioVentaRepuesto" placeholder="00.00" autocomplete="off" required onchange="validateJS(event, 'decimal')">
                   <div class="valid-feedback">Válido.</div>
                   <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
                 </div>
                 <div class="col-md-4 mb-4">
                   <label class="form-label" for="nuevoStockRepuesto">Stock</label>
-                  <input type="number" class="form-control" id="nuevoStockRepuesto" name="nuevoStockRepuesto" placeholder="0" autocomplete="off" required>
+                  <input type="number" class="form-control" id="nuevoStockRepuesto" name="nuevoStockRepuesto" placeholder="0" autocomplete="off" required onchange="validateJS(event, 'decimal')">
                   <div class="valid-feedback">Válido.</div>
                   <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
                 </div>
@@ -81,10 +85,15 @@
                   <label class="form-label" for="agregarMarcaVehiculo">Marca de Vehículo</label>
                   <div class="input-group">
                     <select class="form-select" id="agregarMarcaVehiculo" name="agregarMarcaVehiculo" required>
-                      <option selected disabled>Elije una Marca</option>
-                      <option value="1">Marca 1</option>
-                      <option value="2">Marca 2</option>
-                      <option value="3">Marca 3</option>
+                      <option selected>Elije una Marca</option>
+                      <?php
+                      $item = null;
+                      $valor = null;
+                      $marcas = ControladorMarcas::ctrMostrarMarcas($item, $valor);
+                      foreach ($marcas as $key => $value) {
+                        echo '<option value="' . $value["id_marca"] . '">' . $value["nombre_marca"] . '</option>';
+                      }
+                      ?>
                     </select>
                     <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled" data-bs-toggle="modal" data-bs-target="#modal-marcas" aria-label="Add" data-bs-original-title="Add">
                       <i class="fa fa-plus"></i>
@@ -93,14 +102,12 @@
                   <div class="valid-feedback">Válido.</div>
                   <div class="invalid-feedback">Por favor selecciona una marca de vehículo.</div>
                 </div>
+
                 <div class="col-md-4 mb-4">
                   <label class="form-label" for="agregarModeloVehiculo">Modelo de Vehículo</label>
                   <div class="input-group">
                     <select class="form-select" id="agregarModeloVehiculo" name="agregarModeloVehiculo" required>
                       <option selected disabled>Elije un Modelo</option>
-                      <option value="1">Modelo 1</option>
-                      <option value="2">Modelo 2</option>
-                      <option value="3">Modelo 3</option>
                     </select>
                     <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled" data-bs-toggle="modal" data-bs-target="#modal-modelos" aria-label="Add" data-bs-original-title="Add">
                       <i class="fa fa-plus"></i>
@@ -115,11 +122,6 @@
                   <div class="input-group">
                     <select class="form-select" id="agregarMotor" name="agregarMotor" required>
                       <option selected disabled>Elije un Motor</option>
-                      <option value="1">Motor 1</option>
-                      <option value="2">Motor 2</option>
-                      <option value="3">Motor 3</option>
-                      <option value="4">Motor 4</option>
-                      <option value="5">Motor 5</option>
                     </select>
                     <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled" data-bs-toggle="modal" data-bs-target="#modal-motores" aria-label="Add" data-bs-original-title="Add">
                       <i class="fa fa-plus"></i>
@@ -135,8 +137,8 @@
                 <button type="submit" class="btn btn-alt-primary">Guardar</button>
               </div>
               <?php
-              // $crearRepuesto = new ControladorRepuestos();
-              // $crearRepuesto->ctrCrearRepuesto();
+              $crearRepuesto = new ControladorRepuestos();
+              $crearRepuesto->ctrCrearRepuesto();
               ?>
             </form>
           </div>
@@ -145,6 +147,7 @@
     </div>
   </div>
 </main>
+
 
 
 <!-- Modal Añadir categoria -->

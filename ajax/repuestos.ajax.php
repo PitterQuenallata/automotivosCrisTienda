@@ -2,31 +2,81 @@
 
 require_once "../controllers/repuestos.controller.php";
 require_once "../models/repuestos.model.php";
+require_once "../controllers/marcas.controller.php";
+require_once "../models/marcas.model.php";
+require_once "../controllers/modelos.controller.php";
+require_once "../models/modelos.model.php";
+require_once "../controllers/motores.controller.php";
+require_once "../models/motores.model.php";
 
-/*=============================================
-Acciones para la gestión de repuestos
-=============================================*/
-if (isset($_POST['action'])) {
-    switch ($_POST['action']) {
-        case 'getRepuestos':
-            $item = null;
-            $valor = null;
-            $repuestos = ControladorRepuestos::ctrMostrarRepuestos($item, $valor);
-            header('Content-Type: application/json');
-            if ($repuestos) {
-                echo json_encode(['success' => true, 'data' => $repuestos]);
-            } else {
-                echo json_encode(['success' => false, 'error' => 'No se encontraron repuestos']);
-            }
-            break;
 
-        default:
-            header('Content-Type: application/json');
-            echo json_encode(['success' => false, 'error' => 'Acción no válida']);
-            break;
+class AjaxRepuestos
+{
+    public $idCategoria;
+    public $idMarca;
+    public $idModelo;
+
+    public function ajaxAsignarCodigoRepuesto()
+    {
+        $item = "id_categoria";
+        $valor = $this->idCategoria;
+        
+        $respuestaCodigo = ControladorRepuestos::ctrMostrarRepuestos($item, $valor);
+        
+        echo json_encode($respuestaCodigo);
     }
-    exit;
+
+    public function ajaxMostrarModelos() {
+        $item = "id_marca";
+        $valor = $this->idMarca;
+        $respuesta = ControladorModelos::ctrMostrarModelos($item, $valor);
+        echo json_encode($respuesta);
+    }
+
+    public function ajaxMostrarMotores() {
+        $item = "id_modelo";
+        $valor = $this->idModelo;
+        $respuesta = ControladorMotores::ctrMostrarMotores($item, $valor);
+        echo json_encode($respuesta);
+    }
 }
 
-header('Content-Type: application/json');
-echo json_encode(['success' => false, 'error' => 'No se especificó ninguna acción']);
+/*=============================================
+Activar repuesto
+=============================================*/
+if (isset($_POST["activarId"])) {
+    $item = "id_repuesto";
+    $valor = $_POST["activarId"];
+    $estado = $_POST["activarRepuesto"];
+
+    $respuesta = ControladorRepuestos::ctrActualizarEstadoRepuesto($item, $valor, $estado);
+
+    echo $respuesta;
+}
+
+/*=============================================
+Activar función para asignar código de repuesto
+=============================================*/
+if (isset($_POST["idCategoria"])) {
+    $codigoRepuesto = new AjaxRepuestos();
+    $codigoRepuesto->idCategoria = $_POST["idCategoria"];
+    $codigoRepuesto->ajaxAsignarCodigoRepuesto();
+}
+
+/*=============================================
+Mostrar modelos por marca
+=============================================*/
+if (isset($_POST["idMarca"])) {
+    $modelos = new AjaxRepuestos();
+    $modelos->idMarca = $_POST["idMarca"];
+    $modelos->ajaxMostrarModelos();
+}
+
+/*=============================================
+Mostrar motores por modelo
+=============================================*/
+if (isset($_POST["idModelo"])) {
+    $motores = new AjaxRepuestos();
+    $motores->idModelo = $_POST["idModelo"];
+    $motores->ajaxMostrarMotores();
+}

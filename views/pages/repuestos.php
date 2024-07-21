@@ -10,7 +10,7 @@
 
           <div class="row">
             <!-- Filtros -->
-            <div class="col-lg-3 col-md-12 mb-2">
+            <!-- <div class="col-lg-3 col-md-12 mb-2">
               <div class="block block-rounded">
                 <div class="block-header block-header-default mb-0 d-flex justify-content-between align-items-center">
                   <h3 class="block-title">Filtros</h3>
@@ -33,7 +33,7 @@
                       <label class="form-label" for="select-modelo">Modelo</label>
                       <select class="form-select" id="select-modelo" name="select-modelo">
                         <option selected="">Seleccionar Modelo</option>
-                        <!-- Opciones dinámicas basadas en la marca -->
+                        
                       </select>
                     </div>
                     <div class="mb-4">
@@ -56,10 +56,10 @@
                   </form>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- Tabla de Repuestos -->
-            <div class="col-lg-9 col-md-12">
+            <div class="">
               <div class="block block-rounded">
                 <div class="block-content block-content-full overflow-x-auto">
                   <div class="d-flex align-items-center mb-3">
@@ -85,6 +85,8 @@
                           <th class="text-center" style="width: 50px;">N.</th>
                           <th class="text-center" style="width: 100px;">COD.</th>
                           <th>REPUESTO</th>
+                          <th>DESCRIPCIÓN</th>
+                          <th>P. COMPRA</th>
                           <th>PRECIO</th>
                           <th>Marca</th>
                           <th>Stock</th>
@@ -94,27 +96,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        
-                        <!-- <tr>
-                          <td class="text-center">1</td>
-                          <td>00001</td>
-                          <td>Alternador</td>
-                          <td>$100.00</td>
-                          <td>Honda</td>
-                          <td>10</td>
-                          <td>01/01/2022</td>
-                          <td><span class="badge bg-success">Activo</span></td>
-                          <td class="text-center">
-                            <div class="btn-group">
-                              <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled" data-bs-toggle="tooltip" aria-label="Edit" data-bs-original-title="Edit">
-                                <i class="fa fa-pencil-alt"></i>
-                              </button>
-                              <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled" data-bs-toggle="tooltip" aria-label="Delete" data-bs-original-title="Delete">
-                                <i class="fa fa-times"></i>
-                              </button>
-                            </div>
-                          </td>
-                        </tr> -->
+
                       </tbody>
                     </table>
                   </div>

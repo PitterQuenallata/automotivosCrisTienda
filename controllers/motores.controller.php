@@ -52,17 +52,21 @@ class ControladorMotores
     }
   }
 
-
-  /*=============================================
-MOSTRAR MOTORES
+/*=============================================
+MOSTRAR MOTORES POR MODELO
 =============================================*/
-
-  static public function ctrMostrarMotores($item, $valor)
-  {
-    $tabla = "motores";
-    $respuesta = ModeloMotores::mdlMostrarMotores($tabla, $item, $valor);
+static public function ctrMostrarMotores($item, $valor)
+{
+    if ($item == "id_modelo") {
+        $tabla = "modelo_motores";
+        $respuesta = ModeloMotores::mdlMostrarMotoresPorModelo($tabla, $valor);
+    } else {
+        $tabla = "motores";
+        $respuesta = ModeloMotores::mdlMostrarMotores($tabla, $item, $valor);
+    }
     return $respuesta;
-  }
+}
+
 
   /*=============================================
 MOSTRAR MODELOS POR MOTOR

@@ -56,12 +56,12 @@
               if ($value["estado_usuario"] != 0) {
                   echo '
                   <td class="d-none d-sm-table-cell">
-                      <button type="button" class="btnActivar badge btn btn-success" idUsuario="' . $value["id_usuario"] . '" estadoUsuario="0">Activado</button>
+                      <button type="button" class="btnActivar badge btn btn-success" idUsuario="' . $value["id_usuario"] . '" estadoUsuario="0">Activo</button>
                   </td>';
               } else {
                   echo '
                   <td class="d-none d-sm-table-cell">
-                      <button type="button" class="btnActivar badge btn btn-danger" idUsuario="' . $value["id_usuario"] . '" estadoUsuario="1">Desactivado</button>
+                      <button type="button" class="btnActivar badge btn btn-danger" idUsuario="' . $value["id_usuario"] . '" estadoUsuario="1">Inactivo</button>
                   </td>';
               }
           

@@ -42,6 +42,17 @@ MOSTRAR MOTORES
   }
 
   /*=============================================
+MOSTRAR MOTORES POR MODELO
+=============================================*/
+  static public function mdlMostrarMotoresPorModelo($tabla, $idModelo)
+  {
+    $stmt = Conexion::conectar()->prepare("SELECT motores.* FROM motores JOIN modelo_motores ON motores.id_motor = modelo_motores.id_motor WHERE modelo_motores.id_modelo = :id_modelo");
+    $stmt->bindParam(":id_modelo", $idModelo, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll();
+  }
+
+  /*=============================================
 MOSTRAR MODELOS POR MOTOR
 =============================================*/
   static public function mdlMostrarModelosPorMotor($tabla, $idMotor)
@@ -105,11 +116,12 @@ MOSTRAR MODELOS POR MOTOR
     $stmt = null;
   }
 
-/*=============================================
+  /*=============================================
   EDITAR MOTOR
   =============================================*/
 
-  static public function mdlEditarMotor($tabla, $datos) {
+  static public function mdlEditarMotor($tabla, $datos)
+  {
     $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET nombre_motor = :nombre_motor, cilindrada_motor = :cilindrada_motor, especificaciones_motor = :especificaciones_motor WHERE id_motor = :id_motor");
 
     $stmt->bindParam(":nombre_motor", $datos["nombre_motor"], PDO::PARAM_STR);
@@ -128,54 +140,56 @@ MOSTRAR MODELOS POR MOTOR
 
 
 
-    /*=============================================
+  /*=============================================
     ACTUALIZAR MODELO-MOTOR
     =============================================*/
-    static public function mdlActualizarModeloMotor($tabla, $idModelo, $idMotor) {
-      $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET id_modelo = :id_modelo WHERE id_motor = :id_motor");
+  static public function mdlActualizarModeloMotor($tabla, $idModelo, $idMotor)
+  {
+    $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET id_modelo = :id_modelo WHERE id_motor = :id_motor");
 
-      $stmt->bindParam(":id_modelo", $idModelo, PDO::PARAM_INT);
-      $stmt->bindParam(":id_motor", $idMotor, PDO::PARAM_INT);
+    $stmt->bindParam(":id_modelo", $idModelo, PDO::PARAM_INT);
+    $stmt->bindParam(":id_motor", $idMotor, PDO::PARAM_INT);
 
-      if ($stmt->execute()) {
-          return "ok";
-      } else {
-          return "error";
-      }
+    if ($stmt->execute()) {
+      return "ok";
+    } else {
+      return "error";
+    }
 
-      $stmt = null;
+    $stmt = null;
   }
-  
-/*=============================================
+
+  /*=============================================
 ELIMINAR MOTOR
 =============================================*/
-static public function mdlBorrarMotor($tabla, $idMotor) {
-  $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_motor = :id_motor");
-  $stmt->bindParam(":id_motor", $idMotor, PDO::PARAM_INT);
+  static public function mdlBorrarMotor($tabla, $idMotor)
+  {
+    $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_motor = :id_motor");
+    $stmt->bindParam(":id_motor", $idMotor, PDO::PARAM_INT);
 
-  if ($stmt->execute()) {
+    if ($stmt->execute()) {
       return "ok";
-  } else {
+    } else {
       return "error";
+    }
+
+    $stmt = null;
   }
 
-  $stmt = null;
-}
-
-/*=============================================
+  /*=============================================
 ELIMINAR RELACIONES DE MODELOS CON EL MOTOR
 =============================================*/
-static public function mdlBorrarModeloMotor($tabla, $idMotor) {
-  $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_motor = :id_motor");
-  $stmt->bindParam(":id_motor", $idMotor, PDO::PARAM_INT);
+  static public function mdlBorrarModeloMotor($tabla, $idMotor)
+  {
+    $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_motor = :id_motor");
+    $stmt->bindParam(":id_motor", $idMotor, PDO::PARAM_INT);
 
-  if ($stmt->execute()) {
+    if ($stmt->execute()) {
       return "ok";
-  } else {
+    } else {
       return "error";
+    }
+
+    $stmt = null;
   }
-
-  $stmt = null;
-}
-
 }

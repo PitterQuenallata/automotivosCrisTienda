@@ -32,15 +32,17 @@ static public function mdlIngresarModelo($tabla, $datos)
 	MOSTRAR ModeloS
 	=============================================*/
 
-	static public function mdlMostrarModelos($tabla, $item, $valor) {
-		if ($item != null) {
-				$stmt = Conexion::conectar()->prepare("SELECT m.*, ma.nombre_marca FROM $tabla m JOIN marcas ma ON m.id_marca = ma.id_marca WHERE m.$item = :$item");
-				$stmt->bindParam(":" . $item, $valor, PDO::PARAM_STR);
-		} else {
-				$stmt = Conexion::conectar()->prepare("SELECT m.*, ma.nombre_marca FROM $tabla m JOIN marcas ma ON m.id_marca = ma.id_marca");
-		}
-		$stmt->execute();
-		return $item != null ? $stmt->fetch() : $stmt->fetchAll();
+  static public function mdlMostrarModelos($tabla, $item, $valor) {
+    if ($item != null) {
+        $stmt = Conexion::conectar()->prepare("SELECT m.*, ma.nombre_marca FROM $tabla m JOIN marcas ma ON m.id_marca = ma.id_marca WHERE m.$item = :$item");
+        $stmt->bindParam(":" . $item, $valor, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(); // Cambiado a fetchAll para devolver siempre un array
+    } else {
+        $stmt = Conexion::conectar()->prepare("SELECT m.*, ma.nombre_marca FROM $tabla m JOIN marcas ma ON m.id_marca = ma.id_marca");
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 }
 
 /*=============================================

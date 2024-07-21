@@ -24,25 +24,29 @@ class TablaRepuestos {
         $stock = "<span class='badge bg-primary'>".$repuestos[$i]["stock_repuesto"]."</span>";
       }
 
-      $estado = $repuestos[$i]["estado_repuesto"] == 1 ? "<span class='badge bg-success'>Activo</span>" : "<span class='badge bg-danger'>Inactivo</span>";
+      $estado = $repuestos[$i]["estado_repuesto"] == 1 ? 
+      "<button class='badge btn btn-success btnActivarRepuesto' idRepuesto='".$repuestos[$i]["id_repuesto"]."' estadoRepuesto='0'>Activo</button>" : 
+      "<button class='badge btn btn-danger btnActivarRepuesto' idRepuesto='".$repuestos[$i]["id_repuesto"]."' estadoRepuesto='1'>Inactivo</button>";
 
       // Obtener la categoría del vehículo
       $itemCategoria = "id_categoria";
       $valorCategoria = $repuestos[$i]["id_categoria"];
       $categoria = ControladorCategorias::ctrMostrarCategorias($itemCategoria, $valorCategoria);
 
-      $acciones = "<div class='btn-group'><button class='btn btn-warning btnEditarRepuesto' idRepuesto='".$repuestos[$i]["id_repuesto"]."' data-toggle='modal' data-target='#modalEditarRepuesto'><i class='fa fa-pencil'></i></button><button class='btn btn-danger btnEliminarRepuesto' idRepuesto='".$repuestos[$i]["id_repuesto"]."' codigo='".$repuestos[$i]["codigo_tienda_repuesto"]."'><i class='fa fa-times'></i></button></div>";
+      $acciones = "<div class='btn-group'><button class='btn btn-sm btn-secondary js-bs-tooltip-enabled btnEditarRepuesto' idRepuesto='".$repuestos[$i]["id_repuesto"]."' data-bs-toggle='modal' data-bs-target='#modalEditarRepuesto' aria-label='Edit' data-bs-original-title='Edit'><i class='fa fa-pencil-alt'></i></button><button class='btn btn-sm btn-secondary js-bs-tooltip-enabled btnEliminarRepuesto' idRepuesto='".$repuestos[$i]["id_repuesto"]."' codigo='".$repuestos[$i]["codigo_tienda_repuesto"]."' data-bs-toggle='tooltip' aria-label='Delete' data-bs-original-title='Delete'><i class='fa fa-times'></i></button></div>";
 
       $datosJson .= '[
         "'.($i+1).'",
-        "<span class=\"text-truncate\" style=\"max-width: 100px;\">'.$repuestos[$i]["codigo_tienda_repuesto"].'</span>",
+        "<span class=\"text-center\" style=\"max-width: 100px;\">'.$repuestos[$i]["codigo_tienda_repuesto"].'</span>",
         "<span class=\"text-truncate\" style=\"max-width: 200px;\">'.$repuestos[$i]["nombre_repuesto"].'</span>",
-        "<span class=\"text-truncate\" style=\"max-width: 100px;\">'.$repuestos[$i]["precio_repuesto"].'</span>",
+        "<span class=\"text-truncate\" style=\"max-width: 200px;\">'.$repuestos[$i]["descripcion_repuesto"].'</span>",
+        "<span class=\"text-center\" style=\"max-width: 100px;\">'.$repuestos[$i]["precio_compra"].'</span>",
+        "<span class=\"text-center\" style=\"max-width: 100px;\">'.$repuestos[$i]["precio_repuesto"].'</span>",
         "<span class=\"text-truncate\" style=\"max-width: 100px;\">'.$repuestos[$i]["marca_repuesto"].'</span>",
         "'.$stock.'",
         "<span class=\"text-truncate\" style=\"max-width: 150px;\">'.$categoria["nombre_categoria"].'</span>",
         "'.$estado.'",
-        "'.$acciones.'"
+        "<span class=\"text-center\">'.$acciones.'"
       ],';
     }
 

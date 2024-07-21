@@ -112,9 +112,9 @@ $(document).on("click", ".btnActivar", function () {
 
   // Actualizar el estado del botón
   if (estadoUsuario == 0) {
-    $(this).removeClass('btn-success').addClass('btn-danger').html('Desactivado').attr('estadoUsuario', 1);
+    $(this).removeClass('btn-success').addClass('btn-danger').html('Inactivo').attr('estadoUsuario', 1);
   } else {
-    $(this).removeClass('btn-danger').addClass('btn-success').html('Activado').attr('estadoUsuario', 0);
+    $(this).removeClass('btn-danger').addClass('btn-success').html('Activo').attr('estadoUsuario', 0);
   }
 });
 
