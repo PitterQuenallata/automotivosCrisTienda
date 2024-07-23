@@ -20,20 +20,22 @@ class AjaxRepuestos
     {
         $item = "id_categoria";
         $valor = $this->idCategoria;
-        
+
         $respuestaCodigo = ControladorRepuestos::ctrMostrarRepuestos($item, $valor);
-        
+
         echo json_encode($respuestaCodigo);
     }
 
-    public function ajaxMostrarModelos() {
+    public function ajaxMostrarModelos()
+    {
         $item = "id_marca";
         $valor = $this->idMarca;
-        $respuesta = ControladorModelos::ctrMostrarModelos($item, $valor);
+        $respuesta = ControladorModelos::ctrMostrarModelosConMarca($item, $valor);
         echo json_encode($respuesta);
     }
 
-    public function ajaxMostrarMotores() {
+    public function ajaxMostrarMotores()
+    {
         $item = "id_modelo";
         $valor = $this->idModelo;
         $respuesta = ControladorMotores::ctrMostrarMotores($item, $valor);
@@ -79,4 +81,31 @@ if (isset($_POST["idModelo"])) {
     $motores = new AjaxRepuestos();
     $motores->idModelo = $_POST["idModelo"];
     $motores->ajaxMostrarMotores();
+}
+
+/*=============================================
+Validar existencia de repuesto
+=============================================*/
+if (isset($_POST['nombreRepuesto'])) {
+    $item = "nombre_repuesto";
+    $valor = $_POST['nombreRepuesto'];
+    $repuestos = ControladorRepuestos::ctrMostrarRepuestos($item, $valor);
+
+    if (!empty($repuestos)) {
+        echo json_encode(['exists' => true]);
+    } else {
+        echo json_encode(['exists' => false]);
+    }
+    return;
+}
+
+/*=============================================
+Eliminar repuesto
+=============================================*/
+if (isset($_POST["idRepuestoEliminar"])) {
+    $item = "id_repuesto";
+    $valor = $_POST["idRepuestoEliminar"];
+    $respuesta = ControladorRepuestos::ctrEliminarRepuesto($item, $valor);
+
+    echo $respuesta;
 }

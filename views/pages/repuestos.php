@@ -89,6 +89,9 @@
                           <th>P. COMPRA</th>
                           <th>PRECIO</th>
                           <th>Marca</th>
+                          <th>Marca V.</th>
+                          <th>Modelo V.</th>
+                          <th>Motor</th>
                           <th>Stock</th>
                           <th>CATEGORIA</th>
                           <th>ESTADO</th>

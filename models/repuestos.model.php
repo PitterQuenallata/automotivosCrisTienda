@@ -5,26 +5,35 @@ require_once "conexion.php";
 class ModeloRepuestos
 {
 
-    /*=============================================
-    MOSTRAR REPUESTOS
-    =============================================*/
-
-    static public function mdlMostrarRepuestos($tabla, $item, $valor)
-    {
-
-        if ($item != null) {
-            $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item ORDER BY id_repuesto DESC");
-            $stmt->bindParam(":" . $item, $valor, PDO::PARAM_STR);
-            $stmt->execute();
-            return $stmt->fetch();
-        } else {
-            $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
-            $stmt->execute();
-            return $stmt->fetchAll();
-        }
-
-        $stmt = null;
+/*=============================================
+MOSTRAR REPUESTOS
+=============================================*/
+static public function mdlMostrarRepuestos($tabla, $item, $valor)
+{
+    if ($item != null) {
+        $stmt = Conexion::conectar()->prepare("SELECT r.*, mr.id_modelo, mo.id_motor, m.id_marca
+            FROM $tabla r
+            LEFT JOIN modelo_repuestos mr ON r.id_repuesto = mr.id_repuesto
+            LEFT JOIN motor_repuestos mo ON r.id_repuesto = mo.id_repuesto
+            LEFT JOIN modelos m ON mr.id_modelo = m.id_modelo
+            WHERE r.$item = :$item 
+            ORDER BY r.id_repuesto DESC");
+        $stmt->bindParam(":" . $item, $valor, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetch();
+    } else {
+        $stmt = Conexion::conectar()->prepare("SELECT r.*, mr.id_modelo, mo.id_motor, m.id_marca
+            FROM $tabla r
+            LEFT JOIN modelo_repuestos mr ON r.id_repuesto = mr.id_repuesto
+            LEFT JOIN motor_repuestos mo ON r.id_repuesto = mo.id_repuesto
+            LEFT JOIN modelos m ON mr.id_modelo = m.id_modelo");
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
+
+    $stmt = null;
+}
+
     /*=============================================
   ACTUALIZAR ESTADO REPUESTO
   =============================================*/
@@ -48,7 +57,8 @@ class ModeloRepuestos
     =============================================*/
     public static function mdlIngresarRepuesto($tabla, $datos)
     {
-        $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (id_categoria, nombre_repuesto, descripcion_repuesto,codigo_tienda_repuesto, stock_repuesto, precio_repuesto, precio_compra, marca_repuesto, estado_repuesto) VALUES (:id_categoria, :nombre_repuesto, :descripcion_repuesto, :codigo_tienda_repuesto, :stock_repuesto, :precio_repuesto, :precio_compra, :marca_repuesto, :estado_repuesto)");
+        $link = Conexion::conectar();
+        $stmt = $link->prepare("INSERT INTO $tabla (id_categoria, nombre_repuesto, descripcion_repuesto,codigo_tienda_repuesto, stock_repuesto, precio_repuesto, precio_compra, marca_repuesto, estado_repuesto) VALUES (:id_categoria, :nombre_repuesto, :descripcion_repuesto, :codigo_tienda_repuesto, :stock_repuesto, :precio_repuesto, :precio_compra, :marca_repuesto, :estado_repuesto)");
 
         $stmt->bindParam(":id_categoria", $datos["id_categoria"], PDO::PARAM_INT);
         $stmt->bindParam(":nombre_repuesto", $datos["nombre_repuesto"], PDO::PARAM_STR);
@@ -61,11 +71,10 @@ class ModeloRepuestos
         $stmt->bindParam(":estado_repuesto", $datos["estado_repuesto"], PDO::PARAM_INT);
 
         if ($stmt->execute()) {
-            return "ok";
+            return $link->lastInsertId(); // Devuelve el ID del último repuesto insertado
         } else {
             return "error";
         }
-
 
         $stmt = null;
     }
@@ -117,6 +126,115 @@ class ModeloRepuestos
         }
 
 
+        $stmt = null;
+    }
+
+    /*=============================================
+EDITAR REPUESTO
+=============================================*/
+    public static function mdlEditarRepuesto($tabla, $datos)
+    {
+        $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET id_categoria = :id_categoria, nombre_repuesto = :nombre_repuesto, descripcion_repuesto = :descripcion_repuesto, codigo_tienda_repuesto = :codigo_tienda_repuesto, stock_repuesto = :stock_repuesto, precio_repuesto = :precio_repuesto, precio_compra = :precio_compra, marca_repuesto = :marca_repuesto, estado_repuesto = :estado_repuesto WHERE id_repuesto = :id_repuesto");
+
+        $stmt->bindParam(":id_categoria", $datos["id_categoria"], PDO::PARAM_INT);
+        $stmt->bindParam(":nombre_repuesto", $datos["nombre_repuesto"], PDO::PARAM_STR);
+        $stmt->bindParam(":descripcion_repuesto", $datos["descripcion_repuesto"], PDO::PARAM_STR);
+        $stmt->bindParam(":codigo_tienda_repuesto", $datos["codigo_tienda_repuesto"], PDO::PARAM_STR);
+        $stmt->bindParam(":stock_repuesto", $datos["stock_repuesto"], PDO::PARAM_INT);
+        $stmt->bindParam(":precio_repuesto", $datos["precio_repuesto"], PDO::PARAM_STR);
+        $stmt->bindParam(":precio_compra", $datos["precio_compra"], PDO::PARAM_STR);
+        $stmt->bindParam(":marca_repuesto", $datos["marca_repuesto"], PDO::PARAM_STR);
+        $stmt->bindParam(":estado_repuesto", $datos["estado_repuesto"], PDO::PARAM_INT);
+        $stmt->bindParam(":id_repuesto", $datos["id_repuesto"], PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+
+        $stmt = null;
+    }
+
+    /*=============================================
+ACTUALIZAR MOTOR REPUESTO
+=============================================*/
+    public static function mdlActualizarMotorRepuesto($tabla, $datos)
+    {
+        $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET id_motor = :id_motor WHERE id_repuesto = :id_repuesto");
+
+        $stmt->bindParam(":id_motor", $datos["id_motor"], PDO::PARAM_INT);
+        $stmt->bindParam(":id_repuesto", $datos["id_repuesto"], PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+
+        $stmt = null;
+    }
+
+    /*=============================================
+ACTUALIZAR MODELO REPUESTO
+=============================================*/
+    public static function mdlActualizarModeloRepuesto($tabla, $datos)
+    {
+        $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET id_modelo = :id_modelo WHERE id_repuesto = :id_repuesto");
+
+        $stmt->bindParam(":id_modelo", $datos["id_modelo"], PDO::PARAM_INT);
+        $stmt->bindParam(":id_repuesto", $datos["id_repuesto"], PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+
+        $stmt = null;
+    }
+
+    /*=============================================
+    MOSTRAR MARCA, MODELO Y MOTOR DE REPUESTO
+    =============================================*/
+    public static function mdlMostrarAsociacionesRepuesto($idRepuesto)
+    {
+        // Mostrar marca de vehículo
+        $stmt = Conexion::conectar()->prepare("SELECT marcas.nombre_marca FROM marcas JOIN repuestos ON repuestos.marca_vehiculo = marcas.id_marca WHERE repuestos.id_repuesto = :id_repuesto");
+        $stmt->bindParam(":id_repuesto", $idRepuesto, PDO::PARAM_INT);
+        $stmt->execute();
+        $marca = $stmt->fetch();
+
+        // Mostrar modelo de vehículo
+        $stmt = Conexion::conectar()->prepare("SELECT modelos.nombre_modelo FROM modelos JOIN modelo_repuestos ON modelo_repuestos.id_modelo = modelos.id_modelo WHERE modelo_repuestos.id_repuesto = :id_repuesto");
+        $stmt->bindParam(":id_repuesto", $idRepuesto, PDO::PARAM_INT);
+        $stmt->execute();
+        $modelo = $stmt->fetch();
+
+        // Mostrar motor de vehículo
+        $stmt = Conexion::conectar()->prepare("SELECT motores.nombre_motor FROM motores JOIN motor_repuestos ON motor_repuestos.id_motor = motores.id_motor WHERE motor_repuestos.id_repuesto = :id_repuesto");
+        $stmt->bindParam(":id_repuesto", $idRepuesto, PDO::PARAM_INT);
+        $stmt->execute();
+        $motor = $stmt->fetch();
+
+        return [
+            "marca" => $marca["nombre_marca"],
+            "modelo" => $modelo["nombre_modelo"],
+            "motor" => $motor["nombre_motor"]
+        ];
+    }
+    /*=============================================
+    ELIMINAR REPUESTO
+    =============================================*/
+    static public function mdlEliminarRepuesto($tabla, $item, $valor)
+    {
+        $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE $item = :$item");
+        $stmt->bindParam(":" . $item, $valor, PDO::PARAM_INT);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
         $stmt = null;
     }
 }

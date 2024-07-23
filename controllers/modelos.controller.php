@@ -35,19 +35,25 @@ static public function ctrCrearModelo()
     }
   }
 }
-  /*=============================================
-	MOSTRAR ModeloS
-	=============================================*/
+/*=============================================
+    MOSTRAR MODELOS
+    =============================================*/
+    static public function ctrMostrarModelos($item, $valor)
+    {
+        $tabla = "modelos";
+        $respuesta = ModeloModelos::mdlMostrarModelos($tabla, $item, $valor);
+        return $respuesta;
+    }
 
-  static public function ctrMostrarModelos($item, $valor)
-  {
-
-    $tabla = "modelos";
-
-    $respuesta = ModeloModelos::mdlMostrarModelos($tabla, $item, $valor);
-
-    return $respuesta;
-  }
+    /*=============================================
+    MOSTRAR MODELOS CON MARCA
+    =============================================*/
+    static public function ctrMostrarModelosConMarca($item, $valor)
+    {
+        $tabla = "modelos";
+        $respuesta = ModeloModelos::mdlMostrarModelosConMarca($tabla, $item, $valor);
+        return $respuesta;
+    }
 
 /*=============================================
 EDITAR MODELO

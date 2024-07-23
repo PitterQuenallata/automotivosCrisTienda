@@ -35,20 +35,68 @@ $(document).ready(function () {
       },
     },
     columns: [
-      { data: "0", className: "text-center" },
-      { data: "1", className: "text-truncate" },
-      { data: "2", className: "text-truncate" },
-      { data: "3", className: "text-truncate" }, // Descripción
-      { data: "4", className: "text-center" }, // Precio
-      { data: "5", className: "text-center" }, // Precio por cantidad
-      { data: "6", className: "text-truncate" },
-      { data: "7", className: "text-center" },
-      { data: "8", className: "text-truncate" },
-      { data: "9", className: "text-center" },
-      { data: "10", className: "text-center" },
+      { data: "id_repuesto", className: "text-center" },
+      { data: "codigo_tienda_repuesto", className: "text-truncate" },
+      { data: "nombre_repuesto", className: "text-truncate" },
+      { data: "descripcion_repuesto", className: "text-truncate" },
+      { data: "precio_compra", className: "text-center" },
+      { data: "precio_repuesto", className: "text-center" },
+      { data: "marca_repuesto", className: "text-truncate" },
+      { data: "nombre_marca", className: "text-truncate" }, // Marca del Vehículo
+      { data: "nombre_modelo", className: "text-truncate" }, // Modelo del Vehículo
+      { data: "nombre_motor", className: "text-truncate" }, // Motor del Vehículo
+      { data: "stock_repuesto", className: "text-center" },
+      { data: "nombre_categoria", className: "text-truncate" }, // Categoría
+      { data: "estado_repuesto", className: "text-center" },
+      { data: "acciones", className: "text-center" }
       
     ],
     destroy: true, // Asegura la destrucción previa de la tabla
+  });
+
+  /*=============================================
+  Editar Repuesto
+  =============================================*/
+  $(document).on("click", ".btnEditarRepuesto", function() {
+    var idRepuesto = $(this).attr("idRepuesto");
+    window.location.href = "crear-repuestos?id_repuesto=" + idRepuesto;
+  });
+
+  /*=============================================
+  Eliminar Repuesto
+  =============================================*/
+  $(document).on("click", ".btnEliminarRepuesto", function() {
+    var idRepuesto = $(this).attr("idRepuesto");
+    var codigoRepuesto = $(this).attr("codigo");
+
+    Swal.fire({
+      title: "¿Estás seguro de eliminar este repuesto?",
+      text: "¡No podrás revertir esto!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminarlo"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $.ajax({
+          url: "ajax/repuestos.ajax.php",
+          method: "POST",
+          data: { idRepuestoEliminar: idRepuesto, codigoRepuesto: codigoRepuesto },
+          success: function(response) {
+            if (response == "ok") {
+              Swal.fire("Eliminado!", "El repuesto ha sido eliminado.", "success");
+              $("#tablaRepuestos").DataTable().ajax.reload();
+            } else {
+              Swal.fire("Error!", "No se pudo eliminar el repuesto.", "error");
+            }
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            Swal.fire("Error!", "No se pudo eliminar el repuesto.", "error");
+          }
+        });
+      }
+    });
   });
 
   /*=============================================
@@ -101,27 +149,31 @@ $(document).ready(function () {
     var idCategoria = $(this).val();
     var datos = new FormData();
     datos.append("idCategoria", idCategoria);
+  
     $.ajax({
-      url:"ajax/repuestos.ajax.php",
+      url: "ajax/repuestos.ajax.php",
       method: "POST",
       data: datos,
       cache: false,
       contentType: false,
       processData: false,
-      dataType:"json",
+      dataType: "json",
       success: function (respuesta) {
-        if(!respuesta){
-          var nuevoCodigo=idCategoria+"0000";
+        if (!respuesta) {
+          var nuevoCodigo = idCategoria + "0000";
           $("#nuevoCodigoRepuesto").val(nuevoCodigo);
-        }else{
-          console.log("respu",respuesta);
-          var nuevoCodigo = Number(respuesta["codigo_tienda_repuesto"])+1;
-          console.log("nuevoCodigo",nuevoCodigo);
+        } else {
+          var nuevoCodigo = Number(respuesta["codigo_tienda_repuesto"]) + 1;
           $("#nuevoCodigoRepuesto").val(nuevoCodigo);
+  
+          // Verificar si el nuevo código ya existe
+          verificarCodigoRepuesto(nuevoCodigo);
         }
-        
       },
-    })
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.log("Error al asignar código de repuesto: " + textStatus + " - " + errorThrown);
+      }
+    });
   });
 
 /*=============================================
@@ -133,26 +185,26 @@ $("#agregarMarcaVehiculo").change(function () {
   datos.append("idMarca", idMarca);
 
   $.ajax({
-      url: "ajax/repuestos.ajax.php",
-      method: "POST",
-      data: datos,
-      cache: false,
-      contentType: false,
-      processData: false,
-      dataType: "json",
-      success: function (data) {
-          var modeloSelect = $("#agregarModeloVehiculo");
-          modeloSelect.empty();
-          modeloSelect.append("<option selected disabled>Elije un Modelo</option>");
-          data.forEach(function (modelo) {
-              modeloSelect.append(
-                  '<option value="' + modelo.id_modelo + '">' + modelo.nombre_modelo + ' ' + modelo.version_modelo + '</option>'
-              );
-          });
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-          console.log("Error al cargar modelos: " + textStatus + " - " + errorThrown);
-      }
+    url: "ajax/repuestos.ajax.php",
+    method: "POST",
+    data: datos,
+    cache: false,
+    contentType: false,
+    processData: false,
+    dataType: "json",
+    success: function (response) {
+      var modeloSelect = $("#agregarModeloVehiculo");
+      modeloSelect.empty();
+      modeloSelect.append("<option selected disabled>Elije un Modelo</option>");
+      response.forEach(function (modelo) {
+        modeloSelect.append(
+          '<option value="' + modelo.id_modelo + '">' + modelo.nombre_modelo + ' ' + modelo.version_modelo + '</option>'
+        );
+      });
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log("Error al cargar modelos: " + textStatus + " - " + errorThrown);
+    }
   });
 });
 
@@ -165,28 +217,99 @@ $("#agregarModeloVehiculo").change(function () {
   datos.append("idModelo", idModelo);
 
   $.ajax({
-      url: "ajax/repuestos.ajax.php",
-      method: "POST",
-      data: datos,
-      cache: false,
-      contentType: false,
-      processData: false,
-      dataType: "json",
-      success: function (data) {
-          var motorSelect = $("#agregarMotor");
-          motorSelect.empty();
-          motorSelect.append("<option selected disabled>Elije un Motor</option>");
-          data.forEach(function (motor) {
-              motorSelect.append(
-                  '<option value="' + motor.id_motor + '">' + motor.nombre_motor + '</option>'
-              );
-          });
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-          console.log("Error al cargar motores: " + textStatus + " - " + errorThrown);
-      }
+    url: "ajax/repuestos.ajax.php",
+    method: "POST",
+    data: datos,
+    cache: false,
+    contentType: false,
+    processData: false,
+    dataType: "json",
+    success: function (response) {
+      var motorSelect = $("#agregarMotor");
+      motorSelect.empty();
+      motorSelect.append("<option selected disabled>Elije un Motor</option>");
+      response.forEach(function (motor) {
+        motorSelect.append(
+          '<option value="' + motor.id_motor + '">' + motor.nombre_motor + '</option>'
+        );
+      });
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.log("Error al cargar motores: " + textStatus + " - " + errorThrown);
+    }
   });
 });
 
-
 });
+
+
+
+/*=============================================
+Función para verificar si el repuesto ya existe
+=============================================*/
+function verificarRepuesto() {
+  var nombreRepuesto = $("#nuevoNombreRepuesto").val();
+  var datos = new FormData();
+  datos.append("nombreRepuesto", nombreRepuesto);
+
+  $.ajax({
+    url: "ajax/repuestos.ajax.php",
+    method: "POST",
+    data: datos,
+    cache: false,
+    contentType: false,
+    processData: false,
+    dataType: "json",
+    success: function(response) {
+      var inputElement = $("#nuevoNombreRepuesto");
+      var validFeedbackElement = inputElement.parent().children(".valid-feedback");
+      var invalidFeedbackElement = inputElement.parent().children(".invalid-feedback");
+
+      inputElement.removeClass("is-invalid is-valid");
+      validFeedbackElement.hide();
+      invalidFeedbackElement.hide();
+
+      if (response.exists) {
+        invalidFeedbackElement.html("Repuesto ya registrado");
+        invalidFeedbackElement.show();
+        inputElement.addClass("is-invalid");
+      } else {
+        validFeedbackElement.html("Válido");
+        validFeedbackElement.show();
+        inputElement.addClass("is-valid");
+      }
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.log("Error al verificar repuesto: " + textStatus + " - " + errorThrown);
+    }
+  });
+}
+
+
+/*=============================================
+Función para verificar si el código de repuesto ya existe
+=============================================*/
+function verificarCodigoRepuesto(codigoRepuesto) {
+  var datos = new FormData();
+  datos.append("codigoRepuesto", codigoRepuesto);
+
+  $.ajax({
+    url: "ajax/repuestos.ajax.php",
+    method: "POST",
+    data: datos,
+    cache: false,
+    contentType: false,
+    processData: false,
+    dataType: "json",
+    success: function(response) {
+      if (response.exists) {
+        // Si el código ya existe, muestra una alerta o maneja el caso adecuadamente
+        alert("El código de repuesto ya existe. Por favor, genere un nuevo código.");
+        $("#nuevoCodigoRepuesto").val('');
+      }
+    },
+    error: function(jqXHR, textStatus, errorThrown) {
+      console.log("Error al verificar código de repuesto: " + textStatus + " - " + errorThrown);
+    }
+  });
+}

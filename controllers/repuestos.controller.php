@@ -3,96 +3,205 @@
 class ControladorRepuestos
 {
 
-  /*=============================================
+    /*=============================================
     MOSTRAR REPUESTOS
     =============================================*/
 
-  static public function ctrMostrarRepuestos($item, $valor)
-  {
+    static public function ctrMostrarRepuestos($item, $valor)
+    {
 
-    $tabla = "repuestos";
+        $tabla = "repuestos";
 
-    $respuesta = ModeloRepuestos::mdlMostrarRepuestos($tabla, $item, $valor);
+        $respuesta = ModeloRepuestos::mdlMostrarRepuestos($tabla, $item, $valor);
 
-    return $respuesta;
-  }
-  /*=============================================
+        return $respuesta;
+    }
+    /*=============================================
   ACTUALIZAR ESTADO REPUESTO
   =============================================*/
-  static public function ctrActualizarEstadoRepuesto($item, $valor, $estado)
-  {
-    $tabla = "repuestos";
+    static public function ctrActualizarEstadoRepuesto($item, $valor, $estado)
+    {
+        $tabla = "repuestos";
 
-    $respuesta = ModeloRepuestos::mdlActualizarEstadoRepuesto($tabla, $item, $valor, $estado);
+        $respuesta = ModeloRepuestos::mdlActualizarEstadoRepuesto($tabla, $item, $valor, $estado);
 
-    return $respuesta;
-  }
+        return $respuesta;
+    }
 
-      /*=============================================
+    /*=============================================
     CREAR REPUESTO
     =============================================*/
     public static function ctrCrearRepuesto()
     {
-        if (isset($_POST["nuevoCodigoRepuesto"])) {
+        if (isset($_POST["nuevoNombreRepuesto"])) {
 
-            // Validar los campos usando preg_match
+            // Validar entradas
             if (
                 preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevaDescripcionRepuesto"]) &&
-                preg_match('/^[0-9]+$/', $_POST["nuevoStockRepuesto"]) &&
-                preg_match('/^[0-9]+(\.[0-9]{1,2})?$/', $_POST["nuevoPrecioCompraRepuesto"]) &&
-                preg_match('/^[0-9]+(\.[0-9]{1,2})?$/', $_POST["nuevoPrecioVentaRepuesto"])
+                preg_match('/^[0-9.]+$/', $_POST["nuevoPrecioCompraRepuesto"]) &&
+                preg_match('/^[0-9.]+$/', $_POST["nuevoPrecioVentaRepuesto"]) &&
+                preg_match('/^[0-9]+$/', $_POST["nuevoStockRepuesto"])
             ) {
 
-                // Inserción en la tabla de repuestos
                 $tabla = "repuestos";
+
+                // Verificar si los campos están definidos y no están vacíos
+                $marcaVehiculo = isset($_POST["agregarMarcaVehiculo"]) && !empty($_POST["agregarMarcaVehiculo"]) ? $_POST["agregarMarcaVehiculo"] : null;
+                $modeloVehiculo = isset($_POST["agregarModeloVehiculo"]) && !empty($_POST["agregarModeloVehiculo"]) ? $_POST["agregarModeloVehiculo"] : null;
+                $motorVehiculo = isset($_POST["agregarMotor"]) && !empty($_POST["agregarMotor"]) ? $_POST["agregarMotor"] : null;
+
                 $datos = array(
-                    "id_categoria" => $_POST["agregarCategoria"],
+                    "codigo_tienda_repuesto" => $_POST["nuevoCodigoRepuesto"],
                     "nombre_repuesto" => $_POST["nuevoNombreRepuesto"],
                     "descripcion_repuesto" => $_POST["nuevaDescripcionRepuesto"],
-                    "codigo_tienda_repuesto" => $_POST["nuevoCodigoRepuesto"],
-                    "stock_repuesto" => $_POST["nuevoStockRepuesto"],
                     "precio_repuesto" => $_POST["nuevoPrecioVentaRepuesto"],
                     "precio_compra" => $_POST["nuevoPrecioCompraRepuesto"],
                     "marca_repuesto" => $_POST["nuevaMarcaRepuesto"],
-                    "estado_repuesto" => 1
+                    "stock_repuesto" => $_POST["nuevoStockRepuesto"],
+                    "id_categoria" => $_POST["agregarCategoria"],
+                    "estado_repuesto" => 1 // Asegurar que el estado sea 1 (activo)
                 );
 
-                $respuesta = ModeloRepuestos::mdlIngresarRepuesto($tabla, $datos);
+                $idRepuesto = ModeloRepuestos::mdlIngresarRepuesto($tabla, $datos);
 
-                // Inserción en la tabla de modelo_repuestos y motor_repuestos
-                if ($respuesta == "ok") {
-                    $idRepuesto = ModeloRepuestos::mdlObtenerUltimoID("repuestos");
+                if ($idRepuesto != "error") {
+                    // Insertar en motor_repuestos si se proporcionó un motor
+                    if ($motorVehiculo != null) {
+                        $tablaMotorRepuesto = "motor_repuestos";
+                        $datosMotorRepuesto = array(
+                            "id_motor" => $motorVehiculo,
+                            "id_repuesto" => $idRepuesto
+                        );
+                        ModeloRepuestos::mdlIngresarMotorRepuesto($tablaMotorRepuesto, $datosMotorRepuesto);
+                    }
 
-                    $tablaModelos = "modelo_repuestos";
-                    $datosModelos = array(
-                        "id_modelo" => $_POST["agregarModeloVehiculo"],
-                        "id_repuesto" => $idRepuesto
-                    );
-                    ModeloRepuestos::mdlIngresarModeloRepuesto($tablaModelos, $datosModelos);
+                    // Insertar en modelo_repuestos si se proporcionó un modelo
+                    if ($modeloVehiculo != null) {
+                        $tablaModeloRepuesto = "modelo_repuestos";
+                        $datosModeloRepuesto = array(
+                            "id_modelo" => $modeloVehiculo,
+                            "id_repuesto" => $idRepuesto
+                        );
+                        ModeloRepuestos::mdlIngresarModeloRepuesto($tablaModeloRepuesto, $datosModeloRepuesto);
+                    }
 
-                    $tablaMotores = "motor_repuestos";
-                    $datosMotores = array(
-                        "id_motor" => $_POST["agregarMotor"],
-                        "id_repuesto" => $idRepuesto
-                    );
-                    ModeloRepuestos::mdlIngresarMotorRepuesto($tablaMotores, $datosMotores);
-
-                    // Redirigir con mensaje de éxito
+                    // Alerta de éxito
                     echo '<script>
-                        fncSweetAlert("success", "¡El repuesto ha sido guardado correctamente!", "/repuestos");
-                    </script>';
+                            fncSweetAlert("success", "El repuesto ha sido guardado correctamente", "/repuestos");
+                          </script>';
                 } else {
-                    // Redirigir con mensaje de error en la base de datos
+                    // Alerta de error en el servidor
                     echo '<script>
-                        fncSweetAlert("error", "Hubo un problema al guardar el repuesto en la base de datos.", "");
-                    </script>';
+                            fncSweetAlert("error", "Error al guardar el repuesto", "");
+                          </script>';
                 }
             } else {
-                // Redirigir con mensaje de error de validación
+                // Alerta de error en la validación de campos
                 echo '<script>
-                    fncSweetAlert("error", "Por favor, complete los campos correctamente. No se permiten caracteres especiales.", "");
-                </script>';
+                        fncSweetAlert("error", "Error en la validación de los campos", "");
+                      </script>';
             }
         }
+    }
+
+
+
+    /*=============================================
+EDITAR REPUESTO
+=============================================*/
+    public static function ctrEditarRepuesto()
+    {
+        if (isset($_POST["idRepuesto"])) {
+
+            // Validar entradas
+            if (
+                preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevaDescripcionRepuesto"]) &&
+                preg_match('/^[0-9.]+$/', $_POST["nuevoPrecioCompraRepuesto"]) &&
+                preg_match('/^[0-9.]+$/', $_POST["nuevoPrecioVentaRepuesto"]) &&
+                preg_match('/^[0-9]+$/', $_POST["nuevoStockRepuesto"])
+            ) {
+
+                $tabla = "repuestos";
+
+                // Verificar si los campos están definidos y no están vacíos
+                $marcaVehiculo = isset($_POST["agregarMarcaVehiculo"]) && !empty($_POST["agregarMarcaVehiculo"]) ? $_POST["agregarMarcaVehiculo"] : null;
+                $modeloVehiculo = isset($_POST["agregarModeloVehiculo"]) && !empty($_POST["agregarModeloVehiculo"]) ? $_POST["agregarModeloVehiculo"] : null;
+                $motorVehiculo = isset($_POST["agregarMotor"]) && !empty($_POST["agregarMotor"]) ? $_POST["agregarMotor"] : null;
+
+                $datos = array(
+                    "id_repuesto" => $_POST["idRepuesto"],
+                    "codigo_tienda_repuesto" => $_POST["nuevoCodigoRepuesto"],
+                    "nombre_repuesto" => $_POST["nuevoNombreRepuesto"],
+                    "descripcion_repuesto" => $_POST["nuevaDescripcionRepuesto"],
+                    "precio_repuesto" => $_POST["nuevoPrecioVentaRepuesto"],
+                    "precio_compra" => $_POST["nuevoPrecioCompraRepuesto"],
+                    "marca_repuesto" => $_POST["nuevaMarcaRepuesto"],
+                    "stock_repuesto" => $_POST["nuevoStockRepuesto"],
+                    "id_categoria" => $_POST["agregarCategoria"],
+                    "marca_vehiculo" => $marcaVehiculo,
+                    "modelo_vehiculo" => $modeloVehiculo,
+                    "motor_vehiculo" => $motorVehiculo,
+                    "estado_repuesto" => 1 // Asegurar que el estado sea 1 (activo)
+                );
+
+                $respuesta = ModeloRepuestos::mdlEditarRepuesto($tabla, $datos);
+
+                if ($respuesta == "ok") {
+                    // Actualizar en motor_repuestos si se proporcionó un motor
+                    if ($motorVehiculo != null) {
+                        $tablaMotorRepuesto = "motor_repuestos";
+                        $datosMotorRepuesto = array(
+                            "id_motor" => $motorVehiculo,
+                            "id_repuesto" => $_POST["idRepuesto"]
+                        );
+                        ModeloRepuestos::mdlActualizarMotorRepuesto($tablaMotorRepuesto, $datosMotorRepuesto);
+                    }
+
+                    // Actualizar en modelo_repuestos si se proporcionó un modelo
+                    if ($modeloVehiculo != null) {
+                        $tablaModeloRepuesto = "modelo_repuestos";
+                        $datosModeloRepuesto = array(
+                            "id_modelo" => $modeloVehiculo,
+                            "id_repuesto" => $_POST["idRepuesto"]
+                        );
+                        ModeloRepuestos::mdlActualizarModeloRepuesto($tablaModeloRepuesto, $datosModeloRepuesto);
+                    }
+
+                    // Alerta de éxito
+                    echo '<script>
+                        fncSweetAlert("success", "El repuesto ha sido actualizado correctamente", "/repuestos");
+                      </script>';
+                } else {
+                    // Alerta de error en el servidor
+                    echo '<script>
+                        fncSweetAlert("error", "Error al actualizar el repuesto", "");
+                      </script>';
+                }
+            } else {
+                // Alerta de error en la validación de campos
+                echo '<script>
+                    fncSweetAlert("error", "Error en la validación de los campos", "");
+                  </script>';
+            }
+        }
+    }
+
+
+    /*=============================================
+    MOSTRAR ASOCIACIONES DE REPUESTO
+    =============================================*/
+    public static function ctrMostrarAsociacionesRepuesto($idRepuesto)
+    {
+        return ModeloRepuestos::mdlMostrarAsociacionesRepuesto($idRepuesto);
+    }
+
+    /*=============================================
+    ELIMINAR REPUESTO
+    =============================================*/
+    static public function ctrEliminarRepuesto($item, $valor)
+    {
+        $tabla = "repuestos";
+        $respuesta = ModeloRepuestos::mdlEliminarRepuesto($tabla, $item, $valor);
+        return $respuesta;
     }
 }

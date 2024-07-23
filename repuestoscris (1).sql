@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-07-2024 a las 01:03:10
+-- Tiempo de generación: 23-07-2024 a las 11:43:14
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -244,6 +244,9 @@ CREATE TABLE `modelo_repuestos` (
 INSERT INTO `modelo_repuestos` (`id_modelo`, `id_repuesto`) VALUES
 (1, 29),
 (1, 30),
+(1, 45),
+(2, 33),
+(2, 34),
 (3, 31),
 (3, 32);
 
@@ -289,6 +292,7 @@ CREATE TABLE `motor_repuestos` (
 INSERT INTO `motor_repuestos` (`id_motor`, `id_repuesto`) VALUES
 (1, 29),
 (1, 30),
+(1, 45),
 (3, 31),
 (3, 32);
 
@@ -332,7 +336,7 @@ CREATE TABLE `repuestos` (
   `img_repuesto` text DEFAULT NULL,
   `stock_repuesto` int(11) DEFAULT NULL,
   `precio_repuesto` float DEFAULT NULL,
-  `precio_compra` float NOT NULL,
+  `precio_compra` float DEFAULT NULL,
   `marca_repuesto` varchar(255) DEFAULT NULL,
   `estado_repuesto` tinyint(4) DEFAULT 1,
   `date_created_repuesto` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -344,7 +348,7 @@ CREATE TABLE `repuestos` (
 --
 
 INSERT INTO `repuestos` (`id_repuesto`, `id_categoria`, `nombre_repuesto`, `descripcion_repuesto`, `oem_repuesto`, `codigo_tienda_repuesto`, `img_repuesto`, `stock_repuesto`, `precio_repuesto`, `precio_compra`, `marca_repuesto`, `estado_repuesto`, `date_created_repuesto`, `date_updated_repuesto`) VALUES
-(6, 1, 'Filtro de aire', 'hola', '17220-5A2-A00', '10001', '', 0, 25.99, 0, 'Honda', 1, '2024-06-12 23:49:22', '2024-07-21 22:40:18'),
+(6, 1, 'Filtro de aire', 'hola', '17220-5A2-A00', '10001', '', 0, 25.99, 20, 'Honda', 1, '2024-06-12 23:49:22', '2024-07-23 05:55:27'),
 (7, 3, 'Batería', '', 'S6508B', '30000', '', 15, 120, 0, 'Bosch', 1, '2024-06-12 23:49:22', '2024-07-21 14:02:13'),
 (8, 2, 'Pastillas de freno', '', '04465-06150', '20000', '', 50, 45, 0, 'Toyota', 1, '2024-06-12 23:49:22', '2024-07-21 14:02:02'),
 (9, 3, 'Aceite de motor', '', '94001', '30001', '', 100, 32.99, 0, 'Mobil', 1, '2024-06-12 23:49:22', '2024-07-21 14:02:17'),
@@ -353,7 +357,7 @@ INSERT INTO `repuestos` (`id_repuesto`, `id_categoria`, `nombre_repuesto`, `desc
 (12, 5, 'Amortiguador', '', '6L3Z-18124-B', '50000', '', 25, 75, 0, 'Motorcraft', 1, '2024-06-12 23:49:22', '2024-07-21 14:02:41'),
 (13, 3, 'Filtro de combustible', '', '16400-1AA0A', '30003', '', 30, 35, 0, 'Nissan', 1, '2024-06-12 23:49:22', '2024-07-21 14:02:49'),
 (14, 7, 'Correa de distribución', '', '13028-AA231', '70000', '', 12, 85, 0, 'Subaru', 1, '2024-06-12 23:49:22', '2024-07-21 14:02:55'),
-(15, 8, 'Termostato', '', '25500-23550', '80000', '', 40, 18, 0, 'Hyundai', 1, '2024-06-12 23:49:22', '2024-07-21 14:02:59'),
+(15, 8, 'Termostato', '', '25500-23550', '80000', '', 40, 18, 0, 'Hyundai', 1, '2024-06-12 23:49:22', '2024-07-23 09:40:58'),
 (16, 3, 'Sensor TPMS', '', '42753-SNA-A83', '30004', '', 50, 75.99, 0, 'Honda', 1, '2024-06-12 23:51:20', '2024-07-21 14:03:06'),
 (17, 3, 'Eje de transmisión', '', '44305-S84-A02', '30005', '', 20, 150, 0, 'Honda', 1, '2024-06-12 23:51:20', '2024-07-21 14:03:13'),
 (18, 4, 'Buje de control', '', '51393-SDA-A01', '40000', '', 30, 35, 0, 'Honda', 1, '2024-06-12 23:51:20', '2024-07-21 14:03:19'),
@@ -370,7 +374,20 @@ INSERT INTO `repuestos` (`id_repuesto`, `id_categoria`, `nombre_repuesto`, `desc
 (29, 1, 'Filtro2', '', NULL, '10005', NULL, 50, 50, 0, 'filtroWwe', 1, '2024-07-21 21:57:52', '2024-07-21 21:57:52'),
 (30, 1, 'filtros', '', NULL, '10006', NULL, 100, 980, 0, 'Huajiuwe', 1, '2024-07-21 22:08:12', '2024-07-21 22:08:12'),
 (31, 10, 'Puerta 1', '', NULL, '100000', NULL, 1002, 60, 50, 'honds', 1, '2024-07-21 22:54:56', '2024-07-21 22:54:56'),
-(32, 8, 'Embreague', 'embreague super obsolet', NULL, '80001', NULL, 10, 60, 50, 'Musht', 1, '2024-07-21 22:57:23', '2024-07-21 22:57:23');
+(32, 8, 'Embreague', 'embreague super obsolet', NULL, '80001', NULL, 10, 60, 50, 'Musht', 1, '2024-07-21 22:57:23', '2024-07-21 22:57:23'),
+(33, 7, 'Correa', 'correa tripe 3', NULL, '70001', NULL, 50, 80, 55.5, 'husj', 1, '2024-07-23 02:12:31', '2024-07-23 02:12:31'),
+(34, 7, 'Correa', 'correa tripe 3', NULL, '70001', NULL, 50, 80, 55.5, 'husj', 1, '2024-07-23 02:19:20', '2024-07-23 02:19:20'),
+(35, 7, 'corre4', 'dsfasd', NULL, '70002', NULL, 100, 60.6, NULL, 'correa premiun', 1, '2024-07-23 02:26:36', '2024-07-23 02:31:43'),
+(36, 4, 'correa 4', 'corerea tripe', NULL, '40001', NULL, 10, 80.5, 55.6, 'shiaw', 1, '2024-07-23 02:31:28', '2024-07-23 02:31:38'),
+(37, 9, 'radamiento', 'radmineto', NULL, '90000', NULL, 45, 60, 50, 'roda', 1, '2024-07-23 06:03:21', '2024-07-23 06:03:21'),
+(38, 3, 'czxc', 'dasd', NULL, '30010', NULL, 25, 520, 50, 'adsd', 1, '2024-07-23 06:08:57', '2024-07-23 06:08:57'),
+(39, 4, 'suspencion', 'dasd', NULL, '40002', NULL, 100, 60, 50, 'dasd', 1, '2024-07-23 06:39:55', '2024-07-23 06:39:55'),
+(40, 4, 'dasd', 'dasdas', NULL, '40003', NULL, 20, 21, 21, 'dsadsad', 1, '2024-07-23 06:41:44', '2024-07-23 06:41:44'),
+(41, 4, 'dasd', 'dasdas', NULL, '40003', NULL, 20, 21, 21, 'dsadsad', 1, '2024-07-23 06:42:33', '2024-07-23 06:42:33'),
+(42, 4, 'dasd', 'dasdas', NULL, '40003', NULL, 20, 21, 21, 'dsadsad', 1, '2024-07-23 06:49:39', '2024-07-23 06:49:39'),
+(43, 4, 'dasd', 'dasdas', NULL, '40003', NULL, 20, 21, 21, 'dsadsad', 1, '2024-07-23 06:49:45', '2024-07-23 06:49:45'),
+(44, 6, 'dasdas', 'dasdas', NULL, '60002', NULL, 12, 12, 12, 'dasdas', 1, '2024-07-23 06:50:03', '2024-07-23 06:50:03'),
+(45, 3, 'asdas', 'dasda', NULL, '30011', NULL, 20, 20, 20, 'dasd', 1, '2024-07-23 06:56:51', '2024-07-23 06:56:51');
 
 -- --------------------------------------------------------
 
@@ -397,7 +414,7 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `user_usuario`, `foto_usuario`, `email_usuario`, `password_usuario`, `rol_usuario`, `estado_usuario`, `date_created_usuario`, `date_updated_usuario`) VALUES
-(1, 'benjamin', 'canaviri', 'benjo1234', 'views/assets/media/avatars/usuarios/benjo1234/713.jpg', 'benjo@gmail.com', '$2a$07$azybxcags23425sdg23sdem1CFT2u/A.0JOm/IXWxebxaQOkjS85C', 'administrador', 1, '2024-06-09 15:27:08', '2024-07-21 19:25:08');
+(1, 'benjamin', 'canaviri', 'benjo1234', 'views/assets/media/avatars/usuarios/benjo1234/713.jpg', 'benjo@gmail.com', '$2a$07$azybxcags23425sdg23sdem1CFT2u/A.0JOm/IXWxebxaQOkjS85C', 'administrador', 1, '2024-06-09 15:27:08', '2024-07-23 01:53:03');
 
 -- --------------------------------------------------------
 
@@ -586,7 +603,7 @@ ALTER TABLE `proveedores`
 -- AUTO_INCREMENT de la tabla `repuestos`
 --
 ALTER TABLE `repuestos`
-  MODIFY `id_repuesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id_repuesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`

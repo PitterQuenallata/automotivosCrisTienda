@@ -1,14 +1,15 @@
+
 <?php
 // Verifica si se está editando un repuesto
 $editing = isset($_GET['id_repuesto']);
 $repuesto = null;
 
 if ($editing) {
-  $idRepuesto = $_GET['id_repuesto'];
-  // Aquí deberías obtener los datos del repuesto desde la base de datos
-  $item = "id_repuesto";
-  $valor = $idRepuesto;
-  $repuesto = ControladorRepuestos::ctrMostrarRepuestos($item, $valor);
+    $idRepuesto = $_GET['id_repuesto'];
+    // Aquí deberías obtener los datos del repuesto desde la base de datos
+    $item = "id_repuesto";
+    $valor = $idRepuesto;
+    $repuesto = ControladorRepuestos::ctrMostrarRepuestos($item, $valor);
 }
 ?>
 
@@ -22,8 +23,8 @@ if ($editing) {
           </div>
           <div class="block-content">
             <form method="post" class="needs-validation" novalidate>
-              <?php if ($editing) : ?>
-                <input type="hidden" name="idRepuesto" value="<?php echo $repuesto['id_repuesto']; ?>">
+              <?php if ($editing): ?>
+                  <input type="hidden" name="idRepuesto" value="<?php echo $repuesto['id_repuesto']; ?>">
               <?php endif; ?>
               <div class="row">
                 <div class="col-md-4 mb-4">
@@ -34,8 +35,8 @@ if ($editing) {
                 <div class="col-md-8 mb-4">
                   <label class="form-label" for="nuevoNombreRepuesto">Nombre</label>
                   <input type="text" class="form-control" id="nuevoNombreRepuesto" name="nuevoNombreRepuesto" placeholder="Nombre de Repuesto" autocomplete="off" required onchange="validateJS(event, 'text')" value="<?php echo $editing ? $repuesto['nombre_repuesto'] : ''; ?>">
-                  <div class="valid-feedback">Válido.</div>
-                  <div class="invalid-feedback">El campo solo debe llevar texto</div>
+                    <div class="valid-feedback">Válido.</div>
+                    <div class="invalid-feedback">El campo solo debe llevar texto</div>
                 </div>
               </div>
 
@@ -109,7 +110,7 @@ if ($editing) {
                       $valor = null;
                       $marcas = ControladorMarcas::ctrMostrarMarcas($item, $valor);
                       foreach ($marcas as $key => $value) {
-                        $selected = $editing && $repuesto['id_marca'] == $value["id_marca"] ? 'selected' : '';
+                        $selected = $editing && $repuesto['marca_vehiculo'] == $value["id_marca"] ? 'selected' : '';
                         echo '<option value="' . $value["id_marca"] . '" ' . $selected . '>' . $value["nombre_marca"] . '</option>';
                       }
                       ?>
@@ -130,10 +131,10 @@ if ($editing) {
                       <?php
                       if ($editing) {
                         $item = "id_marca";
-                        $valor = $repuesto['id_marca'];
-                        $modelos = ControladorModelos::ctrMostrarModelosConMarca($item, $valor);
+                        $valor = $repuesto['marca_vehiculo'];
+                        $modelos = ControladorModelos::ctrMostrarModelos($item, $valor);
                         foreach ($modelos as $key => $value) {
-                          $selected = $repuesto['id_modelo'] == $value["id_modelo"] ? 'selected' : '';
+                          $selected = $repuesto['modelo_vehiculo'] == $value["id_modelo"] ? 'selected' : '';
                           echo '<option value="' . $value["id_modelo"] . '" ' . $selected . '>' . $value["nombre_modelo"] . '</option>';
                         }
                       }
@@ -155,10 +156,10 @@ if ($editing) {
                       <?php
                       if ($editing) {
                         $item = "id_modelo";
-                        $valor = $repuesto['id_modelo'];
+                        $valor = $repuesto['modelo_vehiculo'];
                         $motores = ControladorMotores::ctrMostrarMotores($item, $valor);
                         foreach ($motores as $key => $value) {
-                          $selected = $repuesto['id_motor'] == $value["id_motor"] ? 'selected' : '';
+                          $selected = $repuesto['motor_vehiculo'] == $value["id_motor"] ? 'selected' : '';
                           echo '<option value="' . $value["id_motor"] . '" ' . $selected . '>' . $value["nombre_motor"] . '</option>';
                         }
                       }
@@ -173,18 +174,17 @@ if ($editing) {
                 </div>
               </div>
 
-
               <div class="block-content block-content-full block-content-sm text-end border-top">
                 <button type="button" class="btn btn-alt-secondary" onclick="window.location.href='/repuestos'">Volver</button>
                 <button type="submit" class="btn btn-alt-primary"><?php echo $editing ? 'Actualizar' : 'Guardar'; ?></button>
               </div>
               <?php
               if ($editing) {
-                $editarRepuesto = new ControladorRepuestos();
-                $editarRepuesto->ctrEditarRepuesto();
+                  $editarRepuesto = new ControladorRepuestos();
+                  $editarRepuesto->ctrEditarRepuesto();
               } else {
-                $crearRepuesto = new ControladorRepuestos();
-                $crearRepuesto->ctrCrearRepuesto();
+                  $crearRepuesto = new ControladorRepuestos();
+                  $crearRepuesto->ctrCrearRepuesto();
               }
               ?>
             </form>

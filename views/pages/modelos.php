@@ -42,7 +42,7 @@
                   <?php
                   $item = null;
                   $valor = null;
-                  $modelos = ControladorModelos::ctrMostrarModelos($item, $valor);
+                  $modelos = ControladorModelos::ctrMostrarModelosConMarca($item, $valor);
 
                   foreach ($modelos as $key => $value) {
                     echo '

@@ -28,12 +28,31 @@ static public function mdlIngresarModelo($tabla, $datos)
     $stmt = null;
 }
 
-	/*=============================================
-	MOSTRAR ModeloS
-	=============================================*/
+/*=============================================
+    MOSTRAR MODELOS
+    =============================================*/
+    static public function mdlMostrarModelos($tabla, $item, $valor)
+    {
+        if ($item != null) {
+            $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item ORDER BY id_modelo DESC");
+            $stmt->bindParam(":" . $item, $valor, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->fetch();
+        } else {
+            $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
+            $stmt->execute();
+            return $stmt->fetchAll();
+        }
 
-  static public function mdlMostrarModelos($tabla, $item, $valor) {
-    if ($item != null) {
+        $stmt = null;
+    }
+
+    /*=============================================
+    MOSTRAR MODELOS CON MARCA
+    =============================================*/
+    static public function mdlMostrarModelosConMarca($tabla, $item, $valor)
+    {
+      if ($item != null) {
         $stmt = Conexion::conectar()->prepare("SELECT m.*, ma.nombre_marca FROM $tabla m JOIN marcas ma ON m.id_marca = ma.id_marca WHERE m.$item = :$item");
         $stmt->bindParam(":" . $item, $valor, PDO::PARAM_STR);
         $stmt->execute();
@@ -43,7 +62,7 @@ static public function mdlIngresarModelo($tabla, $datos)
         $stmt->execute();
         return $stmt->fetchAll();
     }
-}
+    }
 
 /*=============================================
 EDITAR MODELO
