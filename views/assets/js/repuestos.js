@@ -35,7 +35,7 @@ $(document).ready(function () {
       },
     },
     columns: [
-      { data: "id_repuesto", className: "text-center" },
+      { data: "numero", className: "text-center" },
       { data: "codigo_tienda_repuesto", className: "text-truncate" },
       { data: "nombre_repuesto", className: "text-truncate" },
       { data: "descripcion_repuesto", className: "text-truncate" },
@@ -62,42 +62,49 @@ $(document).ready(function () {
     window.location.href = "crear-repuestos?id_repuesto=" + idRepuesto;
   });
 
-  /*=============================================
+/*=============================================
   Eliminar Repuesto
-  =============================================*/
-  $(document).on("click", ".btnEliminarRepuesto", function() {
-    var idRepuesto = $(this).attr("idRepuesto");
-    var codigoRepuesto = $(this).attr("codigo");
+=============================================*/
+$(document).on("click", ".btnEliminarRepuesto", function() {
+  var idRepuesto = $(this).attr("idRepuesto");
 
-    Swal.fire({
-      title: "¿Estás seguro de eliminar este repuesto?",
+  Swal.fire({
+      title: '¿Está seguro de eliminar este repuesto?',
       text: "¡No podrás revertir esto!",
-      icon: "warning",
+      icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Sí, eliminarlo"
-    }).then((result) => {
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminarlo!'
+  }).then((result) => {
       if (result.isConfirmed) {
-        $.ajax({
-          url: "ajax/repuestos.ajax.php",
-          method: "POST",
-          data: { idRepuestoEliminar: idRepuesto, codigoRepuesto: codigoRepuesto },
-          success: function(response) {
-            if (response == "ok") {
-              Swal.fire("Eliminado!", "El repuesto ha sido eliminado.", "success");
-              $("#tablaRepuestos").DataTable().ajax.reload();
-            } else {
-              Swal.fire("Error!", "No se pudo eliminar el repuesto.", "error");
-            }
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-            Swal.fire("Error!", "No se pudo eliminar el repuesto.", "error");
-          }
-        });
+          $.ajax({
+              url: "ajax/repuestos.ajax.php",
+              method: "POST",
+              data: { idRepuestoEliminar: idRepuesto },
+              success: function(respuesta) {
+                  if (respuesta == "ok") {
+                      Swal.fire(
+                          'Eliminado!',
+                          'El repuesto ha sido eliminado.',
+                          'success'
+                      ).then(function() {
+                          window.location.reload();
+                      });
+                  } else {
+                      Swal.fire(
+                          'Error!',
+                          'No se pudo eliminar el repuesto.',
+                          'error'
+                      );
+                  }
+              }
+          });
       }
-    });
   });
+});
+
+
 
   /*=============================================
   ACTIVAR REPUESTO

@@ -103,9 +103,6 @@ if (isset($_POST['nombreRepuesto'])) {
 Eliminar repuesto
 =============================================*/
 if (isset($_POST["idRepuestoEliminar"])) {
-    $item = "id_repuesto";
-    $valor = $_POST["idRepuestoEliminar"];
-    $respuesta = ControladorRepuestos::ctrEliminarRepuesto($item, $valor);
-
-    echo $respuesta;
+    $eliminarRepuesto = new ControladorRepuestos();
+    $eliminarRepuesto->ctrEliminarRepuesto();
 }

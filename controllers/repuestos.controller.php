@@ -107,14 +107,15 @@ class ControladorRepuestos
 
 
     /*=============================================
-EDITAR REPUESTO
-=============================================*/
+    EDITAR REPUESTO
+    =============================================*/
     public static function ctrEditarRepuesto()
     {
         if (isset($_POST["idRepuesto"])) {
-
             // Validar entradas
             if (
+                !empty($_POST["nuevoNombreRepuesto"]) &&
+                preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevoNombreRepuesto"]) &&
                 preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevaDescripcionRepuesto"]) &&
                 preg_match('/^[0-9.]+$/', $_POST["nuevoPrecioCompraRepuesto"]) &&
                 preg_match('/^[0-9.]+$/', $_POST["nuevoPrecioVentaRepuesto"]) &&
@@ -123,7 +124,6 @@ EDITAR REPUESTO
 
                 $tabla = "repuestos";
 
-                // Verificar si los campos están definidos y no están vacíos
                 $marcaVehiculo = isset($_POST["agregarMarcaVehiculo"]) && !empty($_POST["agregarMarcaVehiculo"]) ? $_POST["agregarMarcaVehiculo"] : null;
                 $modeloVehiculo = isset($_POST["agregarModeloVehiculo"]) && !empty($_POST["agregarModeloVehiculo"]) ? $_POST["agregarModeloVehiculo"] : null;
                 $motorVehiculo = isset($_POST["agregarMotor"]) && !empty($_POST["agregarMotor"]) ? $_POST["agregarMotor"] : null;
@@ -147,44 +147,23 @@ EDITAR REPUESTO
                 $respuesta = ModeloRepuestos::mdlEditarRepuesto($tabla, $datos);
 
                 if ($respuesta == "ok") {
-                    // Actualizar en motor_repuestos si se proporcionó un motor
-                    if ($motorVehiculo != null) {
-                        $tablaMotorRepuesto = "motor_repuestos";
-                        $datosMotorRepuesto = array(
-                            "id_motor" => $motorVehiculo,
-                            "id_repuesto" => $_POST["idRepuesto"]
-                        );
-                        ModeloRepuestos::mdlActualizarMotorRepuesto($tablaMotorRepuesto, $datosMotorRepuesto);
-                    }
-
-                    // Actualizar en modelo_repuestos si se proporcionó un modelo
-                    if ($modeloVehiculo != null) {
-                        $tablaModeloRepuesto = "modelo_repuestos";
-                        $datosModeloRepuesto = array(
-                            "id_modelo" => $modeloVehiculo,
-                            "id_repuesto" => $_POST["idRepuesto"]
-                        );
-                        ModeloRepuestos::mdlActualizarModeloRepuesto($tablaModeloRepuesto, $datosModeloRepuesto);
-                    }
-
-                    // Alerta de éxito
                     echo '<script>
-                        fncSweetAlert("success", "El repuesto ha sido actualizado correctamente", "/repuestos");
-                      </script>';
+                    fncSweetAlert("success", "El repuesto ha sido actualizado correctamente", "/repuestos");
+                </script>';
                 } else {
-                    // Alerta de error en el servidor
                     echo '<script>
-                        fncSweetAlert("error", "Error al actualizar el repuesto", "");
-                      </script>';
+                    fncSweetAlert("error", "Error al actualizar el repuesto", "");
+                </script>';
                 }
             } else {
-                // Alerta de error en la validación de campos
                 echo '<script>
-                    fncSweetAlert("error", "Error en la validación de los campos", "");
-                  </script>';
+                fncSweetAlert("error", "Error en la validación de los campos", "");
+            </script>';
             }
         }
     }
+
+
 
 
     /*=============================================
@@ -198,10 +177,26 @@ EDITAR REPUESTO
     /*=============================================
     ELIMINAR REPUESTO
     =============================================*/
-    static public function ctrEliminarRepuesto($item, $valor)
-    {
-        $tabla = "repuestos";
-        $respuesta = ModeloRepuestos::mdlEliminarRepuesto($tabla, $item, $valor);
-        return $respuesta;
+    public static function ctrEliminarRepuesto() {
+        if (isset($_POST["idRepuestoEliminar"])) {
+            $tabla = "repuestos";
+            $datos = $_POST["idRepuestoEliminar"];
+    
+            // Eliminar relaciones en otras tablas
+            $respuestaMotor = ModeloRepuestos::mdlEliminarMotorRepuesto("motor_repuestos", $datos);
+            $respuestaModelo = ModeloRepuestos::mdlEliminarModeloRepuesto("modelo_repuestos", $datos);
+    
+            if ($respuestaMotor == "ok" && $respuestaModelo == "ok") {
+                $respuesta = ModeloRepuestos::mdlEliminarRepuesto($tabla, $datos);
+    
+                if ($respuesta == "ok") {
+                    echo "ok";
+                } else {
+                    echo "error";
+                }
+            } else {
+                echo "error";
+            }
+        }
     }
 }

@@ -1,131 +1,133 @@
 <?php
-
-
-class ControladorCompras
-{
-  /*=============================================
-	Editar Compra
-	=============================================*/
-  public static function ctrEditarCompra($datos)
-  {
-    $tabla = "compras";
-    $respuesta = ModeloCompras::mdlEditarCompra($tabla, $datos);
-    return $respuesta;
-  }
+class ControladorCompras {
+  
     /*=============================================
-    MOSTRAR DETALLES DE COMPRA
+    CREAR COMPRA
     =============================================*/
-    public static function ctrMostrarDetallesCompra($idCompra) {
-      $detalles = ModeloDetallesCompras::mdlMostrarDetallesCompra("detalles_compras", $idCompra);
-
-      // Obtener el nombre del repuesto para cada detalle de compra
-      foreach ($detalles as &$detalle) {
-          $repuesto = ModeloRepuestos::mdlMostrarRepuestos("repuestos", "id_repuesto", $detalle["id_repuesto"]);
-          $detalle["nombre_repuesto"] = $repuesto["nombre_repuesto"];
-      }
-
-      return $detalles;
-  }
-  /*=============================================
-	Mostrar Compras
-	=============================================*/
-  public static function ctrMostrarCompras($item, $valor)
-  {
-    $tabla = "compras";
-    $respuesta = ModeloCompras::mdlMostrarCompras($tabla, $item, $valor);
-    return $respuesta;
-  }
-
-    /*=============================================
-    ACTUALIZAR DETALLE DE COMPRA
-    =============================================*/
-    static public function ctrActualizarDetalleCompra($datos) {
-      $respuesta = ModeloDetallesCompras::mdlActualizarDetalleCompra("detalles_compras", $datos);
-      
-      if ($respuesta == "ok") {
-          // Actualizar monto total de la compra
-          $actualizacionMonto = self::ctrActualizarMontoTotalCompra($datos["id_compra"]);
-          if ($actualizacionMonto == "ok") {
-              return "ok";
-          } else {
-              return $actualizacionMonto;
-          }
-      } else {
-          return $respuesta;
-      }
-  }
-
-
-    /*=============================================
-    ELIMINAR DETALLE DE COMPRA
-    =============================================*/
-    static public function ctrEliminarDetalleCompra($idDetalle) {
-      $detalle = ModeloDetallesCompras::mdlMostrarDetalleCompraPorId("detalles_compras", $idDetalle);
-      if ($detalle) {
-          $idCompra = $detalle["id_compra"];
-          $respuesta = ModeloDetallesCompras::mdlEliminarDetalleCompra("detalles_compras", $idDetalle);
-          if ($respuesta == "ok") {
-              // Actualizar monto total de la compra
-              return self::ctrActualizarMontoTotalCompra($idCompra);
-          } else {
-              return $respuesta;
-          }
-      } else {
-          return "error";
-      }
-  }
-    /*=============================================
-    ACTUALIZAR MONTO TOTAL DE COMPRA
-    =============================================*/
-    static public function ctrActualizarMontoTotalCompra($idCompra) {
-      $montoTotal = ModeloDetallesCompras::mdlCalcularMontoTotalCompra($idCompra);
-      return ModeloCompras::mdlActualizarMontoTotalCompra("compras", $idCompra, $montoTotal);
-  }
-  /*=============================================
-	Registrar Compras
-	=============================================*/
-  public static function ctrRegistrarCompra($data)
-  {
-
-    $fechaCompra = $data['fechaCompra'];
-    $montoTotal = $data['montoTotal'];
-    $idProveedor = $data['proveedor'];
-    $idUsuario = $data['usuario']; // Ajustar según tu lógica de usuarios
-
-    // Registrar la compra
-    $idCompra = ModeloCompras::mdlRegistrarCompra($fechaCompra, $montoTotal, $idProveedor, $idUsuario);
-
-
-    if ($idCompra) {
-      foreach ($data['detalles'] as $detalle) {
-        $idRepuesto = $detalle['idRepuesto'];
-        $cantidad = $detalle['cantidad'];
-        $precioUnitario = $detalle['precioUnitario'];
-        $codigoCompra = uniqid();
-
-        $detalleRespuesta = ModeloDetallesCompras::mdlRegistrarDetalleCompra($idCompra, $idRepuesto, $cantidad, $codigoCompra, $precioUnitario);
-
-        if ($detalleRespuesta !== true) {
-          return "Error al registrar el detalle de la compra: " . json_encode($detalleRespuesta);
+    public static function ctrCrearCompra($datos)
+    {
+        if (empty($datos["codigoCompra"]) || empty($datos["montoTotal"]) || empty($datos["idUsuario"]) || empty($datos["lista_repuestos"])) {
+            return "error_campos_vacios";
         }
-      }
-      return true;
-    } else {
-      return "Error al registrar la compra.";
+
+        if (!is_numeric($datos["montoTotal"]) || $datos["montoTotal"] <= 0) {
+            return "error_monto_total";
+        }
+
+        $tablaCompras = "compras";
+        $listaRepuestos = $datos["lista_repuestos"];
+
+        $idProveedor = $datos["idProveedor"];
+
+        // Si se proporcionan datos del proveedor manualmente, primero inserta el proveedor
+        if ($datos["proveedorManual"]) {
+            
+            $idProveedor = self::ctrCrearProveedor($datos["proveedorManual"]);
+            if ($idProveedor == "error") {
+                return "error_crear_proveedor";
+            }
+            $datos["idProveedor"] = $idProveedor;
+        }
+
+        $datosCompra = array(
+            "codigo_compra" => $datos["codigoCompra"],
+            "monto_total_compra" => $datos["montoTotal"],
+            "id_proveedor" => $idProveedor,
+            "id_usuario" => $datos["idUsuario"]
+        );
+
+        $idCompra = ModeloCompras::mdlCrearCompra($tablaCompras, $datosCompra);
+
+        if ($idCompra != "error") {
+            $respuestaDetalles = self::ctrCrearDetallesCompra($idCompra, $listaRepuestos);
+
+            if ($respuestaDetalles == "ok") {
+                return "ok";
+            } else {
+                return "error_detalles";
+            }
+        } else {
+            return "error_compra";
+        }
     }
-  }
-      /*=============================================
-    ELIMINAR COMPRA Y SUS DETALLES
+
+    /*=============================================
+    CREAR PROVEEDOR
     =============================================*/
-    static public function ctrEliminarCompra($idCompra) {
-      // Eliminar detalles de la compra
-      $respuestaDetalles = ModeloDetallesCompras::mdlEliminarDetallesPorCompra("detalles_compras", $idCompra);
-      if ($respuestaDetalles == "ok") {
-          // Eliminar la compra
-          $respuestaCompra = ModeloCompras::mdlEliminarCompra("compras", $idCompra);
-          return $respuestaCompra;
-      } else {
-          return "error";
-      }
-  }
+    private static function ctrCrearProveedor($datosProveedor)
+    {
+        $tablaProveedores = "proveedores";
+
+        if (empty($datosProveedor["nombre"]) || empty($datosProveedor["nit"]) || empty($datosProveedor["direccion"]) || empty($datosProveedor["email"]) || empty($datosProveedor["celular"])) {
+            return "error_campos_vacios";
+        }
+
+        $datos = array(
+            "nombre_proveedor" => $datosProveedor["nombre"],
+            "nit_ci_proveedor" => $datosProveedor["nit"],
+            "telefono_proveedor" => $datosProveedor["celular"],
+            "direccion_proveedor" => $datosProveedor["direccion"],
+            "email_proveedor" => $datosProveedor["email"]
+        );
+
+        $idProveedor = ModeloCompras::mdlCrearProveedor($tablaProveedores, $datos);
+    // Debug: Ver contenido de $idProveedor
+    // echo "<pre>";
+    // print($idProveedor);
+    // echo "</pre>";
+    //exit(); // Detener ejecución para ver el resultado
+        return $idProveedor;
+    }
+
+    /*=============================================
+    CREAR DETALLES COMPRA
+    =============================================*/
+    private static function ctrCrearDetallesCompra($idCompra, $listaRepuestos)
+    {
+        $tabla = "detalles_compras";
+
+        foreach ($listaRepuestos as $key => $value) {
+            if (empty($value["cantidad_detalleCompra"]) || !preg_match('/^[0-9]+$/', $value["cantidad_detalleCompra"])) {
+                return "error_cantidad_invalida";
+            }
+
+            if (empty($value["precio_unitario"]) || !preg_match('/^[0-9]+(\.[0-9]+)?$/', $value["precio_unitario"])) {
+                return "error_precio_unitario";
+            }
+
+            $datos = array(
+                "id_compra" => $idCompra,
+                "id_repuesto" => $value["id_repuesto"],
+                "cantidad_detalleCompra" => $value["cantidad_detalleCompra"],
+                "precio_unitario" => $value["precio_unitario"]
+            );
+
+            $respuesta = ModeloCompras::mdlCrearDetalleCompra($tabla, $datos);
+
+            if ($respuesta != "ok") {
+                return "errorr";
+            }
+        }
+
+        return "ok";
+    }
+
+    /*=============================================
+    MOSTRAR LA ÚLTIMA COMPRA Y GENERAR NUEVO CÓDIGO
+    =============================================*/
+    public static function ctrMostrarNuevoCodigoCompra()
+    {
+        $tabla = "compras";
+        $respuesta = ModeloCompras::mdlMostrarUltimaCompra($tabla);
+
+        if ($respuesta) {
+            $ultimoCodigo = $respuesta["codigo_compra"];
+            $numero = intval(substr($ultimoCodigo, 3)) + 1;
+            $nuevoCodigo = "COM" . str_pad($numero, 4, "0", STR_PAD_LEFT);
+        } else {
+            $nuevoCodigo = "COM0001";
+        }
+
+        return $nuevoCodigo;
+    }
 }

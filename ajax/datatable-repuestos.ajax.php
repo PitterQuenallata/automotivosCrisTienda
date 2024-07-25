@@ -20,6 +20,8 @@ class TablaRepuestos {
     $repuestos = ControladorRepuestos::ctrMostrarRepuestos($item, $valor);
 
     $datosJson = '{ "data": [ ';
+        // Inicializar contador
+        $contador = 1;
 
     for ($i = 0; $i < count($repuestos); $i++) {
       if ($repuestos[$i]["stock_repuesto"] <= 10) {
@@ -60,7 +62,7 @@ class TablaRepuestos {
       $acciones = "<div class='btn-group'><button class='btn btn-sm btn-secondary js-bs-tooltip-enabled btnEditarRepuesto' idRepuesto='" . $repuestos[$i]["id_repuesto"] . "' data-bs-toggle='modal' data-bs-target='#modalEditarRepuesto' aria-label='Edit' data-bs-original-title='Edit'><i class='fa fa-pencil-alt'></i></button><button class='btn btn-sm btn-secondary js-bs-tooltip-enabled btnEliminarRepuesto' idRepuesto='" . $repuestos[$i]["id_repuesto"] . "' codigo='" . $repuestos[$i]["codigo_tienda_repuesto"] . "' data-bs-toggle='tooltip' aria-label='Delete' data-bs-original-title='Delete'><i class='fa fa-times'></i></button></div>";
 
       $datosJson .= '{
-        "id_repuesto": "' . $repuestos[$i]["id_repuesto"] . '",
+        "numero": "' . $contador . '",
         "codigo_tienda_repuesto": "' . $repuestos[$i]["codigo_tienda_repuesto"] . '",
         "nombre_repuesto": "' . $repuestos[$i]["nombre_repuesto"] . '",
         "descripcion_repuesto": "' . $repuestos[$i]["descripcion_repuesto"] . '",
@@ -75,6 +77,8 @@ class TablaRepuestos {
         "estado_repuesto": "' . $estado . '",
         "acciones": "' . $acciones . '"
       },';
+            // Incrementar el contador
+            $contador++;
     }
 
     $datosJson = substr($datosJson, 0, -1);

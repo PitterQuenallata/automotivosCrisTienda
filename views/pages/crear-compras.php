@@ -1,3 +1,4 @@
+
 <!-- Main Container -->
 <main id="main-container">
   <!-- Page Content -->
@@ -6,77 +7,92 @@
       <h1 class="h3 fw-extrabold mb-1">Añadir Compras</h1>
       <h2 class="fs-sm fw-medium text-muted mb-0">Repuestos</h2>
     </div>
-    
+
     <div class="row justify-content-center">
-      <div class="col-11">
+      <div class="col-12">
         <div class="row">
+
           <!-- Lado izquierdo form -->
+          <!-- Formulario para Iniciar la Compra -->
           <div class="col-md-5">
             <div class="block block-rounded block-bordered">
               <div class="block-content">
-                <!-- Formulario para Iniciar la Compra -->
-                <form id="formIniciarCompra">
-                  <div class="form-group">
-                    <label for="proveedorSelect">Proveedor</label>
-                    <select class="form-control" id="proveedorSelect" name="proveedor" required>
-                      <option selected disabled>Elije un Proveedor</option>
-                      <?php
-                      $item = null;
-                      $valor = null;
-                      $proveedores = ControladorProveedores::ctrMostrarProveedores($item, $valor);
-                      foreach ($proveedores as $key => $value) {
-                        echo '<option value="' . $value["id_proveedor"] . '">' . $value["nombre_proveedor"] . '</option>';
-                      }
-                      ?>
-                    </select>
-                    <div class="invalid-feedback">Por favor selecciona un proveedor.</div>
-                  </div>
-                  <div class="form-group mb-2">
-                    <label for="fechaCompra">Fecha de Compra</label>
-                    <input type="date" class="form-control" id="fechaCompra" name="fecha" required>
-                    <div class="invalid-feedback">Por favor selecciona una fecha.</div>
-                  </div>
-
-                  <div class="progress mb-2" style="height: 5px;" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar bg-success" style="width: 100%"></div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="repuestoSelect">Repuesto</label>
-                    <select class="form-select" id="repuestoSelect" name="repuesto" required>
-                      <option selected disabled>Elije un Repuesto</option>
-                      <?php
-                      $item = null;
-                      $valor = null;
-                      $repuestos = ControladorRepuestos::ctrMostrarRepuestos($item, $valor);
-                      foreach ($repuestos as $key => $value) {
-                        echo '<option value="' . $value["id_repuesto"] . '">' . $value["nombre_repuesto"] . '</option>';
-                      }
-                      ?>
-                    </select>
-                    <div class="invalid-feedback">Por favor, seleccione un repuesto.</div>
-                  </div>
-                  <div class="row form-group mb-3">
-                    <div class="col-6 border-end">
-                      <label class="form-label" for="precioRepuesto">Precio Unitario</label>
-                      <div class="input-group input-group-lg">
-                        <input type="number" step="0.01" class="form-control" id="precioRepuesto" name="precio" min="0.01" required placeholder="0.00">
-                        <span class="input-group-text fw-semibold">BS</span>
-                        <div class="valid-feedback">Válido.</div>
-                        <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
+                <form id="formIniciarCompra" class="formularioCompra">
+                  <div class="row">
+                    <div class="col-md-3 mb-4">
+                      <label class="form-label" for="codigoCompra">COD.</label>
+                      <input type="text" class="form-control" id="codigoCompra" name="codigoCompra" value="" readonly>
+                    </div>
+                    <div class="col-md-2 mb-4">
+                      <label class="form-label" for="usuario">Usuario</label>
+                      <input type="text" class="form-control" id="usuario" name="usuario" value="<?php echo $_SESSION["users"]["nombre_usuario"] ?>" readonly>
+                      <input type="hidden" id="idUsuario" name="idUsuario" value="<?php echo $_SESSION["users"]["id_usuario"] ?>">
+                    </div>
+                    <div class="col-md-7 mb-4">
+                      <label class="form-label" for="agregarProveedor">Proveedor</label>
+                      <div class="input-group">
+                        <select class="form-select" id="agregarProveedor" name="agregarProveedor" required>
+                          <option selected disabled>Elije un Proveedor</option>
+                          <?php
+                          $item = null;
+                          $valor = null;
+                          $proveedores = ControladorProveedores::ctrMostrarProveedores($item, $valor);
+                          foreach ($proveedores as $key => $value) {
+                            echo '<option value="' . $value["id_proveedor"] . '">' . $value["nombre_proveedor"] . ' - Celular: ' . $value["telefono_proveedor"] . ' - NIT/CI: ' . $value["nit_ci_proveedor"] . '</option>';
+                          }
+                          ?>
+                        </select>
+                        <button type="button" class="btn btn-sm btn-secondary" id="toggleDatosProveedor">Manual</button>
                       </div>
                     </div>
-                    <div class="col-6">
-                      <label class="form-label" for="cantidadRepuesto">Cantidad</label>
-                      <div class="input-group input-group-lg">
-                        <input type="number" class="form-control" id="cantidadRepuesto" name="cantidad" min="1" required placeholder="0">
-                        <div class="valid-feedback">Válido.</div>
-                        <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
+
+                  </div>
+
+                  <div id="datosProveedor" style="display:none;">
+                    <div class="row">
+                      <div class="col-md-6 mb-1">
+                        <label class="form-label" for="nombreProveedor">Nombre Proveedor</label>
+                        <input type="text" class="form-control" id="nombreProveedor" name="nombreProveedor" disabled>
+                      </div>
+                      <div class="col-md-3 mb-1">
+                        <label class="form-label" for="nitProveedor">NIT/CI</label>
+                        <input type="text" class="form-control" id="nitProveedor" name="nitProveedor">
+                      </div>
+                      <div class="col-md-3 mb-1 ">
+                        <label class="form-label" for="celularProveedor">Celular</label>
+                        <input type="text" class="form-control" id="celularProveedor" name="celularProveedor">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-6 mb-4">
+                        <label class="form-label" for="direccionProveedor">Dirección</label>
+                        <input type="text" class="form-control" id="direccionProveedor" name="direccionProveedor">
+                      </div>
+                      <div class="col-md-6 mb-4">
+                        <label class="form-label" for="gmailProveedor">Gmail</label>
+                        <input type="text" class="form-control" id="gmailProveedor" name="gmailProveedor">
                       </div>
                     </div>
                   </div>
+
+
+                  <!-- Repuestos a comprar añadidos -->
+                  <div class="nuevaCompra"></div>
+                  <!-- total de toda la compra -->
+                  <div class="row">
+                    <div class="col-md-12 mb-4">
+                      <label class="form-label" for="compraTotal">Monto a pagar</label>
+                      <div class="input-group">
+                        <input type="text" class="form-control form-control-alt text-center" id="compraTotal" name="compraTotal">
+                        <span class="input-group-text input-group-text-alt">BS</span>
+                      </div>
+                    </div>
+                  </div>
+                  <input type="hidden" id="listaRepuestos" name="listaRepuestos">
+                  
+                  <input type="hidden" id="idProveedor" name="idProveedor">
                   <div class="block-content block-content-full block-content-sm text-end border-top">
-                    <button type="button" class="btn btn-alt-primary" id="añadirRepuesto">Añadir Repuesto</button>
+                    <button type="button" class="btn btn-alt-primary" id="guardarCompra">Guardar Compra</button>
                   </div>
                 </form>
               </div>
@@ -88,36 +104,32 @@
             <div class="block block-rounded">
               <div class="block-content block-content-full">
                 <div class="table-responsive">
-                  <h3 class="block-title">Detalle Compra (Repuesto)</h3>
-                  <table class="table table-borderless table-striped mb-0" id="tablaDetallesCompra">
+                  <div class="d-flex align-items-center mb-3">
+                    <a href="/crear-repuestos" class="btn btn-success me-1 mb-1">
+                      <i class="fa fa-plus opacity-50 me-1"></i> Añadir Repuesto
+                    </a>
+                  </div>
+                  <table id="tablaRepuestosCompra" class="table table-sm table-striped table-vcenter js-dataTable-responsive">
                     <thead>
                       <tr>
-                        <th>ID</th>
-                        <th>Repuesto</th>
-                        <th>Cantidad</th>
-                        <th class="text-end">Precio</th>
-                        <th class="text-end">Total</th>
-                        <th></th>
+                        <th class="text-center" style="width: 50px;">N.</th>
+                        <th class="text-center" style="width: 100px;">COD.</th>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <th>Marca</th>
+                        <th>Stock</th>
+                        <th>Precio</th>
+                        <th class="text-center" style="width: 100px;">Acción</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <!-- Detalles añadidos aparecerán aquí -->
                     </tbody>
-                    <tfoot>
-                      <tr class="table-success">
-                        <td colspan="4" class="text-end fw-semibold text-uppercase">Total</td>
-                        <td class="text-end fw-semibold" id="totalCompra">0,00 BS</td>
-                      </tr>
-                    </tfoot>
                   </table>
                 </div>
               </div>
-              <div class="block-content block-content-full block-content-sm text-end border-top">
-                <button type="button" class="btn btn-alt-secondary" id="limpiarTabla" >Limpiar</button>
-                <button type="button" class="btn btn-alt-primary" id="confirmarCompra">Confirmar Compra</button>
-              </div>
             </div>
           </div>
+
         </div>
       </div>
     </div>
