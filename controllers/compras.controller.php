@@ -1,6 +1,16 @@
 <?php
-class ControladorCompras {
-  
+class ControladorCompras
+{
+
+    /*=============================================
+	Mostrar Compras
+	=============================================*/
+    public static function ctrMostrarCompras($item, $valor)
+    {
+        $tabla = "compras";
+        $respuesta = ModeloCompras::mdlMostrarCompras($tabla, $item, $valor);
+        return $respuesta;
+    }
     /*=============================================
     CREAR COMPRA
     =============================================*/
@@ -21,7 +31,7 @@ class ControladorCompras {
 
         // Si se proporcionan datos del proveedor manualmente, primero inserta el proveedor
         if ($datos["proveedorManual"]) {
-            
+
             $idProveedor = self::ctrCrearProveedor($datos["proveedorManual"]);
             if ($idProveedor == "error") {
                 return "error_crear_proveedor";
@@ -71,11 +81,11 @@ class ControladorCompras {
         );
 
         $idProveedor = ModeloCompras::mdlCrearProveedor($tablaProveedores, $datos);
-    // Debug: Ver contenido de $idProveedor
-    // echo "<pre>";
-    // print($idProveedor);
-    // echo "</pre>";
-    //exit(); // Detener ejecución para ver el resultado
+        // Debug: Ver contenido de $idProveedor
+        // echo "<pre>";
+        // print($idProveedor);
+        // echo "</pre>";
+        //exit(); // Detener ejecución para ver el resultado
         return $idProveedor;
     }
 
@@ -130,4 +140,97 @@ class ControladorCompras {
 
         return $nuevoCodigo;
     }
+
+
+    /*=============================================
+    MOSTRAR DETALLES DE COMPRA
+    =============================================*/
+    public static function ctrMostrarDetallesCompra($idCompra)
+    {
+        $tabla = "detalles_compras";
+        $respuesta = ModeloCompras::mdlMostrarDetallesCompra($tabla, $idCompra);
+        return $respuesta;
+    }
+
+
+    /*=============================================
+    EDITAR DETALLE DE COMPRA
+    =============================================*/
+    public static function ctrEditarDetalleCompra($datos)
+    {
+        if (!empty($datos['id_detalle_compra']) && !empty($datos['cantidad_detalleCompra']) && !empty($datos['precio_unitario']) && !empty($datos['id_repuesto'])) {
+            $tabla = "detalles_compras";
+            $respuesta = ModeloCompras::mdlEditarDetalleCompra($tabla, $datos);
+            return $respuesta;
+        } else {
+            return "error_campos_vacios";
+        }
+    }
+
+    /*=============================================
+    ELIMINAR DETALLE DE COMPRA
+    =============================================*/
+    public static function ctrEliminarDetalleCompra($idDetalle)
+    {
+        $tabla = "detalles_compras";
+        $respuesta = ModeloCompras::mdlEliminarDetalleCompra($tabla, $idDetalle);
+        return $respuesta;
+    }
+
+    /*=============================================
+    MOSTRAR REPUESTOS SIMPLE
+    =============================================*/
+    public static function ctrMostrarRepuestosSimple($item, $valor)
+    {
+        $tabla = "repuestos";
+        $respuesta = ModeloCompras::mdlMostrarRepuestosSimple($tabla, $item, $valor);
+        return $respuesta;
+    }
+
+    /*=============================================
+    ACTUALIZAR MONTO TOTAL DE COMPRA
+    =============================================*/
+    public static function ctrActualizarMontoTotalCompra($idCompra) {
+        $montoTotal = ModeloDetallesCompras::mdlCalcularMontoTotalCompra($idCompra);
+        return ModeloCompras::mdlActualizarMontoTotalCompra("compras", $idCompra, $montoTotal);
+    }
+
+
+    /*=============================================COMPRAS=============================================*/
+    public static function ctrObtenerCompra($idCompra)
+    {
+        $tabla = "compras";
+        return ModeloCompras::mdlObtenerCompra($tabla, $idCompra);
+    }
+    
+    public static function ctrEditarCompra($datos)
+    {
+        $tabla = "compras";
+        return ModeloCompras::mdlEditarCompra($tabla, $datos);
+    }
+    
+    public static function ctrEliminarCompra($idCompra)
+    {
+        $tabla = "compras";
+        $tablaDetalles = "detalles_compras";
+    
+        // Eliminar detalles de compra primero
+        $eliminarDetalles = ModeloCompras::mdlEliminarDetallesCompra($tablaDetalles, $idCompra);
+    
+        if ($eliminarDetalles == "ok") {
+            // Si se eliminaron los detalles correctamente, eliminar la compra
+            return ModeloCompras::mdlEliminarCompra($tabla, $idCompra);
+        } else {
+            return "error";
+        }
+    }
+    
+    public static function ctrListarProveedores()
+    {
+        $tabla = "proveedores";
+        return ModeloProveedores::mdlMostrarProveedores($tabla, null, null);
+    }
+    
+    
+
 }

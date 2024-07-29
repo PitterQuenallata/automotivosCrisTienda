@@ -6,11 +6,12 @@
 <script src="<?php echo $path ?>views/assets/js/modelos.js"></script>
 <script src="<?php echo $path ?>views/assets/js/motores.js"></script>
 <script src="<?php echo $path ?>views/assets/js/proveedores.js"></script>
-<script src="<?php echo $path ?>views/assets/js/compras.js"></script>
-<script src="<?php echo $path ?>views/assets/js/detalle_compra.js"></script>
+
 <script src="<?php echo $path ?>views/assets/js/ventas.js"></script>
 <script src="<?php echo $path ?>views/assets/js/repuestos.js"></script>
 <script src="<?php echo $path ?>views/assets/js/crear_compras.js"></script>
+<script src="<?php echo $path ?>views/assets/js/lista_compras.js"></script>
+<script src="<?php echo $path ?>views/assets/js/lista_ventas.js"></script>
 
 
 <!-- jQuery (required for DataTables plugin) -->
@@ -34,4 +35,4 @@
 <!-- Page JS Code -->
 <script src="<?php echo $path ?>views/assets/js/pages/be_tables_datatables.min.js"></script>
 
-
+<script src="<?php echo $path ?>views/assets/js/plugins/jqueryToast/dist/jquery.toast.min.js"></script>

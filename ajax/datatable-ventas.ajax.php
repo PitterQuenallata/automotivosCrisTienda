@@ -1,7 +1,6 @@
 <?php
-
-require_once "../controllers/repuestos.controller.php";
-require_once "../models/repuestos.model.php";
+require_once "../controllers/ventas.controller.php";
+require_once "../models/ventas.model.php";
 
 class TablaRepuestosVentas {
 
@@ -9,7 +8,7 @@ class TablaRepuestosVentas {
 
     $item = null;
     $valor = null;
-    $repuestos = ControladorRepuestos::ctrMostrarRepuestos($item, $valor);
+    $repuestos = ControladorVentas::ctrMostrarRepuestosVentas($item, $valor);
 
     if(count($repuestos) == 0) {
       echo '{"data": []}';
@@ -21,7 +20,7 @@ class TablaRepuestosVentas {
     for($i = 0; $i < count($repuestos); $i++) {
       if($repuestos[$i]["stock_repuesto"] <= 10) {
         $stock = "<button class='btn btn-sm btn-danger me-1 mb-1'>".$repuestos[$i]["stock_repuesto"]."</button>";
-      } else if($repuestos[$i]["stock_repuesto"] > 11 && $repuestos[$i]["stock_repuesto"] <= 15) {
+      } else if($repuestos[$i]["stock_repuesto"] >= 11 && $repuestos[$i]["stock_repuesto"] <= 15) {
         $stock = "<button class='btn btn-sm btn-warning me-1 mb-1'>".$repuestos[$i]["stock_repuesto"]."</button>";
       } else {
         $stock = "<button class='btn btn-sm btn-success me-1 mb-1'>".$repuestos[$i]["stock_repuesto"]."</button>";
@@ -31,12 +30,13 @@ class TablaRepuestosVentas {
 
       $datosJson .= '[
         "'.($i+1).'",
-        "'.$repuestos[$i]["oem_repuesto"].'",
+        "'.$repuestos[$i]["codigo_tienda_repuesto"].'",
         "'.$repuestos[$i]["nombre_repuesto"].'",
-        "'.$repuestos[$i]["id_categoria"].'",
-        "'.$repuestos[$i]["marca_repuesto"].'",
-        "'.$stock.'",
+        "'.$repuestos[$i]["descripcion_repuesto"].'",
         "'.$repuestos[$i]["precio_repuesto"].'",
+        "'.$stock.'",
+        "'.$repuestos[$i]["nombre_categoria"].'",
+        "'.$repuestos[$i]["marca_repuesto"].'",
         "'.$botones.'"
       ],';
     }

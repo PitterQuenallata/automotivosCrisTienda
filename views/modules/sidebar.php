@@ -181,13 +181,8 @@
                 </a>
               </li>
               <li class="nav-main-item">
-                <a class="nav-main-link" href="be_forms_layouts.html">
-                  <span class="nav-main-link-name">Layouts</span>
-                </a>
-              </li>
-              <li class="nav-main-item">
-                <a class="nav-main-link" href="be_forms_input_groups.html">
-                  <span class="nav-main-link-name">Input Groups</span>
+                <a class="nav-main-link" href="/lista-ventas">
+                  <span class="nav-main-link-name">Lista Ventas</span>
                 </a>
               </li>
 

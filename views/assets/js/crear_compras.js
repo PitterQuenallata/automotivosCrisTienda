@@ -238,7 +238,7 @@ $(document).ready(function () {
         contentType: "application/json",
         success: function(respuesta) {
             if (respuesta.indexOf("ok") !== -1) {
-                fncSweetAlert("success", "Compra guardada correctamente.", "/compras");
+                fncSweetAlert("success", "Compra guardada correctamente.", "/lista-compras");
             } else {
                 fncSweetAlert("error", respuesta);
             }

@@ -43,7 +43,7 @@ function loadPage($route, $path, $routesArray)
 if (isset($_SESSION["users"])) {
     // Determina la ruta solicitada
     $route = !empty($routesArray[0]) ? $routesArray[0] : "inicio";
-    $validRoutes = ["inicio", "usuarios", "categorias", "marcas", "vehiculos", "modelos", "motores", "proveedores", "repuestos", "lista-compras","crear-compras","crear-ventas","crear-repuestos", "salir"]; // Añadir rutas válidas aquí
+    $validRoutes = ["inicio", "usuarios", "categorias", "marcas", "vehiculos", "modelos", "motores", "proveedores", "repuestos", "lista-compras","crear-compras","crear-ventas","lista-ventas","crear-repuestos", "salir"]; // Añadir rutas válidas aquí
 
     // Verifica si la ruta es válida y carga la página correspondiente
     if (in_array($route, $validRoutes)) {

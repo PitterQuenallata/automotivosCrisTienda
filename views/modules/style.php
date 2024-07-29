@@ -15,11 +15,11 @@
 
 <!-- alerts -->
 <link rel="stylesheet" type="text/css" href="<?php echo $path ?>views/assets/css/plugins/notie/notie.min.css">
-<link rel="stylesheet" type="text/css" href="<?php echo $path ?>views/assets/css/plugins/toastr.min.css">
+<link rel="stylesheet" type="text/css" href="<?php echo $path ?>views/assets/js/plugins/jqueryToast/dist/jquery.toast.min.css">
 <link rel="stylesheet" type="text/css" href="<?php echo $path ?>views/assets/css/plugins/material-preloader/material-preloader.css">
 
 <script src="<?php echo $path ?>views/assets/js/plugins/material-preloader/material-preloader.js"></script>
-<script src="<?php echo $path ?>views/assets/js/plugins/toastr/toastr.min.js"></script>
+
 <script src="<?php echo $path ?>views/assets/js/plugins/sweetalert2/sweetalert.min.js"></script>
 <script src="<?php echo $path ?>views/assets/js/plugins/notie/notie.min.js"></script>
 <script src="<?php echo $path ?>views/assets/js/alerts/alerts.js"></script>

@@ -36,7 +36,7 @@ class TablaRepuestos {
         "<button class='badge btn btn-success btnActivarRepuesto' idRepuesto='" . $repuestos[$i]["id_repuesto"] . "' estadoRepuesto='0'>Activo</button>" : 
         "<button class='badge btn btn-danger btnActivarRepuesto' idRepuesto='" . $repuestos[$i]["id_repuesto"] . "' estadoRepuesto='1'>Inactivo</button>";
 
-      // Obtener la categoría del vehículo
+      // Obtener la categoría del repuesto
       $itemCategoria = "id_categoria";
       $valorCategoria = $repuestos[$i]["id_categoria"];
       $categoria = ControladorCategorias::ctrMostrarCategorias($itemCategoria, $valorCategoria);

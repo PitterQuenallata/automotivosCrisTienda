@@ -1,0 +1,59 @@
+Ideas de Reportes:
+Reporte de Ventas Diarias/Semanales/Mensuales:
+
+Total de ventas realizadas.
+Ventas por categoría de repuesto.
+Ventas por cliente.
+Comparación de ventas con periodos anteriores.
+Reporte de Inventario:
+
+Estado del inventario (cantidad actual de cada repuesto).
+Repuestos con bajo stock (por debajo de un umbral definido).
+Historial de movimientos de inventario (entradas y salidas).
+Reporte de Compras:
+
+Total de compras realizadas por proveedor.
+Comparación de precios de proveedores.
+Historial de compras por repuesto.
+Reporte de Clientes:
+
+Clientes más frecuentes.
+Historial de compras por cliente.
+Nuevos clientes registrados en un periodo específico.
+Reporte de Proveedores:
+
+Proveedores más utilizados.
+Historial de compras por proveedor.
+Evaluación del desempeño de proveedores (entregas a tiempo, calidad de productos, etc.).
+Reporte Financiero:
+
+Ingresos y gastos.
+Margen de ganancia por repuesto.
+Comparación de ingresos y gastos en diferentes periodos.
+Reporte de Usuarios del Sistema:
+
+Actividad de usuarios (ventas registradas, compras registradas, etc.).
+Historial de inicio de sesión.
+Permisos y roles de los usuarios.
+Ideas de Widgets para el Dashboard:
+Widget de Ventas Totales:
+
+Un gráfico de barras o línea mostrando las ventas totales por día/semana/mes.
+Widget de Stock Bajo:
+
+Una lista de los repuestos que están por debajo del stock mínimo, con un indicador visual (rojo/amarillo/verde).
+Widget de Clientes Frecuentes:
+
+Un gráfico circular mostrando los clientes que más compran, con sus respectivas participaciones.
+Widget de Proveedores Activos:
+
+Un gráfico de barras mostrando los proveedores con más compras en el periodo seleccionado.
+Widget de Comparación de Ventas:
+
+Un gráfico comparativo mostrando las ventas de este mes frente al mes pasado o este año frente al año pasado.
+Widget de Ingresos vs. Gastos:
+
+Un gráfico de líneas o área mostrando los ingresos y gastos a lo largo del tiempo.
+Widget de Actividad Reciente:
+
+Una lista de las últimas acciones realizadas por los usuarios del sistema (ventas, compras, registros, etc.).
