@@ -17,6 +17,7 @@
 <link rel="stylesheet" type="text/css" href="<?php echo $path ?>views/assets/css/plugins/notie/notie.min.css">
 <link rel="stylesheet" type="text/css" href="<?php echo $path ?>views/assets/js/plugins/jqueryToast/dist/jquery.toast.min.css">
 <link rel="stylesheet" type="text/css" href="<?php echo $path ?>views/assets/css/plugins/material-preloader/material-preloader.css">
+<link rel="stylesheet" type="text/css" href="<?php echo $path ?>views/assets/bower_components/daterangepicker/daterangepicker.css">
 
 <script src="<?php echo $path ?>views/assets/js/plugins/material-preloader/material-preloader.js"></script>
 
@@ -25,6 +26,8 @@
 <script src="<?php echo $path ?>views/assets/js/alerts/alerts.js"></script>
 
 <script src="<?php echo $path ?>views/assets/js/plugins/jqueryNumber/jquerynumber.min.js"></script>
+<script src="<?php echo $path ?>views/assets/bower_components/daterangepicker/moment.min.js"></script>
+<script src="<?php echo $path ?>views/assets/bower_components/daterangepicker/daterangepicker.js"></script>
 
 <!-- Page JS Plugins -->
 

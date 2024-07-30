@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-07-2024 a las 08:58:17
+-- Tiempo de generación: 30-07-2024 a las 04:50:04
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -128,7 +128,7 @@ CREATE TABLE `detalles_compras` (
   `id_compra` int(11) DEFAULT NULL,
   `id_repuesto` int(11) DEFAULT NULL,
   `cantidad_detalleCompra` int(11) DEFAULT NULL,
-  `precio_unitario` decimal(10,2) DEFAULT NULL,
+  `precio_unitario` decimal(10,2) NOT NULL,
   `date_created_detalle_compra` timestamp NOT NULL DEFAULT current_timestamp(),
   `date_updated_detalle_compra` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -375,13 +375,13 @@ CREATE TABLE `repuestos` (
   `id_repuesto` int(11) NOT NULL,
   `id_categoria` int(11) DEFAULT NULL,
   `nombre_repuesto` varchar(255) NOT NULL,
-  `descripcion_repuesto` text NOT NULL,
+  `descripcion_repuesto` text DEFAULT NULL,
   `oem_repuesto` varchar(255) DEFAULT NULL,
-  `codigo_tienda_repuesto` varchar(255) DEFAULT NULL,
+  `codigo_tienda_repuesto` varchar(255) NOT NULL,
   `img_repuesto` text DEFAULT NULL,
   `stock_repuesto` int(11) DEFAULT NULL,
-  `precio_repuesto` float DEFAULT NULL,
-  `precio_compra` float DEFAULT NULL,
+  `precio_repuesto` decimal(10,2) DEFAULT NULL,
+  `precio_compra` decimal(10,2) DEFAULT NULL,
   `marca_repuesto` varchar(255) DEFAULT NULL,
   `venta_repuesto` int(11) NOT NULL,
   `estado_repuesto` tinyint(4) DEFAULT 1,
@@ -394,35 +394,35 @@ CREATE TABLE `repuestos` (
 --
 
 INSERT INTO `repuestos` (`id_repuesto`, `id_categoria`, `nombre_repuesto`, `descripcion_repuesto`, `oem_repuesto`, `codigo_tienda_repuesto`, `img_repuesto`, `stock_repuesto`, `precio_repuesto`, `precio_compra`, `marca_repuesto`, `venta_repuesto`, `estado_repuesto`, `date_created_repuesto`, `date_updated_repuesto`) VALUES
-(7, 3, 'Batería', 'hola', 'S6508B', '30000', '', 6, 120, 0, 'Bosch', 0, 1, '2024-06-12 23:49:22', '2024-07-29 04:30:13'),
-(8, 2, 'Pastillas de freno', '', '04465-06150', '20000', '', 49, 45, 0, 'Toyota', 0, 1, '2024-06-12 23:49:22', '2024-07-28 23:39:59'),
-(9, 3, 'Aceite de motor', '', '94001', '30001', '', 90, 32.99, 0, 'Mobil', 0, 1, '2024-06-12 23:49:22', '2024-07-29 04:52:13'),
-(10, 6, 'Bujías', '', '6619', '60000', '', 200, 10, 0, 'NGK', 0, 1, '2024-06-12 23:49:22', '2024-07-21 14:02:28'),
-(11, 3, 'Alternador', '', '10480322', '30002', '', 0, 210, 0, 'AC Delco', 0, 1, '2024-06-12 23:49:22', '2024-07-24 23:21:14'),
-(12, 5, 'Amortiguador', '', '6L3Z-18124-B', '50000', '', 25, 75, 0, 'Motorcraft', 0, 1, '2024-06-12 23:49:22', '2024-07-21 14:02:41'),
-(13, 3, 'Filtro de combustible', '', '16400-1AA0A', '30003', '', 30, 35, 0, 'Nissan', 0, 1, '2024-06-12 23:49:22', '2024-07-21 14:02:49'),
-(14, 7, 'Correa de distribución', '', '13028-AA231', '70000', '', 12, 85, 0, 'Subaru', 0, 1, '2024-06-12 23:49:22', '2024-07-21 14:02:55'),
-(15, 8, 'Termostato', '', '25500-23550', '80000', '', 40, 18, 0, 'Hyundai', 0, 1, '2024-06-12 23:49:22', '2024-07-23 09:40:58'),
-(16, 3, 'Sensor TPMS', '', '42753-SNA-A83', '30004', '', 50, 75.99, 0, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:03:06'),
-(17, 3, 'Eje de transmisión', '', '44305-S84-A02', '30005', '', 20, 150, 0, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:03:13'),
-(18, 4, 'Buje de control', '', '51393-SDA-A01', '40000', '', 30, 35, 0, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:03:19'),
-(19, 3, 'Enfriador de transmisión', '', '25430-PLR-003', '30006', '', 15, 120, 0, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:03:30'),
-(20, 3, 'Soporte del motor', '', '50820-SDA-A02', '30007', '', 40, 45, 0, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:03:37'),
-(21, 1, 'Filtro de aceite', '', '15400-PLM-A02', '10002', '', 70, 9.99, 0, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-29 01:22:08'),
-(22, 2, 'Pastillas de freno delanteras', '', '45022-TK8-A02', '20001', '', 60, 60, 0, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:03:51'),
-(23, 3, 'Batería', '', '31500-SR1-100', '30008', '', 25, 110, 0, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:04:02'),
-(24, 3, 'Alternador', '', '31100-RCA-A01', '30009', '', 10, 230, 0, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:04:06'),
-(25, 6, 'Bobina de encendido', '', '30520-RNA-A01', '60001', '', 80, 50, 0, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:04:15'),
-(26, 1, 'FIltrito', '', NULL, '10003', NULL, 42, 60, 0, 'Stevean', 0, 1, '2024-07-21 21:40:08', '2024-07-29 00:11:41'),
-(27, 1, 'FIltrito', '', NULL, '10003', NULL, 42, 60, 0, 'Stevean', 0, 1, '2024-07-21 21:41:40', '2024-07-29 00:11:41'),
-(28, 1, 'Filtro', '', NULL, '10004', NULL, 47, 80, 0, 'Siash', 0, 1, '2024-07-21 21:52:38', '2024-07-29 00:11:41'),
-(29, 1, 'Filtro2', '', NULL, '10005', NULL, 49, 50, 0, 'filtroWwe', 0, 1, '2024-07-21 21:57:52', '2024-07-28 23:15:52'),
-(30, 1, 'filtros', '', NULL, '10006', NULL, 99, 980, 0, 'Huajiuwe', 0, 1, '2024-07-21 22:08:12', '2024-07-28 23:15:52'),
-(31, 10, 'Puerta 1', '', NULL, '100000', NULL, 1002, 60, 50, 'honds', 0, 1, '2024-07-21 22:54:56', '2024-07-21 22:54:56'),
-(32, 8, 'Embreague', 'embreague super obsolet', NULL, '80001', NULL, 10, 60, 50, 'Musht', 0, 1, '2024-07-21 22:57:23', '2024-07-21 22:57:23'),
-(33, 7, 'Correa', 'correa tripe 3', NULL, '70001', NULL, 50, 80, 55.5, 'husj', 0, 1, '2024-07-23 02:12:31', '2024-07-23 02:12:31'),
-(34, 7, 'Correa', 'correa tripe 3', NULL, '70001', NULL, 50, 80, 55.5, 'husj', 0, 1, '2024-07-23 02:19:20', '2024-07-23 02:19:20'),
-(46, 7, 'Carreasoj', 'a', NULL, '70002', NULL, 40, 50, 50, 'd', 0, 1, '2024-07-24 15:04:46', '2024-07-24 15:04:46');
+(7, 3, 'Batería', 'hola', 'S6508B', '30000', '', 6, 120.00, 0.00, 'Bosch', 0, 1, '2024-06-12 23:49:22', '2024-07-29 04:30:13'),
+(8, 2, 'Pastillas de freno', '', '04465-06150', '20000', '', 49, 45.00, 0.00, 'Toyota', 0, 1, '2024-06-12 23:49:22', '2024-07-28 23:39:59'),
+(9, 3, 'Aceite de motor', '', '94001', '30001', '', 90, 32.99, 0.00, 'Mobil', 0, 1, '2024-06-12 23:49:22', '2024-07-29 04:52:13'),
+(10, 6, 'Bujías', '', '6619', '60000', '', 200, 10.00, 0.00, 'NGK', 0, 1, '2024-06-12 23:49:22', '2024-07-21 14:02:28'),
+(11, 3, 'Alternador', '', '10480322', '30002', '', 0, 210.00, 0.00, 'AC Delco', 0, 1, '2024-06-12 23:49:22', '2024-07-24 23:21:14'),
+(12, 5, 'Amortiguador', '', '6L3Z-18124-B', '50000', '', 25, 75.00, 0.00, 'Motorcraft', 0, 1, '2024-06-12 23:49:22', '2024-07-21 14:02:41'),
+(13, 3, 'Filtro de combustible', '', '16400-1AA0A', '30003', '', 30, 35.00, 0.00, 'Nissan', 0, 1, '2024-06-12 23:49:22', '2024-07-21 14:02:49'),
+(14, 7, 'Correa de distribución', '', '13028-AA231', '70000', '', 12, 85.00, 0.00, 'Subaru', 0, 1, '2024-06-12 23:49:22', '2024-07-21 14:02:55'),
+(15, 8, 'Termostato', '', '25500-23550', '80000', '', 40, 18.00, 0.00, 'Hyundai', 0, 1, '2024-06-12 23:49:22', '2024-07-23 09:40:58'),
+(16, 3, 'Sensor TPMS', '', '42753-SNA-A83', '30004', '', 50, 75.99, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:03:06'),
+(17, 3, 'Eje de transmisión', '', '44305-S84-A02', '30005', '', 20, 150.00, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:03:13'),
+(18, 4, 'Buje de control', '', '51393-SDA-A01', '40000', '', 30, 35.00, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:03:19'),
+(19, 3, 'Enfriador de transmisión', '', '25430-PLR-003', '30006', '', 15, 120.00, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:03:30'),
+(20, 3, 'Soporte del motor', '', '50820-SDA-A02', '30007', '', 40, 45.00, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:03:37'),
+(21, 1, 'Filtro de aceite', '', '15400-PLM-A02', '10002', '', 70, 9.99, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-29 01:22:08'),
+(22, 2, 'Pastillas de freno delanteras', '', '45022-TK8-A02', '20001', '', 60, 60.00, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:03:51'),
+(23, 3, 'Batería', '', '31500-SR1-100', '30008', '', 25, 110.00, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:04:02'),
+(24, 3, 'Alternador', '', '31100-RCA-A01', '30009', '', 10, 230.00, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:04:06'),
+(25, 6, 'Bobina de encendido', '', '30520-RNA-A01', '60001', '', 80, 50.00, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:04:15'),
+(26, 1, 'FIltrito', '', NULL, '10003', NULL, 42, 60.00, 0.00, 'Stevean', 0, 1, '2024-07-21 21:40:08', '2024-07-29 00:11:41'),
+(27, 1, 'FIltrito', '', NULL, '10003', NULL, 42, 60.00, 0.00, 'Stevean', 0, 1, '2024-07-21 21:41:40', '2024-07-29 00:11:41'),
+(28, 1, 'Filtro', '', NULL, '10004', NULL, 47, 80.00, 0.00, 'Siash', 0, 1, '2024-07-21 21:52:38', '2024-07-29 00:11:41'),
+(29, 1, 'Filtro2', '', NULL, '10005', NULL, 49, 50.00, 0.00, 'filtroWwe', 0, 1, '2024-07-21 21:57:52', '2024-07-28 23:15:52'),
+(30, 1, 'filtros', '', NULL, '10006', NULL, 99, 980.00, 0.00, 'Huajiuwe', 0, 1, '2024-07-21 22:08:12', '2024-07-28 23:15:52'),
+(31, 10, 'Puerta 1', '', NULL, '100000', NULL, 1002, 60.00, 50.00, 'honds', 0, 1, '2024-07-21 22:54:56', '2024-07-21 22:54:56'),
+(32, 8, 'Embreague', 'embreague super obsolet', NULL, '80001', NULL, 10, 60.00, 50.00, 'Musht', 0, 1, '2024-07-21 22:57:23', '2024-07-21 22:57:23'),
+(33, 7, 'Correa', 'correa tripe 3', NULL, '70001', NULL, 50, 80.00, 56.00, 'husj', 0, 1, '2024-07-23 02:12:31', '2024-07-23 02:12:31'),
+(34, 7, 'Correa', 'correa tripe 3', NULL, '70001', NULL, 50, 80.00, 56.00, 'husj', 0, 1, '2024-07-23 02:19:20', '2024-07-23 02:19:20'),
+(46, 7, 'Carreasoj', 'a', NULL, '70002', NULL, 40, 50.00, 50.00, 'd', 0, 1, '2024-07-24 15:04:46', '2024-07-24 15:04:46');
 
 -- --------------------------------------------------------
 
@@ -449,8 +449,9 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `user_usuario`, `foto_usuario`, `email_usuario`, `password_usuario`, `rol_usuario`, `estado_usuario`, `date_created_usuario`, `date_updated_usuario`) VALUES
-(1, 'benjamin', 'canaviri', 'benjo1234', 'views/assets/media/avatars/usuarios/benjo1234/713.jpg', 'benjo@gmail.com', '$2a$07$azybxcags23425sdg23sdem1CFT2u/A.0JOm/IXWxebxaQOkjS85C', 'administrador', 1, '2024-06-09 15:27:08', '2024-07-28 15:44:17'),
-(2, 'pitter', 'kevin', 'pitter123', 'views/assets/media/avatars/usuarios/pitter123/696.jpg', 'pitter@gmail.com', '$2a$07$azybxcags23425sdg23sdexDgBwF1Wba.r8oVb3KiQPBr8fPcAQBe', 'venta', 1, '2024-07-25 03:06:26', '2024-07-25 03:06:26');
+(1, 'benjamin', 'canaviri', 'benjo1234', 'views/assets/media/avatars/usuarios/benjo1234/713.jpg', 'benjo@gmail.com', '$2a$07$azybxcags23425sdg23sdem1CFT2u/A.0JOm/IXWxebxaQOkjS85C', 'administrador', 1, '2024-06-09 15:27:08', '2024-07-29 23:27:02'),
+(2, 'pitter', 'kevin', 'pitter123', 'views/assets/media/avatars/usuarios/pitter123/696.jpg', 'pitter@gmail.com', '$2a$07$azybxcags23425sdg23sdexDgBwF1Wba.r8oVb3KiQPBr8fPcAQBe', 'venta', 1, '2024-07-25 03:06:26', '2024-07-25 03:06:26'),
+(3, 'david', 'apaza', 'tonkis123', 'views/assets/media/avatars/usuarios/tonkis123/570.jpg', 'tonkis@gmail.com', '$2a$07$azybxcags23425sdg23sdeqJpRVasxIvNizan7dQx1M6JQIJEH4vK', 'venta', 1, '2024-07-29 23:17:47', '2024-07-29 23:18:04');
 
 -- --------------------------------------------------------
 
@@ -461,7 +462,7 @@ INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `use
 CREATE TABLE `ventas` (
   `id_venta` int(11) NOT NULL,
   `codigo_venta` int(11) NOT NULL,
-  `monto_total_venta` int(11) NOT NULL,
+  `monto_total_venta` decimal(10,2) NOT NULL,
   `id_cliente` int(11) DEFAULT NULL,
   `id_usuario` int(11) NOT NULL,
   `estado_venta` varchar(50) DEFAULT NULL,
@@ -474,23 +475,22 @@ CREATE TABLE `ventas` (
 --
 
 INSERT INTO `ventas` (`id_venta`, `codigo_venta`, `monto_total_venta`, `id_cliente`, `id_usuario`, `estado_venta`, `date_created_venta`, `date_updated_venta`) VALUES
-(1, 1, 60, NULL, 1, NULL, '2024-07-29 00:10:41', '2024-07-29 00:10:41'),
-(2, 2, 50, NULL, 1, NULL, '2024-07-29 00:11:13', '2024-07-29 00:11:13'),
-(3, 3, 630, NULL, 1, NULL, '2024-07-29 00:11:41', '2024-07-29 00:11:41'),
-(5, 4, 10, 93, 1, NULL, '2024-07-29 01:03:10', '2024-07-29 01:03:10'),
-(6, 5, 10, 94, 1, NULL, '2024-07-29 01:06:01', '2024-07-29 01:06:01'),
-(7, 6, 10, NULL, 1, NULL, '2024-07-29 01:06:54', '2024-07-29 01:06:54'),
-(8, 7, 10, NULL, 1, NULL, '2024-07-29 01:07:13', '2024-07-29 01:07:13'),
-(9, 8, 10, 95, 1, NULL, '2024-07-29 01:07:30', '2024-07-29 01:07:30'),
-(10, 9, 10, 96, 1, NULL, '2024-07-29 01:08:08', '2024-07-29 01:08:08'),
-(11, 10, 10, 96, 1, NULL, '2024-07-29 01:08:20', '2024-07-29 01:08:20'),
-(12, 11, 10, NULL, 1, NULL, '2024-07-29 01:10:35', '2024-07-29 01:10:35'),
-(13, 12, 240, 96, 1, NULL, '2024-07-29 01:18:57', '2024-07-29 01:18:57'),
-(14, 13, 360, NULL, 1, NULL, '2024-07-29 01:20:52', '2024-07-29 01:20:52'),
-(15, 14, 120, NULL, 1, NULL, '2024-07-29 01:21:13', '2024-07-29 01:21:13'),
-(16, 15, 60, NULL, 1, NULL, '2024-07-29 01:22:08', '2024-07-29 01:22:08'),
-(17, 16, 120, 97, 1, NULL, '2024-07-29 04:30:13', '2024-07-29 04:30:13'),
-(18, 17, 264, 98, 1, NULL, '2024-07-29 04:52:13', '2024-07-29 04:52:13');
+(1, 1, 60.00, NULL, 1, NULL, '2024-07-29 00:10:41', '2024-07-29 00:10:41'),
+(2, 2, 50.00, NULL, 1, NULL, '2024-07-29 00:11:13', '2024-07-29 00:11:13'),
+(3, 3, 630.00, NULL, 1, NULL, '2024-07-29 00:11:41', '2024-07-29 00:11:41'),
+(5, 4, 10.00, 93, 1, NULL, '2024-07-29 01:03:10', '2024-07-29 01:03:10'),
+(6, 5, 10.00, 94, 1, NULL, '2024-07-29 01:06:01', '2024-07-29 01:06:01'),
+(7, 6, 10.00, NULL, 1, NULL, '2024-07-29 01:06:54', '2024-07-29 01:06:54'),
+(8, 7, 10.00, NULL, 1, NULL, '2024-07-29 01:07:13', '2024-07-29 01:07:13'),
+(9, 8, 10.00, 95, 1, NULL, '2024-07-29 01:07:30', '2024-07-29 01:07:30'),
+(10, 9, 10.00, 96, 1, NULL, '2024-07-29 01:08:08', '2024-07-29 01:08:08'),
+(11, 10, 10.00, 96, 1, NULL, '2024-07-29 01:08:20', '2024-07-29 01:08:20'),
+(12, 11, 10.00, NULL, 1, NULL, '2024-07-29 01:10:35', '2024-07-29 01:10:35'),
+(13, 12, 360.00, 96, 1, NULL, '2024-07-29 01:18:57', '2024-07-29 21:52:52'),
+(14, 13, 360.00, NULL, 1, NULL, '2024-07-29 01:20:52', '2024-07-29 01:20:52'),
+(15, 14, 120.00, NULL, 1, NULL, '2024-07-29 01:21:13', '2024-07-29 01:21:13'),
+(16, 15, 60.00, NULL, 1, NULL, '2024-07-29 01:22:08', '2024-07-29 01:22:08'),
+(17, 16, 263.92, 97, 1, NULL, '2024-07-29 04:30:13', '2024-07-29 22:19:44');
 
 --
 -- Índices para tablas volcadas
@@ -667,7 +667,7 @@ ALTER TABLE `repuestos`
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `ventas`

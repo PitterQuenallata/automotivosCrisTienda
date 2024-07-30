@@ -51,23 +51,24 @@ class ModeloListasVentas
   }
 
 
-  /*=============================================
-  MOSTRAR DETALLE VENTAS
-  =============================================*/
-  public static function mdlMostrarDetalleVentas($tabla, $item, $valor)
-  {
-    if ($item != null) {
-      $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
-      $stmt->bindParam(":" . $item, $valor, PDO::PARAM_STR);
-      $stmt->execute();
-      return $stmt->fetchAll();
-    } else {
-      $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
-      $stmt->execute();
-      return $stmt->fetchAll();
-    }
-    $stmt = null;
+/*=============================================
+MOSTRAR DETALLE VENTAS
+=============================================*/
+public static function mdlMostrarDetalleVentas($tabla, $item, $valor)
+{
+  if ($item != null) {
+    $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item ORDER BY id_detalleVenta DESC");
+    $stmt->bindParam(":" . $item, $valor, PDO::PARAM_STR);
+    $stmt->execute();
+    return $stmt->fetchAll();
+  } else {
+    $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla ORDER BY id_detalleVenta DESC");
+    $stmt->execute();
+    return $stmt->fetchAll();
   }
+  $stmt = null;
+}
+
 
   /*=============================================
   MOSTRAR REPUESTO

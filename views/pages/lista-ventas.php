@@ -20,8 +20,21 @@
               <button type="button" class="btn btn-success me-1 mb-1" onclick="window.location.href='/crear-ventas'">
                 <i class="fa fa-plus opacity-50 me-1"></i> Añadir Compra
               </button>
+
+              <div class="auto-col">
+                <div id="daterange-btn" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+                  <i class="fa fa-calendar"></i>&nbsp;
+                  <span></span> <i class="fa fa-caret-down"></i>
+                </div>
+              </div>
+
+
+              <!-- <button type="button" class="btn btn-alt-secondary " id="daterange-btn">
+                <i class="fa fa-calendar m-2"><span></span></i>Rango de Fecha
+                <i class="fa fa-caret-down m-2"></i>
+              </button> -->
               <div class="items-push">
-                <div class="col-sm-6 text-end">
+                <div class="auto-col m-0  text-end">
                   <div class="dropdown">
                     <button type="button" class="btn btn-alt-primary dropdown-toggle" id="dropdown-align-alt-primary" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                       Tablas
