@@ -7,9 +7,32 @@ class TablaVentasRealizadas
 {
   public function mostrarTablaVentasRealizadas()
   {
-    $item = null;
-    $valor = null;
-    $ventas = ControladorListasVentas::ctrMostrarVentas($item, $valor);
+
+  
+    // Capturar rutas de la URL limpiando las queries
+$routesArray = explode("/", $_SERVER["REQUEST_URI"]);
+array_shift($routesArray);
+foreach ($routesArray as $key => $value) {
+    $routesArray[$key] = explode("?", $value)[0];
+}
+
+    // echo "<pre>";
+    // echo print_r($routesArray);
+    // echo "</pre>";
+
+    if (isset($_GET["fechaInicio"])) {
+      $fechaInicial = $_GET["fechaInicio"];
+      $fechaFinal = $_GET["fechaFin"];
+      // echo  var_dump($fechaInicial);
+      // echo  var_dump($fechaFinal);
+      $ventas = ControladorListasVentas::ctrRangoFechasVentas($fechaInicial, $fechaFinal);
+    } else {
+      $item = null;
+      $valor = null;
+      $ventas = ControladorListasVentas::ctrMostrarVentas($item, $valor);
+    }
+
+
 
     if (count($ventas) == 0) {
       echo '{"data": []}';
@@ -44,7 +67,7 @@ class TablaVentasRealizadas
         "' . $nombreCliente . '",
         "' . $nitCiCliente . '",
         "' . $usuario["nombre_usuario"] . '",
-        "' . $ventas[$i]["date_updated_venta"] . '",
+        "' . $ventas[$i]["date_created_venta"] . '",
         "' . $botonesAccion . '"
       ],';
     }

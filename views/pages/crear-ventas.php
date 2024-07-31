@@ -100,3 +100,5 @@
     </div>
   </div>
 </main>
+
+<script src="<?php echo $path ?>views/assets/js/ventas.js"></script>

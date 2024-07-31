@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-06-2024 a las 01:58:41
+-- Tiempo de generación: 31-07-2024 a las 06:30:12
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `repuestosfinal`
+-- Base de datos: `repuestoscris`
 --
 
 -- --------------------------------------------------------
@@ -47,7 +47,9 @@ INSERT INTO `categorias` (`id_categoria`, `nombre_categoria`, `date_created_cate
 (6, 'bujias', '2024-06-09 15:36:55', '2024-06-09 15:36:55'),
 (7, 'carreras, cadenas, rodillos', '2024-06-09 15:36:55', '2024-06-09 15:36:55'),
 (8, 'embrague', '2024-06-09 15:36:55', '2024-06-09 15:36:55'),
-(9, 'rodamientos', '2024-06-09 15:36:55', '2024-06-09 15:36:55');
+(9, 'rodamientos', '2024-06-09 15:36:55', '2024-06-09 15:36:55'),
+(10, 'puertas', '2024-07-21 15:44:46', '2024-07-21 15:47:12'),
+(18, 'frenos', '2024-07-28 23:50:01', '2024-07-28 23:50:01');
 
 -- --------------------------------------------------------
 
@@ -57,13 +59,13 @@ INSERT INTO `categorias` (`id_categoria`, `nombre_categoria`, `date_created_cate
 
 CREATE TABLE `clientes` (
   `id_cliente` int(11) NOT NULL,
-  `nombre_cliente` varchar(255) DEFAULT NULL,
+  `nombre_cliente` varchar(255) NOT NULL,
   `apellido_cliente` varchar(255) DEFAULT NULL,
-  `direccion_cliente` varchar(255) DEFAULT NULL,
+  `nit_ci_cliente` varchar(255) DEFAULT NULL,
   `telefono_cliente` varchar(255) DEFAULT NULL,
+  `compra_cliente` int(11) DEFAULT NULL,
+  `direccion_cliente` varchar(255) DEFAULT NULL,
   `email_cliente` varchar(255) DEFAULT NULL,
-  `nit_cliente` varchar(20) DEFAULT NULL,
-  `dni_cliente` varchar(20) DEFAULT NULL,
   `date_created_cliente` timestamp NOT NULL DEFAULT current_timestamp(),
   `date_updated_cliente` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -72,12 +74,24 @@ CREATE TABLE `clientes` (
 -- Volcado de datos para la tabla `clientes`
 --
 
-INSERT INTO `clientes` (`id_cliente`, `nombre_cliente`, `apellido_cliente`, `direccion_cliente`, `telefono_cliente`, `email_cliente`, `nit_cliente`, `dni_cliente`, `date_created_cliente`, `date_updated_cliente`) VALUES
-(1, 'Juan', 'Pérez', 'Calle Falsa 123', '555-1234', 'juan.perez@example.com', '123456789', '987654321', '2024-06-12 18:51:03', '2024-06-12 18:51:03'),
-(2, 'María', 'González', 'Avenida Siempre Viva 742', '555-5678', 'maria.gonzalez@example.com', '987654321', '123456789', '2024-06-12 18:51:03', '2024-06-12 18:51:03'),
-(3, 'Carlos', 'Ramírez', 'Boulevard Central 456', '555-8765', 'carlos.ramirez@example.com', '111222333', '112233445', '2024-06-12 18:51:03', '2024-06-12 18:51:03'),
-(4, 'Ana', 'Fernández', 'Calle Principal 789', '555-4321', 'ana.fernandez@example.com', '444555666', '667788990', '2024-06-12 18:51:03', '2024-06-12 18:51:03'),
-(5, 'Luis', 'Martínez', 'Avenida Secundaria 101', '555-1357', 'luis.martinez@example.com', '777888999', '998877665', '2024-06-12 18:51:03', '2024-06-12 18:51:03');
+INSERT INTO `clientes` (`id_cliente`, `nombre_cliente`, `apellido_cliente`, `nit_ci_cliente`, `telefono_cliente`, `compra_cliente`, `direccion_cliente`, `email_cliente`, `date_created_cliente`, `date_updated_cliente`) VALUES
+(1, 'Juan', 'Pérez', '123456789', '555', 0, 'Calle Falsa 123', 'juan.perez@example.com', '2024-06-12 18:51:03', '2024-06-12 18:51:03'),
+(2, 'María', 'González', '987654321', '555', 0, 'Avenida Siempre Viva 742', 'maria.gonzalez@example.com', '2024-06-12 18:51:03', '2024-06-12 18:51:03'),
+(3, 'Carlos', 'Ramírez', '111222333', '555', 0, 'Boulevard Central 456', 'carlos.ramirez@example.com', '2024-06-12 18:51:03', '2024-06-12 18:51:03'),
+(4, 'Ana', 'Fernández', '444555666', '555', 0, 'Calle Principal 789', 'ana.fernandez@example.com', '2024-06-12 18:51:03', '2024-06-12 18:51:03'),
+(5, 'Luis', 'Martínez', '777888999', '555', 0, 'Avenida Secundaria 101', 'luis.martinez@example.com', '2024-06-12 18:51:03', '2024-06-12 18:51:03'),
+(87, 'juan', NULL, '7925456', '31231', 1, NULL, NULL, '2024-07-29 00:34:05', '2024-07-29 00:34:05'),
+(88, 'juan', NULL, '12345', NULL, NULL, NULL, NULL, '2024-07-29 00:43:37', '2024-07-29 00:43:37'),
+(89, 'juan', NULL, '000', '1242', NULL, NULL, NULL, '2024-07-29 00:56:05', '2024-07-29 00:56:05'),
+(90, 'juanra', NULL, '123045', '445', NULL, NULL, NULL, '2024-07-29 01:00:02', '2024-07-29 01:00:02'),
+(91, '545', NULL, '2543434', '4545', NULL, NULL, NULL, '2024-07-29 01:00:26', '2024-07-29 01:00:26'),
+(92, 'ddada', NULL, '1231313', '25', NULL, NULL, NULL, '2024-07-29 01:01:27', '2024-07-29 01:01:27'),
+(93, 'dada', NULL, '12313131313', '11', NULL, NULL, NULL, '2024-07-29 01:03:10', '2024-07-29 01:03:10'),
+(94, '545', NULL, '1131311', '12', NULL, NULL, NULL, '2024-07-29 01:06:01', '2024-07-29 01:06:01'),
+(95, '2323', NULL, '161616', '11', NULL, NULL, NULL, '2024-07-29 01:07:30', '2024-07-29 01:07:30'),
+(96, '545', NULL, '1111', '11', 2, NULL, NULL, '2024-07-29 01:08:08', '2024-07-29 01:18:57'),
+(97, 'pitter', NULL, '7091455', '67033711', NULL, NULL, NULL, '2024-07-29 04:30:13', '2024-07-29 04:30:13'),
+(98, 'juan', NULL, '7000', '25', NULL, NULL, NULL, '2024-07-29 04:52:13', '2024-07-29 04:52:13');
 
 -- --------------------------------------------------------
 
@@ -87,7 +101,8 @@ INSERT INTO `clientes` (`id_cliente`, `nombre_cliente`, `apellido_cliente`, `dir
 
 CREATE TABLE `compras` (
   `id_compra` int(11) NOT NULL,
-  `fecha_compra` date DEFAULT NULL,
+  `codigo_compra` text NOT NULL,
+  `fecha_compra` date NOT NULL,
   `monto_total_compra` decimal(10,2) NOT NULL,
   `id_proveedor` int(11) DEFAULT NULL,
   `id_usuario` int(11) DEFAULT NULL,
@@ -99,8 +114,8 @@ CREATE TABLE `compras` (
 -- Volcado de datos para la tabla `compras`
 --
 
-INSERT INTO `compras` (`id_compra`, `fecha_compra`, `monto_total_compra`, `id_proveedor`, `id_usuario`, `date_created_compra`, `date_updated_compra`) VALUES
-(40, '2024-06-13', 1680.00, 5, 1, '2024-06-12 23:55:09', '2024-06-12 23:57:00');
+INSERT INTO `compras` (`id_compra`, `codigo_compra`, `fecha_compra`, `monto_total_compra`, `id_proveedor`, `id_usuario`, `date_created_compra`, `date_updated_compra`) VALUES
+(23, 'COM0018', '2024-07-26', 10.00, 13, 1, '2024-07-26 03:21:31', '2024-07-26 03:45:55');
 
 -- --------------------------------------------------------
 
@@ -113,8 +128,7 @@ CREATE TABLE `detalles_compras` (
   `id_compra` int(11) DEFAULT NULL,
   `id_repuesto` int(11) DEFAULT NULL,
   `cantidad_detalleCompra` int(11) DEFAULT NULL,
-  `codigo_compra` varchar(10) NOT NULL,
-  `precio_unitario` decimal(10,2) DEFAULT NULL,
+  `precio_unitario` decimal(10,2) NOT NULL,
   `date_created_detalle_compra` timestamp NOT NULL DEFAULT current_timestamp(),
   `date_updated_detalle_compra` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -123,9 +137,8 @@ CREATE TABLE `detalles_compras` (
 -- Volcado de datos para la tabla `detalles_compras`
 --
 
-INSERT INTO `detalles_compras` (`id_detalle_compra`, `id_compra`, `id_repuesto`, `cantidad_detalleCompra`, `codigo_compra`, `precio_unitario`, `date_created_detalle_compra`, `date_updated_detalle_compra`) VALUES
-(45, 40, 16, 20, '666a355d75', 80.00, '2024-06-12 23:55:09', '2024-06-12 23:55:09'),
-(46, 40, 15, 1, '666a355d7b', 80.00, '2024-06-12 23:55:09', '2024-06-12 23:56:20');
+INSERT INTO `detalles_compras` (`id_detalle_compra`, `id_compra`, `id_repuesto`, `cantidad_detalleCompra`, `precio_unitario`, `date_created_detalle_compra`, `date_updated_detalle_compra`) VALUES
+(47, 23, 10, 5, 2.00, '2024-07-26 03:21:31', '2024-07-26 03:26:47');
 
 -- --------------------------------------------------------
 
@@ -135,13 +148,38 @@ INSERT INTO `detalles_compras` (`id_detalle_compra`, `id_compra`, `id_repuesto`,
 
 CREATE TABLE `detalles_ventas` (
   `id_detalleVenta` int(11) NOT NULL,
-  `id_venta` int(11) DEFAULT NULL,
-  `id_repuesto` int(11) DEFAULT NULL,
-  `cantidad_detalleVenta` int(11) DEFAULT NULL,
-  `precio_unitario_detalleVenta` decimal(10,2) DEFAULT NULL,
-  `date_created_detalleVenta` timestamp NOT NULL DEFAULT current_timestamp(),
-  `date_updated_detalleVenta` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `id_venta` int(11) NOT NULL,
+  `id_repuesto` int(11) NOT NULL,
+  `cantidad_detalleVenta` int(11) NOT NULL,
+  `precio_unitario_detalleVenta` decimal(10,2) NOT NULL,
+  `date_updated_detalleVenta` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `date_created_detalleVenta` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `detalles_ventas`
+--
+
+INSERT INTO `detalles_ventas` (`id_detalleVenta`, `id_venta`, `id_repuesto`, `cantidad_detalleVenta`, `precio_unitario_detalleVenta`, `date_updated_detalleVenta`, `date_created_detalleVenta`) VALUES
+(1, 1, 21, 6, 9.99, '2024-07-30 20:23:49', '2024-07-01'),
+(2, 2, 21, 5, 9.99, '2024-07-30 20:23:49', '2024-07-05'),
+(3, 3, 21, 3, 9.99, '2024-07-30 20:23:49', '2024-07-10'),
+(4, 3, 26, 3, 60.00, '2024-07-30 20:23:49', '2024-07-10'),
+(5, 3, 27, 3, 60.00, '2024-07-30 20:23:49', '2024-07-10'),
+(6, 3, 28, 3, 80.00, '2024-07-30 20:23:49', '2024-07-10'),
+(8, 5, 21, 1, 9.99, '2024-07-30 20:23:49', '2024-07-20'),
+(9, 6, 21, 1, 9.99, '2024-07-30 20:23:49', '2024-07-25'),
+(10, 7, 21, 1, 9.99, '2024-07-30 20:23:49', '2024-07-30'),
+(11, 8, 21, 1, 9.99, '2024-07-30 20:23:49', '2024-07-31'),
+(12, 9, 21, 1, 9.99, '2024-07-30 20:23:49', '2024-08-01'),
+(13, 10, 21, 1, 9.99, '2024-07-30 20:23:49', '2024-08-05'),
+(14, 11, 21, 1, 9.99, '2024-07-30 20:23:49', '2024-08-10'),
+(15, 12, 7, 2, 120.00, '2024-07-30 20:23:49', '2024-08-15'),
+(16, 13, 7, 3, 120.00, '2024-07-30 20:21:51', '2024-07-28'),
+(17, 14, 7, 1, 120.00, '2024-07-30 20:21:51', '2024-07-28'),
+(18, 15, 21, 6, 9.99, '2024-07-30 20:21:51', '2024-07-28'),
+(19, 16, 7, 1, 120.00, '2024-07-30 20:21:51', '2024-07-29'),
+(20, 17, 9, 8, 32.99, '2024-07-30 20:21:51', '2024-07-29');
 
 -- --------------------------------------------------------
 
@@ -234,6 +272,19 @@ CREATE TABLE `modelo_repuestos` (
   `id_repuesto` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `modelo_repuestos`
+--
+
+INSERT INTO `modelo_repuestos` (`id_modelo`, `id_repuesto`) VALUES
+(1, 29),
+(1, 30),
+(1, 46),
+(2, 33),
+(2, 34),
+(3, 31),
+(3, 32);
+
 -- --------------------------------------------------------
 
 --
@@ -269,6 +320,17 @@ CREATE TABLE `motor_repuestos` (
   `id_repuesto` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `motor_repuestos`
+--
+
+INSERT INTO `motor_repuestos` (`id_motor`, `id_repuesto`) VALUES
+(1, 29),
+(1, 30),
+(1, 46),
+(3, 31),
+(3, 32);
+
 -- --------------------------------------------------------
 
 --
@@ -277,9 +339,11 @@ CREATE TABLE `motor_repuestos` (
 
 CREATE TABLE `proveedores` (
   `id_proveedor` int(11) NOT NULL,
-  `nombre_proveedor` varchar(255) DEFAULT NULL,
-  `telefono_proveedor` varchar(255) DEFAULT NULL,
-  `direccion_proveedor` varchar(255) DEFAULT NULL,
+  `nombre_proveedor` varchar(255) NOT NULL,
+  `nit_ci_proveedor` int(11) NOT NULL,
+  `telefono_proveedor` varchar(255) NOT NULL,
+  `direccion_proveedor` varchar(255) NOT NULL,
+  `email_proveedor` text NOT NULL,
   `date_created_proveedor` timestamp NOT NULL DEFAULT current_timestamp(),
   `date_updated_proveedor` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -288,10 +352,18 @@ CREATE TABLE `proveedores` (
 -- Volcado de datos para la tabla `proveedores`
 --
 
-INSERT INTO `proveedores` (`id_proveedor`, `nombre_proveedor`, `telefono_proveedor`, `direccion_proveedor`, `date_created_proveedor`, `date_updated_proveedor`) VALUES
-(1, 'Star Company', '67033711', 'Calle Falsa 123, Ciudad Falsa', '2024-06-10 02:28:09', '2024-06-12 23:32:18'),
-(2, 'AutoParts Cocha', '75845684', 'Avenida Siempreviva ', '2024-06-10 02:28:09', '2024-06-12 23:32:30'),
-(5, 'Juan Marquez', '79125836', 'San Cruz', '2024-06-10 05:20:20', '2024-06-10 05:20:20');
+INSERT INTO `proveedores` (`id_proveedor`, `nombre_proveedor`, `nit_ci_proveedor`, `telefono_proveedor`, `direccion_proveedor`, `email_proveedor`, `date_created_proveedor`, `date_updated_proveedor`) VALUES
+(1, 'Star Company', 0, '67033711', 'Calle Falsa 123, Ciudad Falsa', '', '2024-06-10 02:28:09', '2024-06-12 23:32:18'),
+(2, 'AutoParts Cocha', 0, '75845684', 'Avenida Siempreviva ', '', '2024-06-10 02:28:09', '2024-06-12 23:32:30'),
+(5, 'Juan Marquez', 0, '79125836', 'San Cruz', '', '2024-06-10 05:20:20', '2024-06-10 05:20:20'),
+(6, 'pitter', 7091455, '5858', 'santa', 'gasd@gmail.com', '2024-07-25 05:12:31', '2024-07-25 05:12:31'),
+(7, 'pitter', 5668, '6868', 'santa', 'fa@gmaill.com', '2024-07-25 05:14:26', '2024-07-25 05:14:26'),
+(8, 'fsdfsd', 5345, '543534', 'gdfg', 'gdfg', '2024-07-25 05:21:35', '2024-07-25 05:21:35'),
+(9, '', 0, '', '', '', '2024-07-25 06:58:11', '2024-07-25 06:58:11'),
+(10, 'dsadas', 123, '123', 'dasd', 'sda', '2024-07-25 07:05:22', '2024-07-25 07:05:22'),
+(11, 'dsadas', 123, '123', 'dasd', 'sda', '2024-07-25 07:05:52', '2024-07-25 07:05:52'),
+(12, 'dsadas', 123, '123', 'dasd', 'sda', '2024-07-25 07:06:59', '2024-07-25 07:06:59'),
+(13, 'josias', 9999, '9999', 'santa', 'santa', '2024-07-25 07:07:57', '2024-07-25 07:07:57');
 
 -- --------------------------------------------------------
 
@@ -303,12 +375,15 @@ CREATE TABLE `repuestos` (
   `id_repuesto` int(11) NOT NULL,
   `id_categoria` int(11) DEFAULT NULL,
   `nombre_repuesto` varchar(255) NOT NULL,
+  `descripcion_repuesto` text DEFAULT NULL,
   `oem_repuesto` varchar(255) DEFAULT NULL,
-  `codigo_tienda_repuesto` varchar(255) DEFAULT NULL,
+  `codigo_tienda_repuesto` varchar(255) NOT NULL,
+  `img_repuesto` text DEFAULT NULL,
   `stock_repuesto` int(11) DEFAULT NULL,
   `precio_repuesto` decimal(10,2) DEFAULT NULL,
-  `precio_cantidad_repuesto` decimal(10,2) DEFAULT NULL,
+  `precio_compra` decimal(10,2) DEFAULT NULL,
   `marca_repuesto` varchar(255) DEFAULT NULL,
+  `venta_repuesto` int(11) NOT NULL,
   `estado_repuesto` tinyint(4) DEFAULT 1,
   `date_created_repuesto` timestamp NOT NULL DEFAULT current_timestamp(),
   `date_updated_repuesto` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
@@ -318,27 +393,36 @@ CREATE TABLE `repuestos` (
 -- Volcado de datos para la tabla `repuestos`
 --
 
-INSERT INTO `repuestos` (`id_repuesto`, `id_categoria`, `nombre_repuesto`, `oem_repuesto`, `codigo_tienda_repuesto`, `stock_repuesto`, `precio_repuesto`, `precio_cantidad_repuesto`, `marca_repuesto`, `estado_repuesto`, `date_created_repuesto`, `date_updated_repuesto`) VALUES
-(6, 1, 'Filtro de aire', '17220-5A2-A00', 'HA-FA', 20, 25.99, 24.99, 'Honda', 1, '2024-06-12 23:49:22', '2024-06-12 23:49:22'),
-(7, 3, 'Batería', 'S6508B', 'BOS-BAT', 15, 120.00, 115.00, 'Bosch', 1, '2024-06-12 23:49:22', '2024-06-12 23:49:22'),
-(8, 2, 'Pastillas de freno', '04465-06150', 'TOY-PF', 50, 45.00, 43.00, 'Toyota', 1, '2024-06-12 23:49:22', '2024-06-12 23:49:22'),
-(9, 3, 'Aceite de motor', '94001', 'MOB-AE', 100, 32.99, 30.99, 'Mobil', 1, '2024-06-12 23:49:22', '2024-06-12 23:49:22'),
-(10, 6, 'Bujías', '6619', 'NGK-BU', 200, 10.00, 9.50, 'NGK', 1, '2024-06-12 23:49:22', '2024-06-12 23:49:22'),
-(11, 3, 'Alternador', '10480322', 'CHEV-ALT', 8, 210.00, 205.00, 'AC Delco', 1, '2024-06-12 23:49:22', '2024-06-12 23:49:22'),
-(12, 5, 'Amortiguador', '6L3Z-18124-B', 'FORD-AM', 25, 75.00, 70.00, 'Motorcraft', 1, '2024-06-12 23:49:22', '2024-06-12 23:49:22'),
-(13, 3, 'Filtro de combustible', '16400-1AA0A', 'NIS-FF', 30, 35.00, 33.00, 'Nissan', 1, '2024-06-12 23:49:22', '2024-06-12 23:49:22'),
-(14, 7, 'Correa de distribución', '13028-AA231', 'SUB-CT', 12, 85.00, 80.00, 'Subaru', 1, '2024-06-12 23:49:22', '2024-06-12 23:49:22'),
-(15, 8, 'Termostato', '25500-23550', 'HYU-TER', 40, 18.00, 17.00, 'Hyundai', 1, '2024-06-12 23:49:22', '2024-06-12 23:49:22'),
-(16, 3, 'Sensor TPMS', '42753-SNA-A83', 'HON-TPMS', 50, 75.99, 72.00, 'Honda', 1, '2024-06-12 23:51:20', '2024-06-12 23:51:20'),
-(17, 3, 'Eje de transmisión', '44305-S84-A02', 'HON-AXLE', 20, 150.00, 145.00, 'Honda', 1, '2024-06-12 23:51:20', '2024-06-12 23:51:20'),
-(18, 4, 'Buje de control', '51393-SDA-A01', 'HON-CTRLARM', 30, 35.00, 32.00, 'Honda', 1, '2024-06-12 23:51:20', '2024-06-12 23:51:20'),
-(19, 3, 'Enfriador de transmisión', '25430-PLR-003', 'HON-TRANSCL', 15, 120.00, 115.00, 'Honda', 1, '2024-06-12 23:51:20', '2024-06-12 23:51:20'),
-(20, 3, 'Soporte del motor', '50820-SDA-A02', 'HON-ENGMT', 40, 45.00, 42.00, 'Honda', 1, '2024-06-12 23:51:20', '2024-06-12 23:51:20'),
-(21, 1, 'Filtro de aceite', '15400-PLM-A02', 'HON-OILFLT', 100, 9.99, 9.50, 'Honda', 1, '2024-06-12 23:51:20', '2024-06-12 23:51:20'),
-(22, 2, 'Pastillas de freno delanteras', '45022-TK8-A02', 'HON-FRNTBRK', 60, 60.00, 57.00, 'Honda', 1, '2024-06-12 23:51:20', '2024-06-12 23:51:20'),
-(23, 3, 'Batería', '31500-SR1-100', 'HON-BAT', 25, 110.00, 105.00, 'Honda', 1, '2024-06-12 23:51:20', '2024-06-12 23:51:20'),
-(24, 3, 'Alternador', '31100-RCA-A01', 'HON-ALT', 10, 230.00, 225.00, 'Honda', 1, '2024-06-12 23:51:20', '2024-06-12 23:51:20'),
-(25, 6, 'Bobina de encendido', '30520-RNA-A01', 'HON-IGNCOIL', 80, 50.00, 47.00, 'Honda', 1, '2024-06-12 23:51:20', '2024-06-12 23:51:20');
+INSERT INTO `repuestos` (`id_repuesto`, `id_categoria`, `nombre_repuesto`, `descripcion_repuesto`, `oem_repuesto`, `codigo_tienda_repuesto`, `img_repuesto`, `stock_repuesto`, `precio_repuesto`, `precio_compra`, `marca_repuesto`, `venta_repuesto`, `estado_repuesto`, `date_created_repuesto`, `date_updated_repuesto`) VALUES
+(7, 3, 'Batería', 'hola', 'S6508B', '30000', '', 6, 120.00, 0.00, 'Bosch', 0, 1, '2024-06-12 23:49:22', '2024-07-29 04:30:13'),
+(8, 2, 'Pastillas de freno', '', '04465-06150', '20000', '', 49, 45.00, 0.00, 'Toyota', 0, 1, '2024-06-12 23:49:22', '2024-07-28 23:39:59'),
+(9, 3, 'Aceite de motor', '', '94001', '30001', '', 90, 32.99, 0.00, 'Mobil', 0, 1, '2024-06-12 23:49:22', '2024-07-29 04:52:13'),
+(10, 6, 'Bujías', '', '6619', '60000', '', 200, 10.00, 0.00, 'NGK', 0, 1, '2024-06-12 23:49:22', '2024-07-21 14:02:28'),
+(11, 3, 'Alternador', '', '10480322', '30002', '', 0, 210.00, 0.00, 'AC Delco', 0, 1, '2024-06-12 23:49:22', '2024-07-24 23:21:14'),
+(12, 5, 'Amortiguador', '', '6L3Z-18124-B', '50000', '', 25, 75.00, 0.00, 'Motorcraft', 0, 1, '2024-06-12 23:49:22', '2024-07-21 14:02:41'),
+(13, 3, 'Filtro de combustible', '', '16400-1AA0A', '30003', '', 30, 35.00, 0.00, 'Nissan', 0, 1, '2024-06-12 23:49:22', '2024-07-21 14:02:49'),
+(14, 7, 'Correa de distribución', '', '13028-AA231', '70000', '', 12, 85.00, 0.00, 'Subaru', 0, 1, '2024-06-12 23:49:22', '2024-07-21 14:02:55'),
+(15, 8, 'Termostato', '', '25500-23550', '80000', '', 40, 18.00, 0.00, 'Hyundai', 0, 1, '2024-06-12 23:49:22', '2024-07-23 09:40:58'),
+(16, 3, 'Sensor TPMS', '', '42753-SNA-A83', '30004', '', 50, 75.99, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:03:06'),
+(17, 3, 'Eje de transmisión', '', '44305-S84-A02', '30005', '', 20, 150.00, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:03:13'),
+(18, 4, 'Buje de control', '', '51393-SDA-A01', '40000', '', 30, 35.00, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:03:19'),
+(19, 3, 'Enfriador de transmisión', '', '25430-PLR-003', '30006', '', 15, 120.00, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:03:30'),
+(20, 3, 'Soporte del motor', '', '50820-SDA-A02', '30007', '', 40, 45.00, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:03:37'),
+(21, 1, 'Filtro de aceite', '', '15400-PLM-A02', '10002', '', 70, 9.99, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-29 01:22:08'),
+(22, 2, 'Pastillas de freno delanteras', '', '45022-TK8-A02', '20001', '', 60, 60.00, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:03:51'),
+(23, 3, 'Batería', '', '31500-SR1-100', '30008', '', 25, 110.00, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:04:02'),
+(24, 3, 'Alternador', '', '31100-RCA-A01', '30009', '', 10, 230.00, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:04:06'),
+(25, 6, 'Bobina de encendido', '', '30520-RNA-A01', '60001', '', 80, 50.00, 0.00, 'Honda', 0, 1, '2024-06-12 23:51:20', '2024-07-21 14:04:15'),
+(26, 1, 'FIltrito', '', NULL, '10003', NULL, 42, 60.00, 0.00, 'Stevean', 0, 1, '2024-07-21 21:40:08', '2024-07-29 00:11:41'),
+(27, 1, 'FIltrito', '', NULL, '10003', NULL, 42, 60.00, 0.00, 'Stevean', 0, 1, '2024-07-21 21:41:40', '2024-07-29 00:11:41'),
+(28, 1, 'Filtro', '', NULL, '10004', NULL, 47, 80.00, 0.00, 'Siash', 0, 1, '2024-07-21 21:52:38', '2024-07-29 00:11:41'),
+(29, 1, 'Filtro2', '', NULL, '10005', NULL, 49, 50.00, 0.00, 'filtroWwe', 0, 1, '2024-07-21 21:57:52', '2024-07-28 23:15:52'),
+(30, 1, 'filtros', '', NULL, '10006', NULL, 99, 980.00, 0.00, 'Huajiuwe', 0, 1, '2024-07-21 22:08:12', '2024-07-28 23:15:52'),
+(31, 10, 'Puerta 1', '', NULL, '100000', NULL, 1002, 60.00, 50.00, 'honds', 0, 1, '2024-07-21 22:54:56', '2024-07-21 22:54:56'),
+(32, 8, 'Embreague', 'embreague super obsolet', NULL, '80001', NULL, 10, 60.00, 50.00, 'Musht', 0, 1, '2024-07-21 22:57:23', '2024-07-21 22:57:23'),
+(33, 7, 'Correa', 'correa tripe 3', NULL, '70001', NULL, 50, 80.00, 56.00, 'husj', 0, 1, '2024-07-23 02:12:31', '2024-07-23 02:12:31'),
+(34, 7, 'Correa', 'correa tripe 3', NULL, '70001', NULL, 50, 80.00, 56.00, 'husj', 0, 1, '2024-07-23 02:19:20', '2024-07-23 02:19:20'),
+(46, 7, 'Carreasoj', 'a', NULL, '70002', NULL, 40, 50.00, 50.00, 'd', 0, 1, '2024-07-24 15:04:46', '2024-07-24 15:04:46');
 
 -- --------------------------------------------------------
 
@@ -365,7 +449,9 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `user_usuario`, `foto_usuario`, `email_usuario`, `password_usuario`, `rol_usuario`, `estado_usuario`, `date_created_usuario`, `date_updated_usuario`) VALUES
-(1, 'benjamin', 'canaviri', 'benjo1234', 'views/assets/media/avatars/usuarios/benjo1234/713.jpg', 'benjo@gmail.com', '$2a$07$azybxcags23425sdg23sdem1CFT2u/A.0JOm/IXWxebxaQOkjS85C', 'administrador', 1, '2024-06-09 15:27:08', '2024-06-12 23:52:24');
+(1, 'benjamin', 'canaviri', 'benjo1234', 'views/assets/media/avatars/usuarios/benjo1234/713.jpg', 'benjo@gmail.com', '$2a$07$azybxcags23425sdg23sdem1CFT2u/A.0JOm/IXWxebxaQOkjS85C', 'administrador', 1, '2024-06-09 15:27:08', '2024-07-30 14:04:02'),
+(2, 'pitter', 'kevin', 'pitter123', 'views/assets/media/avatars/usuarios/pitter123/696.jpg', 'pitter@gmail.com', '$2a$07$azybxcags23425sdg23sdexDgBwF1Wba.r8oVb3KiQPBr8fPcAQBe', 'venta', 1, '2024-07-25 03:06:26', '2024-07-25 03:06:26'),
+(3, 'david', 'apaza', 'tonkis123', 'views/assets/media/avatars/usuarios/tonkis123/570.jpg', 'tonkis@gmail.com', '$2a$07$azybxcags23425sdg23sdeqJpRVasxIvNizan7dQx1M6JQIJEH4vK', 'venta', 1, '2024-07-29 23:17:47', '2024-07-29 23:18:04');
 
 -- --------------------------------------------------------
 
@@ -376,14 +462,35 @@ INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `apellido_usuario`, `use
 CREATE TABLE `ventas` (
   `id_venta` int(11) NOT NULL,
   `codigo_venta` int(11) NOT NULL,
-  `fecha_venta` date DEFAULT NULL,
-  `monto_total_venta` int(11) DEFAULT NULL,
+  `monto_total_venta` decimal(10,2) NOT NULL,
   `id_cliente` int(11) DEFAULT NULL,
-  `id_usuario` int(11) DEFAULT NULL,
-  `estado_venta` varchar(50) NOT NULL DEFAULT '''pendiente''',
-  `date_created_venta` timestamp NOT NULL DEFAULT current_timestamp(),
+  `id_usuario` int(11) NOT NULL,
+  `estado_venta` varchar(50) DEFAULT NULL,
+  `date_created_venta` date DEFAULT NULL,
   `date_updated_venta` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `ventas`
+--
+
+INSERT INTO `ventas` (`id_venta`, `codigo_venta`, `monto_total_venta`, `id_cliente`, `id_usuario`, `estado_venta`, `date_created_venta`, `date_updated_venta`) VALUES
+(1, 1, 60.00, NULL, 1, NULL, '2024-07-01', '2024-07-30 20:01:31'),
+(2, 2, 50.00, NULL, 1, NULL, '2024-07-05', '2024-07-30 20:01:31'),
+(3, 3, 630.00, NULL, 1, NULL, '2024-07-10', '2024-07-30 20:01:31'),
+(5, 4, 10.00, 93, 1, NULL, '2024-07-20', '2024-07-30 20:01:31'),
+(6, 5, 10.00, 94, 1, NULL, '2024-07-25', '2024-07-30 20:01:31'),
+(7, 6, 10.00, NULL, 1, NULL, '2024-07-30', '2024-07-30 20:01:31'),
+(8, 7, 10.00, NULL, 1, NULL, '2024-07-31', '2024-07-30 20:01:31'),
+(9, 8, 10.00, 95, 1, NULL, '2024-08-01', '2024-07-30 20:01:31'),
+(10, 9, 10.00, 96, 1, NULL, '2024-08-05', '2024-07-30 20:01:31'),
+(11, 10, 10.00, 96, 1, NULL, '2024-08-10', '2024-07-30 20:01:31'),
+(12, 11, 10.00, NULL, 1, NULL, '2024-08-15', '2024-07-30 20:01:31'),
+(13, 12, 360.00, 96, 1, NULL, '2024-07-28', '2024-07-30 04:00:00'),
+(14, 13, 360.00, NULL, 1, NULL, '2024-07-28', '2024-07-30 04:00:00'),
+(15, 14, 120.00, NULL, 1, NULL, '2024-07-28', '2024-07-30 04:00:00'),
+(16, 15, 60.00, NULL, 1, NULL, '2024-07-28', '2024-07-30 04:00:00'),
+(17, 16, 263.92, 97, 1, NULL, '2024-07-29', '2024-07-30 04:00:00');
 
 --
 -- Índices para tablas volcadas
@@ -500,31 +607,31 @@ ALTER TABLE `ventas`
 -- AUTO_INCREMENT de la tabla `categorias`
 --
 ALTER TABLE `categorias`
-  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
 -- AUTO_INCREMENT de la tabla `compras`
 --
 ALTER TABLE `compras`
-  MODIFY `id_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `detalles_compras`
 --
 ALTER TABLE `detalles_compras`
-  MODIFY `id_detalle_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id_detalle_compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT de la tabla `detalles_ventas`
 --
 ALTER TABLE `detalles_ventas`
-  MODIFY `id_detalleVenta` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_detalleVenta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `marcas`
@@ -548,25 +655,25 @@ ALTER TABLE `motores`
 -- AUTO_INCREMENT de la tabla `proveedores`
 --
 ALTER TABLE `proveedores`
-  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `repuestos`
 --
 ALTER TABLE `repuestos`
-  MODIFY `id_repuesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id_repuesto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `id_venta` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- Restricciones para tablas volcadas

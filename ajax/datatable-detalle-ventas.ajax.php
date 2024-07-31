@@ -1,13 +1,30 @@
 <?php
-session_start(); 
+session_start();
 require_once "../controllers/listasVentas.controller.php";
 require_once "../models/listasVentas.model.php";
 
-class TablaDetalleVentas {
-  public function mostrarTablaDetalleVentas() {
-    $item = null;
-    $valor = null;
-    $detalles = ControladorListasVentas::ctrMostrarDetalleVentas($item, $valor);
+class TablaDetalleVentas
+{
+  public function mostrarTablaDetalleVentas()
+  {
+    // Capturar rutas de la URL limpiando las queries
+    $routesArray = explode("/", $_SERVER["REQUEST_URI"]);
+    array_shift($routesArray);
+    foreach ($routesArray as $key => $value) {
+      $routesArray[$key] = explode("?", $value)[0];
+    }
+
+    if (isset($_GET["fechaInicio"])) {
+      $fechaInicial = $_GET["fechaInicio"];
+      $fechaFinal = $_GET["fechaFin"];
+      // echo  var_dump($fechaInicial);
+      // echo  var_dump($fechaFinal);
+      $detalles = ControladorListasVentas::ctrRangoFechasDetalleVentas($fechaInicial, $fechaFinal);
+    } else {
+      $item = null;
+      $valor = null;
+      $detalles = ControladorListasVentas::ctrMostrarDetalleVentas($item, $valor);
+    }
 
     if (count($detalles) == 0) {
       echo '{"data": []}';
@@ -49,7 +66,7 @@ class TablaDetalleVentas {
         "' . $detalles[$i]["cantidad_detalleVenta"] . '",
         "' . $detalles[$i]["precio_unitario_detalleVenta"] . '",
         "' . $total . '",
-        "' . $venta["date_updated_venta"] . '",
+        "' . $venta["date_created_venta"] . '",
         "' . $botonesAccion . '"
       ],';
     }
@@ -63,4 +80,3 @@ class TablaDetalleVentas {
 
 $activarDetalleVentas = new TablaDetalleVentas();
 $activarDetalleVentas->mostrarTablaDetalleVentas();
-?>

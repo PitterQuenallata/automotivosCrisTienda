@@ -54,5 +54,25 @@ class ControladorListasVentas {
     $respuesta = ModeloListasVentas::mdlMostrarVenta($tabla, $item, $valor);
     return $respuesta;
   }
+
+  /*=============================================
+  MOSTRAR VENTA POR RANGO DE FECHAS
+  =============================================*/
+  public static function ctrRangoFechasVentas($fechaInicial, $fechaFinal) {
+
+    $respuesta = ModeloListasVentas::mdlRangoFechasVentas($fechaInicial, $fechaFinal);
+
+    return $respuesta;
+  }
+/*=============================================
+  MOSTRAR Detalles VENTA POR RANGO DE FECHAS
+  =============================================*/
+  public static function ctrRangoFechasDetalleVentas($fechaInicial, $fechaFinal) {
+
+    $respuesta = ModeloListasVentas::mdlRangoFechasDetalleVentas($fechaInicial, $fechaFinal);
+    return $respuesta;
+  }
+
+
 }
 ?>
