@@ -156,7 +156,7 @@ if ($("#tablaDetalleVentasRealizadas").length) {
   });
   
     //capturar hoy
-    $(" .daterangepicker .ranges li").on("click", function () {
+    $(" .daterangepicker.opensright .ranges li").on("click", function () {
       var hoy = $(this).text();
       if (hoy === "Hoy") {
         var d = moment();
@@ -191,6 +191,7 @@ if ($("#tablaDetalleVentasRealizadas").length) {
           moment().subtract(1, "month").endOf("month"),
         ],
       },
+      opens: 'right',
       startDate: moment(),
       endDate: moment(),
     },

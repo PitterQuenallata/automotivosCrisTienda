@@ -12,6 +12,7 @@
 <script src="<?php echo $path ?>views/assets/js/crear_compras.js"></script>
 <script src="<?php echo $path ?>views/assets/js/lista_compras.js"></script>
 <script src="<?php echo $path ?>views/assets/js/lista_ventas.js"></script>
+<script src="<?php echo $path ?>views/assets/js/reportes.js"></script>
 
 
 <!-- jQuery (required for DataTables plugin) -->

@@ -160,12 +160,6 @@
                   <span class="nav-main-link-name">Crear Compra</span>
                 </a>
               </li>
-              <li class="nav-main-item">
-                <a class="nav-main-link" href="be_forms_input_groups.html">
-                  <span class="nav-main-link-name">Input Groups</span>
-                </a>
-              </li>
-
             </ul>
           </li>
 
@@ -187,8 +181,15 @@
               </li>
 
             </ul>
+
           </li>
 
+          <li class="nav-main-item">
+            <a class="nav-main-link" href="/reportes">
+              <i class="nav-main-link-icon fa fa-chart-line"></i>
+              <span class="nav-main-link-name">Reportes</span>
+            </a>
+          </li>
 
         </ul>
         </li>
