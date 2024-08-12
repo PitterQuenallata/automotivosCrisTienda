@@ -1,4 +1,5 @@
 $(document).ready(function () {
+  console.log("crear_compras.js ready");
   // Inicializar la DataTable para los repuestos
   if ($.fn.DataTable.isDataTable("#tablaRepuestosCompra")) {
     $("#tablaRepuestosCompra").DataTable().destroy();

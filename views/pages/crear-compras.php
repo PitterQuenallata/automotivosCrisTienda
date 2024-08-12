@@ -28,23 +28,7 @@
                       <input type="text" class="form-control" id="usuario" name="usuario" value="<?php echo $_SESSION["users"]["nombre_usuario"] ?>" readonly>
                       <input type="hidden" id="idUsuario" name="idUsuario" value="<?php echo $_SESSION["users"]["id_usuario"] ?>">
                     </div>
-                    <div class="col-md-7 mb-4">
-                      <label class="form-label" for="agregarProveedor">Proveedor</label>
-                      <div class="input-group">
-                        <select class="form-select" id="agregarProveedor" name="agregarProveedor" required>
-                          <option selected disabled>Elije un Proveedor</option>
-                          <?php
-                          $item = null;
-                          $valor = null;
-                          $proveedores = ControladorProveedores::ctrMostrarProveedores($item, $valor);
-                          foreach ($proveedores as $key => $value) {
-                            echo '<option value="' . $value["id_proveedor"] . '">' . $value["nombre_proveedor"] . ' - Celular: ' . $value["telefono_proveedor"] . ' - NIT/CI: ' . $value["nit_ci_proveedor"] . '</option>';
-                          }
-                          ?>
-                        </select>
-                        <button type="button" class="btn btn-sm btn-secondary" id="toggleDatosProveedor">Manual</button>
-                      </div>
-                    </div>
+
 
                   </div>
 
