@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 require_once "../../../controllers/listasVentas.controller.php";
 require_once "../../../models/listasVentas.model.php";
 
@@ -51,7 +51,7 @@ class imprimirrecibo {
     $bloque1 = <<<EOF
     <table>
       <tr>
-        <td style="width:150px"><img src="images/iconCrisBlack.png"></td>
+        <td style="width:150px"><img src="images/image_demo.jpg"></td>
         <td style="background-color:white; width:140px">
           <div style="font-size:8.5px; text-align:right; line-height:15px;">
             <br>NIT: 71.759.963-9
@@ -174,6 +174,7 @@ class imprimirrecibo {
 
 $recibo = new imprimirrecibo();
 $recibo->id_venta = $_GET["codigo"];
+ob_end_clean();
 $recibo->traerImpresionrecibo();
 
 ?>
