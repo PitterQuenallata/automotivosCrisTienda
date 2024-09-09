@@ -41,16 +41,18 @@ MOSTRAR MOTORES
     }
   }
 
-  /*=============================================
+/*=============================================
 MOSTRAR MOTORES POR MODELO
 =============================================*/
-  static public function mdlMostrarMotoresPorModelo($tabla, $idModelo)
-  {
-    $stmt = Conexion::conectar()->prepare("SELECT motores.* FROM motores JOIN modelo_motores ON motores.id_motor = modelo_motores.id_motor WHERE modelo_motores.id_modelo = :id_modelo");
+static public function mdlMostrarMotoresPorModelo($tabla, $idModelo)
+{
+    // Modificar la consulta para obtener motores directamente
+    $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE id_modelo = :id_modelo");
     $stmt->bindParam(":id_modelo", $idModelo, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll();
-  }
+}
+
 
   /*=============================================
 MOSTRAR MODELOS POR MOTOR

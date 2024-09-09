@@ -5,28 +5,34 @@ require_once "conexion.php";
 class ModeloRepuestos
 {
 
+        /*=============================================
+    OBTENER EL ÚLTIMO CÓDIGO DE REPUESTO
+    =============================================*/
+    static public function mdlObtenerUltimoCodigoRepuesto() {
+        $stmt = Conexion::conectar()->prepare("SELECT codigo_tienda_repuesto 
+                                               FROM repuestos 
+                                               ORDER BY id_repuesto DESC 
+                                               LIMIT 1");
+        $stmt->execute();
+        return $stmt->fetch();
+        $stmt = null;
+    }
     /*=============================================
-MOSTRAR REPUESTOS
-=============================================*/
+    MOSTRAR REPUESTOS
+    =============================================*/
     static public function mdlMostrarRepuestos($tabla, $item, $valor)
     {
         if ($item != null) {
-            $stmt = Conexion::conectar()->prepare("SELECT r.*, mr.id_modelo, mo.id_motor, m.id_marca
+            $stmt = Conexion::conectar()->prepare("SELECT r.*
             FROM $tabla r
-            LEFT JOIN modelo_repuestos mr ON r.id_repuesto = mr.id_repuesto
-            LEFT JOIN motor_repuestos mo ON r.id_repuesto = mo.id_repuesto
-            LEFT JOIN modelos m ON mr.id_modelo = m.id_modelo
             WHERE r.$item = :$item 
             ORDER BY r.id_repuesto DESC");
             $stmt->bindParam(":" . $item, $valor, PDO::PARAM_STR);
             $stmt->execute();
             return $stmt->fetch();
         } else {
-            $stmt = Conexion::conectar()->prepare("SELECT r.*, mr.id_modelo, mo.id_motor, m.id_marca
-            FROM $tabla r
-            LEFT JOIN modelo_repuestos mr ON r.id_repuesto = mr.id_repuesto
-            LEFT JOIN motor_repuestos mo ON r.id_repuesto = mo.id_repuesto
-            LEFT JOIN modelos m ON mr.id_modelo = m.id_modelo");
+            $stmt = Conexion::conectar()->prepare("SELECT r.*
+            FROM $tabla r");
             $stmt->execute();
             return $stmt->fetchAll();
         }
@@ -35,8 +41,8 @@ MOSTRAR REPUESTOS
     }
 
     /*=============================================
-  ACTUALIZAR ESTADO REPUESTO
-  =============================================*/
+    ACTUALIZAR ESTADO REPUESTO
+    =============================================*/
     static public function mdlActualizarEstadoRepuesto($tabla, $item, $valor, $estado)
     {
         $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET estado_repuesto = :estado WHERE $item = :valor");

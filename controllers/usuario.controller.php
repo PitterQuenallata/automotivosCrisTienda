@@ -13,9 +13,9 @@ static public function ctrIngresoUsuario()
 {
     if (isset($_POST["ingUsuario"])) {
         echo '<script>
-        fncMatPreloader("on");
-        fncSweetAlert("loading", "", "");
-    </script>';
+        //fncMatPreloader("on");
+        //fncSweetAlert("loading", "", "");
+        </script>';
 
         if (
             preg_match('/^[a-zA-Z0-9]+$/', $_POST["ingUsuario"]) &&
@@ -60,25 +60,28 @@ static public function ctrIngresoUsuario()
                     } else {
                         echo '<div class="alert alert-danger mt-3">El usuario está inactivo</div>
                         <script>
-                            fncToastr("error", "El usuario está inactivo");
                             fncMatPreloader("off");
                             fncFormatInputs();
+                            fncToastr("error", "El usuario está inactivo");
+
                         </script>';
                     }
                 } else {
                     echo '<div class="alert alert-danger mt-3">Usuario y contraseña incorrectos</div>
                     <script>
-                        fncToastr("error", "Usuario y contraseña incorrectos");
                         fncMatPreloader("off");
                         fncFormatInputs();
+                        fncToastr("error", "Usuario y contraseña incorrectos");
+
                     </script>';
                 }
             } else {
+                var_dump($respuesta);
                 echo '<div class="alert alert-danger mt-3">Usuario y contraseña incorrectos</div>
                 <script>
-                    fncToastr("error", "Usuario y contraseña incorrectos");
                     fncMatPreloader("off");
                     fncFormatInputs();
+                    fncToastr("error", "Usuario y contraseña incorrectos");
                 </script>';
             }
         }

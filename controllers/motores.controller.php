@@ -58,7 +58,7 @@ MOSTRAR MOTORES POR MODELO
 static public function ctrMostrarMotores($item, $valor)
 {
     if ($item == "id_modelo") {
-        $tabla = "modelo_motores";
+        $tabla = "motores";
         $respuesta = ModeloMotores::mdlMostrarMotoresPorModelo($tabla, $valor);
     } else {
         $tabla = "motores";

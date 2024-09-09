@@ -53,7 +53,6 @@ class ModeloCategorias
 			return $stmt->fetchAll();
 		}
 
-
 		$stmt = null;
 	}
 

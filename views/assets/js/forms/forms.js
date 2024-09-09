@@ -39,6 +39,11 @@ function validateJS(event, type) {
       $(event.target).parent().children(".invalid-feedback").html("La entrada tiene errores de caracteres especiales");
       event.target.value = "";
       return;
+    } else {
+      // Llama a la función de verificación solo si la validación de texto es exitosa
+      if (event.target.id === "nuevoNombreRepuesto") {
+        verificarRepuesto(); // Esta función debe estar definida en repuestos.js
+      }
     }
   }
 

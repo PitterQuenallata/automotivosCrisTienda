@@ -11,7 +11,8 @@
 
 <!-- jQuery 3 -->
 <script src="<?php echo $path ?>views/assets/bower_components/jquery/dist/jquery.min.js"></script>
-
+<script src="<?php echo $path ?>views/assets/js/alerts/alerts.js"></script>
+<script src="<?php echo $path ?>views/assets/js/forms/forms.js"></script>
 
 <!-- alerts -->
 <link rel="stylesheet" type="text/css" href="<?php echo $path ?>views/assets/css/plugins/notie/notie.min.css">
@@ -24,7 +25,8 @@
 
 <script src="<?php echo $path ?>views/assets/js/plugins/sweetalert2/sweetalert.min.js"></script>
 <script src="<?php echo $path ?>views/assets/js/plugins/notie/notie.min.js"></script>
-<script src="<?php echo $path ?>views/assets/js/alerts/alerts.js"></script>
+
+<script src="<?php echo $path ?>views/assets/js/plugins/jqueryToast/dist/jquery.toast.min.js"></script>
 
 <script src="<?php echo $path ?>views/assets/js/plugins/jqueryNumber/jquerynumber.min.js"></script>
 <script src="<?php echo $path ?>views/assets/bower_components/daterangepicker/moment.min.js"></script>

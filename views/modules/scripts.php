@@ -1,4 +1,4 @@
-<script src="<?php echo $path ?>views/assets/js/forms/forms.js"></script>
+
 <script src="<?php echo $path ?>views/assets/js/codebase.app.min.js"></script>
 <script src="<?php echo $path ?>views/assets/js/usuarios.js"></script>
 <script src="<?php echo $path ?>views/assets/js/categorias.js"></script>
@@ -36,4 +36,4 @@
 <!-- Page JS Code -->
 <script src="<?php echo $path ?>views/assets/js/pages/be_tables_datatables.min.js"></script>
 
-<script src="<?php echo $path ?>views/assets/js/plugins/jqueryToast/dist/jquery.toast.min.js"></script>
+

@@ -33,7 +33,7 @@ if ($editing) {
                 </div>
                 <div class="col-md-8 mb-4">
                   <label class="form-label" for="nuevoNombreRepuesto">Nombre</label>
-                  <input type="text" class="form-control" id="nuevoNombreRepuesto" name="nuevoNombreRepuesto" placeholder="Nombre de Repuesto" autocomplete="off" required onchange="validateJS(event, 'text')" value="<?php echo $editing ? $repuesto['nombre_repuesto'] : ''; ?>">
+                  <input type="text" class="form-control" id="nuevoNombreRepuesto" name="nuevoNombreRepuesto" placeholder="Nombre de Repuesto" autocomplete="off" required onchange="validateJS(event, 'complete')" value="<?php echo $editing ? $repuesto['nombre_repuesto'] : ''; ?>">
                   <div class="valid-feedback">Válido.</div>
                   <div class="invalid-feedback">El campo solo debe llevar texto</div>
                 </div>
@@ -53,6 +53,7 @@ if ($editing) {
                   <div class="valid-feedback">Válido.</div>
                   <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
                 </div>
+
                 <div class="col-md-6 mb-4">
                   <label class="form-label" for="agregarCategoria">Categoría</label>
                   <div class="input-group">

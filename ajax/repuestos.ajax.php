@@ -16,15 +16,7 @@ class AjaxRepuestos
     public $idMarca;
     public $idModelo;
 
-    public function ajaxAsignarCodigoRepuesto()
-    {
-        $item = "id_categoria";
-        $valor = $this->idCategoria;
 
-        $respuestaCodigo = ControladorRepuestos::ctrMostrarRepuestos($item, $valor);
-
-        echo json_encode($respuestaCodigo);
-    }
 
     public function ajaxMostrarModelos()
     {
@@ -39,6 +31,7 @@ class AjaxRepuestos
         $item = "id_modelo";
         $valor = $this->idModelo;
         $respuesta = ControladorMotores::ctrMostrarMotores($item, $valor);
+        //print_r(json_encode($respuesta));
         echo json_encode($respuesta);
     }
 }
@@ -56,14 +49,6 @@ if (isset($_POST["activarId"])) {
     echo $respuesta;
 }
 
-/*=============================================
-Activar función para asignar código de repuesto
-=============================================*/
-if (isset($_POST["idCategoria"])) {
-    $codigoRepuesto = new AjaxRepuestos();
-    $codigoRepuesto->idCategoria = $_POST["idCategoria"];
-    $codigoRepuesto->ajaxAsignarCodigoRepuesto();
-}
 
 /*=============================================
 Mostrar modelos por marca

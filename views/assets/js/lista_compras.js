@@ -6,6 +6,7 @@ $(document).ready(function () {
 
   $("#tablaCompras").DataTable({
     ajax: "ajax/datatable-listaCompras.ajax.php?action=listarCompras",
+    responsive: true,
     deferRender: true,
     retrieve: true,
     processing: true,
