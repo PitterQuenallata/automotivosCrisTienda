@@ -19,23 +19,27 @@ class AjaxMotores{
     echo json_encode($respuesta);
   }
 
-	/*=============================================
-	EDITAR MODELO DE MOTOR
-	=============================================*/	
+    /*=============================================
+    EDITAR MOTOR
+    =============================================*/ 
+    public $idMotor;
 
-	public $idMotor;
+    public function ajaxEditarMotor() {
+        $item = "id_motor";
+        $valor = $this->idMotor;
 
-	public function ajaxEditarMotor() {
-			$item = "id_motor";
-			$valor = $this->idMotor;
+        // Obtener los datos del motor
+        $respuesta = ControladorMotores::ctrMostrarMotores($item, $valor);
 
-			$respuesta = ControladorMotores::ctrMostrarMotores($item, $valor);
-			$modelos = ControladorMotores::ctrMostrarModelosPorMotor($valor);
+        // Obtener el modelo relacionado
+        $idModelo = $respuesta["id_modelo"];
+        $modelo = ControladorModelos::ctrMostrarModelos("id_modelo", $idModelo);
 
-			$respuesta["modelos"] = $modelos;
+        // Añadir el modelo a la respuesta
+        $respuesta["modelo"] = $modelo;
 
-			echo json_encode($respuesta);
-	}
+        echo json_encode($respuesta);
+    }
 }
 
 /*=============================================
@@ -49,10 +53,10 @@ if (isset($_POST["idMarca"])) {
 }
 
 /*=============================================
-EDITAR motor
-=============================================*/	
+EDITAR MOTOR
+=============================================*/ 
 if (isset($_POST["idMotor"])) {
 	$editarMotor = new AjaxMotores();
-	$editarMotor -> idMotor = $_POST["idMotor"];
-	$editarMotor -> ajaxEditarMotor();
+	$editarMotor->idMotor = $_POST["idMotor"];
+	$editarMotor->ajaxEditarMotor();
 }

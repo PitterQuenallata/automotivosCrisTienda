@@ -20,26 +20,17 @@
                 <i class="fa fa-plus opacity-50 me-1"></i> Añadir Motor
               </button>
 
-              <!-- Botón para añadir más modelos a un motor -->
-              <!-- <button type="button" class="btn btn-success me-1 mb-1 btnAñadirModelosMotor" idMotor="<?php //echo $value['id_motor']; ?>" data-bs-target="#modalAñadirModelosMotor" data-bs-toggle="modal" aria-label="Add Models" data-bs-original-title="Add Models">
-                <i class="fa fa-plus"></i> Añadir Modelos
-              </button> -->
-              <!-- Botón para editar modelos de un motor -->
-              <!-- <button type="button" class="btn btn-success me-1 mb-1 btnEditarModelosMotor" idMotor="<?php //echo $value['id_motor']; ?>" data-bs-target="#modalEditarModelosMotor" data-bs-toggle="modal" aria-label="Edit Models" data-bs-original-title="Edit Models">
-                <i class="fa fa-pencil-alt"></i> Editar Modelos
-              </button> -->
 
 
             </div>
             <div class="block-content">
-              <table id="tablass" class="table table-vcenter">
+              <table class="table table-sm table-striped table-vcenter js-dataTable-responsive">
                 <thead>
                   <tr>
                     <th class="text-center" style="width: 50px;"></th>
                     <th>Motor</th>
                     <th>Cilindrada</th>
                     <th>Especificaciones</th>
-                    <th>Modelos Compatibles</th>
                     <th class="text-center" style="width: 100px;">Acciones</th>
                   </tr>
                 </thead>
@@ -51,36 +42,27 @@
 
                   foreach ($motores as $key => $value) {
                     echo '
-                          <tr>
-                            <th class="text-center" scope="row">' . ($key + 1) . '</th>
-                            <td >' . $value["nombre_motor"] . '</td>
-                            <td class="text-uppercase">' . $value["cilindrada_motor"] . '</td>
-                            <td >' . $value["especificaciones_motor"] . '</td>
-                            <td >';
-
-                    // Obtener los modelos compatibles con este motor
-                    $modelos = ControladorMotores::ctrMostrarModelosPorMotor($value["id_motor"]);
-                    foreach ($modelos as $modelo) {
-                      echo $modelo["nombre_modelo"] . " (" . $modelo["version_modelo"] . "), ";
-                    }
-
-                    echo '</td>
-                    <td class="text-center">
-                      <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled btnEditarMotor" idMotor="' . $value["id_motor"] . '" data-bs-target="#modalEditarMotor" data-bs-toggle="modal" aria-label="Edit" data-bs-original-title="Edit">
-                          <i class="fa fa-pencil-alt"></i>
-                        </button>
-                        <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled btnEliminarMotor" idMotor="' . $value["id_motor"] . '" data-bs-toggle="tooltip" aria-label="Delete" data-bs-original-title="Delete">
-                          <i class="fa fa-times"></i>
-                        </button>
-                      </div>
-                    </td>
-                  </tr>';
+                      <tr>
+                        <th class="text-center" scope="row">' . ($key + 1) . '</th>
+                        <td>' . $value["nombre_motor"] . '</td>
+                        <td class="text-uppercase">' . $value["cilindrada_motor"] . '</td>
+                        <td>' . $value["especificaciones_motor"] . '</td>
+                        <td class="text-center">
+                          <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled btnEditarMotor" idMotor="' . $value["id_motor"] . '" data-bs-target="#modalEditarMotor" data-bs-toggle="modal" aria-label="Edit" data-bs-original-title="Edit">
+                              <i class="fa fa-pencil-alt"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled btnEliminarMotor" idMotor="' . $value["id_motor"] . '" data-bs-toggle="tooltip" aria-label="Delete" data-bs-original-title="Delete">
+                              <i class="fa fa-times"></i>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>';
                   }
                   ?>
                 </tbody>
-
               </table>
+
             </div>
           </div>
         </div>
@@ -171,55 +153,71 @@
     </div>
   </div>
 
-  <!-- Modal editar Motor -->
-  <div class="modal" id="modalEditarMotor" tabindex="-1" role="dialog" aria-labelledby="modal-large" aria-hidden="true">
+<!-- Modal editar Motor -->
+<div class="modal" id="modalEditarMotor" tabindex="-1" role="dialog" aria-labelledby="modal-large" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
-      <div class="modal-content">
-        <div class="block block-rounded shadow-none mb-0">
-          <div class="block-header block-header-default">
-            <h3 class="block-title">Editar Motor</h3>
-            <div class="block-options">
-              <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                <i class="fa fa-times"></i>
-              </button>
-            </div>
-          </div>
-          <form method="post">
-            <div class="block-content fs-sm">
-              <div class="mb-4">
-                <div class="input-group">
-                  <span class="input-group-text btn btn-outline-primary">Nombre del Motor</span>
-                  <input type="text" class="form-control" id="editarMotor" name="editarMotor">
-                  <input type="hidden" name="idMotor" id="idMotor" required>
+        <div class="modal-content">
+            <div class="block block-rounded shadow-none mb-0">
+                <div class="block-header block-header-default">
+                    <h3 class="block-title">Editar Motor</h3>
+                    <div class="block-options">
+                        <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
                 </div>
-              </div>
-              <div class="mb-4">
-                <div class="input-group">
-                  <span class="input-group-text btn btn-outline-primary">Cilindrada</span>
-                  <input type="text" class="form-control" id="editarCilindrada" name="editarCilindrada">
-                </div>
-              </div>
-              <div class="mb-4">
-                <div class="input-group">
-                  <span class="input-group-text btn btn-outline-primary">Especificaciones</span>
-                  <textarea class="form-control" id="editarEspecificaciones" name="editarEspecificaciones"></textarea>
-                </div>
-              </div>
+                <form method="post">
+                    <div class="block-content fs-sm">
+                        <!-- Campo nombre del motor -->
+                        <div class="mb-4">
+                            <div class="input-group">
+                                <span class="input-group-text btn btn-outline-primary">Nombre del Motor</span>
+                                <input type="text" class="form-control" id="editarMotor" name="editarMotor">
+                                <input type="hidden" name="idMotor" id="idMotor" required>
+                                <!-- Input oculto para almacenar el nombre original del motor -->
+                                <input type="hidden" name="nombreMotorActual" id="nombreMotorActual">
+                            </div>
+                        </div>
 
+                        <!-- Campo cilindrada -->
+                        <div class="mb-4">
+                            <div class="input-group">
+                                <span class="input-group-text btn btn-outline-primary">Cilindrada</span>
+                                <input type="text" class="form-control" id="editarCilindrada" name="editarCilindrada">
+                                <!-- Input oculto para almacenar la cilindrada original -->
+                                <input type="hidden" name="cilindradaActual" id="cilindradaActual">
+                            </div>
+                        </div>
+
+                        <!-- Campo especificaciones -->
+                        <div class="mb-4">
+                            <div class="input-group">
+                                <span class="input-group-text btn btn-outline-primary">Especificaciones</span>
+                                <textarea class="form-control" id="editarEspecificaciones" name="editarEspecificaciones"></textarea>
+                                <!-- Input oculto para almacenar las especificaciones originales -->
+                                <input type="hidden" name="especificacionesActuales" id="especificacionesActuales">
+                            </div>
+                        </div>
+
+                        <!-- Campo oculto para el id del modelo relacionado -->
+                        <input type="hidden" name="idModeloActual" id="idModeloActual">
+                    </div>
+
+                    <div class="block-content block-content-full block-content-sm text-end border-top">
+                        <button type="button" class="btn btn-alt-secondary" data-bs-dismiss="modal">Salir</button>
+                        <button type="submit" class="btn btn-alt-primary">Guardar Cambios</button>
+                    </div>
+
+                    <?php
+                    $editarMotor = new ControladorMotores();
+                    $editarMotor->ctrEditarMotor();
+                    ?>
+                </form>
             </div>
-            <div class="block-content block-content-full block-content-sm text-end border-top">
-              <button type="button" class="btn btn-alt-secondary" data-bs-dismiss="modal">Salir</button>
-              <button type="submit" class="btn btn-alt-primary">Guardar Cambios</button>
-            </div>
-            <?php
-            $editarMotor = new ControladorMotores();
-            $editarMotor->ctrEditarMotor();
-            ?>
-          </form>
         </div>
-      </div>
     </div>
-  </div>
+</div>
+
 
 
 

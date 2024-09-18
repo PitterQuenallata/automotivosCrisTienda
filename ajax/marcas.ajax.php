@@ -17,7 +17,7 @@ class AjaxMarcas{
 		$valor = $this->idMarca;
 
 		$respuesta = ControladorMarcas::ctrMostrarMarcas($item, $valor);
-
+		
 		echo json_encode($respuesta);
 
 	}

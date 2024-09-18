@@ -8,7 +8,7 @@ $(".btnEditarModelo").click(function () {
   datos.append("idModelo", idModelo);
 
   $.ajax({
-    url: "ajax/modelos.ajax.php",
+    url: "/ajax/modelos.ajax.php",
     method: "POST",
     data: datos,
     cache: false,

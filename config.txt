@@ -1,5 +1,5 @@
 
 <VirtualHost *:80>
     DocumentRoot "C:/xampp/htdocs/automotivosCrisTienda"
-    ServerName automotivoscristienda.com
+    ServerName cristienda.local
 </VirtualHost>

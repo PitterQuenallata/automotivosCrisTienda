@@ -22,11 +22,13 @@ class ModeloProveedores {
   INGRESAR PROVEEDOR
   =============================================*/
   static public function mdlIngresarProveedor($tabla, $datos) {
-    $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (nombre_proveedor, telefono_proveedor, direccion_proveedor) VALUES (:nombre_proveedor, :telefono_proveedor, :direccion_proveedor)");
+    $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (nombre_proveedor, telefono_proveedor, direccion_proveedor, nit_ci_proveedor) VALUES (:nombre_proveedor, :telefono_proveedor, :direccion_proveedor, :nit_ci_proveedor)");
 
     $stmt->bindParam(":nombre_proveedor", $datos["nombre_proveedor"], PDO::PARAM_STR);
     $stmt->bindParam(":telefono_proveedor", $datos["telefono_proveedor"], PDO::PARAM_STR);
     $stmt->bindParam(":direccion_proveedor", $datos["direccion_proveedor"], PDO::PARAM_STR);
+    $stmt->bindParam(":nit_ci_proveedor", $datos["nit_ci_proveedor"], PDO::PARAM_STR);
+    
 
     if ($stmt->execute()) {
       return "ok";
@@ -41,10 +43,11 @@ class ModeloProveedores {
   EDITAR PROVEEDOR
   =============================================*/
   static public function mdlEditarProveedor($tabla, $datos) {
-    $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET nombre_proveedor = :nombre_proveedor, telefono_proveedor = :telefono_proveedor, direccion_proveedor = :direccion_proveedor WHERE id_proveedor = :id_proveedor");
+    $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET nombre_proveedor = :nombre_proveedor, telefono_proveedor = :telefono_proveedor, direccion_proveedor = :direccion_proveedor, nit_ci_proveedor = :nit_ci_proveedor WHERE id_proveedor = :id_proveedor");
     $stmt->bindParam(":nombre_proveedor", $datos["nombre_proveedor"], PDO::PARAM_STR);
     $stmt->bindParam(":telefono_proveedor", $datos["telefono_proveedor"], PDO::PARAM_STR);
     $stmt->bindParam(":direccion_proveedor", $datos["direccion_proveedor"], PDO::PARAM_STR);
+    $stmt->bindParam(":nit_ci_proveedor", $datos["nit_ci_proveedor"], PDO::PARAM_STR);
     $stmt->bindParam(":id_proveedor", $datos["id_proveedor"], PDO::PARAM_INT);
 
     if ($stmt->execute()) {

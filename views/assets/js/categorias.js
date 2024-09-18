@@ -31,7 +31,8 @@ $(".btnElininarCategoria").click(function () {
   var idCategoria = $(this).attr("idCategoria");
   var baseURL = "categorias?ruta=categoria&idCategoria=" + idCategoria;
 
-
+  console.log(baseURL);
   // Llamar a la función personalizada de SweetAlert
-  fncSweetAlert("confirm", "¡Está seguro de borrar la categoria", baseURL);
+  fncSweetAlert("confirm", "¡Está seguro de borrar la categoriaaaa", baseURL);
+  
 });

@@ -91,12 +91,6 @@
                     <i class="nav-main-link-icon fa fa-users"></i>
                     <span class="nav-main-link-name">Usuarios</span>
                   </a></li>';
-
-            echo '<li class="nav-main-item">
-                  <a class="nav-main-link" href="/crear-ventas">
-                    <i class="nav-main-link-icon fa fa-baht-sign"></i>
-                    <span class="nav-main-link-name">Compra</span>
-                  </a></li>';
           } ?>
           <li class="nav-main-item">
             <a class="nav-main-link" href="/proveedores">
@@ -136,11 +130,11 @@
                   <span class="nav-main-link-name">Repuestos</span>
                 </a>
               </li>
-              <li class="nav-main-item">
+              <!-- <li class="nav-main-item">
                 <a class="nav-main-link" href="/vehiculos">
                   <span class="nav-main-link-name">Vehiculos</span>
                 </a>
-              </li>
+              </li> -->
             </ul>
           </li>
 

@@ -11,8 +11,7 @@
 
 <!-- jQuery 3 -->
 <script src="<?php echo $path ?>views/assets/bower_components/jquery/dist/jquery.min.js"></script>
-<script src="<?php echo $path ?>views/assets/js/alerts/alerts.js"></script>
-<script src="<?php echo $path ?>views/assets/js/forms/forms.js"></script>
+
 
 <!-- alerts -->
 <link rel="stylesheet" type="text/css" href="<?php echo $path ?>views/assets/css/plugins/notie/notie.min.css">
@@ -34,6 +33,7 @@
 <script src="<?php echo $path ?>extensions/morris/morris.min.js"></script>
 <script src="<?php echo $path ?>extensions/chart/chart.umd.js"></script>
 
+<!-- Cargar el plugin de toast después -->
 
 <!-- Page JS Plugins -->
 
@@ -43,3 +43,6 @@
 <link rel="stylesheet" href="<?php echo $path ?>views/assets/js/plugins/datatables-bs5/css/dataTables.bootstrap5.min.css">
 <link rel="stylesheet" href="<?php echo $path ?>views/assets/js/plugins/datatables-buttons-bs5/css/buttons.bootstrap5.min.css">
 <link rel="stylesheet" href="<?php echo $path ?>views/assets/js/plugins/datatables-responsive-bs5/css/responsive.bootstrap5.min.css">
+
+<script src="<?php echo $path ?>views/assets/js/alerts/alerts.js"></script>
+<script src="<?php echo $path ?>views/assets/js/forms/forms.js"></script>

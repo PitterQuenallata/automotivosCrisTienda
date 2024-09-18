@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  console.log("crear_compras.js ready");
+  //console.log("crear_compras.js ready");
   // Inicializar la DataTable para los repuestos
   if ($.fn.DataTable.isDataTable("#tablaRepuestosCompra")) {
     $("#tablaRepuestosCompra").DataTable().destroy();
@@ -108,10 +108,26 @@ $(document).ready(function () {
   $("#toggleDatosProveedor").on("click", function () {
     var datosProveedor = $("#datosProveedor");
     datosProveedor.toggle();
-    $(
-      "#nombreProveedor, #nitProveedor, #direccionProveedor, #gmailProveedor, #celularProveedor"
-    ).prop("disabled", !datosProveedor.is(":visible"));
+
+    var esVisible = datosProveedor.is(":visible");
+
+    // Deshabilitar el select si se están añadiendo los datos manualmente
+    $("#agregarProveedor").prop("disabled", esVisible);
+
+    // Deshabilitar los campos manuales si no están visibles
+    $("#nombreProveedor, #nitProveedor, #direccionProveedor #celularProveedor").prop("disabled", !esVisible);
   });
+
+    // Habilitar el select si se selecciona un proveedor de la lista y ocultar el formulario manual
+    $("#agregarProveedor").on("change", function () {
+      if ($(this).val() !== "") {
+        // Ocultar el formulario manual
+        $("#datosProveedor").hide();
+  
+        // Habilitar campos del select
+        $("#nombreProveedor, #nitProveedor, #direccionProveedor, #celularProveedor").prop("disabled", true);
+      }
+    });
 
   // Actualizar el precio total cuando se cambie la cantidad
   $(".nuevaCompra").on(
@@ -123,31 +139,31 @@ $(document).ready(function () {
   );
 
   // Obtener nuevo código de compra al seleccionar un proveedor o hacer clic en el botón manual
-  $("#agregarProveedor, #toggleDatosProveedor").on("change click", function () {
-    $.ajax({
-      url: "ajax/compras.ajax.php",
-      method: "POST",
-      data: { accion: "generarCodigoCompra" },
-      dataType: "json",
-      success: function (response) {
-        if (response.codigo) {
-          $("#codigoCompra").val(response.codigo);
-        } else {
-          console.error(
-            "Error al generar el código de compra: " + response.error
-          );
-        }
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        console.error(
-          "Error al generar el código de compra: " +
-            textStatus +
-            " - " +
-            errorThrown
-        );
-      },
-    });
-  });
+  // $("#agregarProveedor, #toggleDatosProveedor").on("change click", function () {
+  //   $.ajax({
+  //     url: "/ajax/compras.ajax.php",
+  //     method: "POST",
+  //     data: { accion: "generarCodigoCompra" },
+  //     dataType: "json",
+  //     success: function (response) {
+  //       if (response.codigo) {
+  //         $("#codigoCompra").val(response.codigo);
+  //       } else {
+  //         console.error(
+  //           "Error al generar el código de compra: " + response.error
+  //         );
+  //       }
+  //     },
+  //     error: function (jqXHR, textStatus, errorThrown) {
+  //       console.error(
+  //         "Error al generar el código de compra: " +
+  //           textStatus +
+  //           " - " +
+  //           errorThrown
+  //       );
+  //     },
+  //   });
+  // });
 
   $(document).ready(function () {
     // Obtener nuevo código de compra al seleccionar un proveedor o hacer clic en el botón manual
@@ -190,7 +206,6 @@ $(document).ready(function () {
           nombre: $("#nombreProveedor").val(),
           nit: $("#nitProveedor").val(),
           direccion: $("#direccionProveedor").val(),
-          email: $("#gmailProveedor").val(),
           celular: $("#celularProveedor").val(),
         };
 
@@ -199,7 +214,6 @@ $(document).ready(function () {
           !datosProveedor.nombre ||
           !datosProveedor.nit ||
           !datosProveedor.direccion ||
-          !datosProveedor.email ||
           !datosProveedor.celular
         ) {
           fncSweetAlert(
@@ -233,7 +247,7 @@ $(document).ready(function () {
       };
 
       $.ajax({
-        url: "ajax/compras.ajax.php",
+        url: "/ajax/compras.ajax.php",
         method: "POST",
         data: JSON.stringify(datos),
         contentType: "application/json",

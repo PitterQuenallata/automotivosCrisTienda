@@ -55,4 +55,13 @@ function validateJS(event, type) {
       return;
     }
   }
+
+  if (type == "integer") {
+    var pattern = /^[0-9]+(\.[0-9]{1,2})?$/; // Permite números enteros y decimales con hasta dos cifras decimales
+    if (!pattern.test(event.target.value)) {
+      $(event.target).parent().children(".invalid-feedback").html("Por favor ingrese solo números para el CI o NIT");
+      event.target.value = "";
+      return;
+    }
+  }
 }

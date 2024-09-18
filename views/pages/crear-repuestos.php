@@ -9,7 +9,10 @@ if ($editing) {
   $item = "id_repuesto";
   $valor = $idRepuesto;
   $repuesto = ControladorRepuestos::ctrMostrarRepuestos($item, $valor);
+  // if ($editing) { echo '<pre>'; print_r($repuesto['id_marca']); echo '</pre>'; }
+  // print_r($repuesto);
 }
+
 ?>
 
 <main id="main-container">
@@ -26,35 +29,14 @@ if ($editing) {
                 <input type="hidden" name="idRepuesto" value="<?php echo $repuesto['id_repuesto']; ?>">
               <?php endif; ?>
               <div class="row">
-                <div class="col-md-4 mb-4">
+                <div class="col-md-2 mb-4">
                   <label class="form-label" for="nuevoCodigoRepuesto">Código</label>
-                  <input type="text" class="form-control" id="nuevoCodigoRepuesto" name="nuevoCodigoRepuesto" placeholder="Código de Repuesto" autocomplete="off" required readonly value="<?php echo $editing ? $repuesto['codigo_tienda_repuesto'] : ''; ?>">
+                  <input type="text" class="form-control" id="nuevoCodigoRepuesto" require name="nuevoCodigoRepuesto" placeholder="Código de Repuesto" autocomplete="off" required readonly value="<?php echo $editing ? $repuesto['codigo_tienda_repuesto'] : ''; ?>">
                   <div class="valid-feedback">Válido.</div>
                 </div>
-                <div class="col-md-8 mb-4">
-                  <label class="form-label" for="nuevoNombreRepuesto">Nombre</label>
-                  <input type="text" class="form-control" id="nuevoNombreRepuesto" name="nuevoNombreRepuesto" placeholder="Nombre de Repuesto" autocomplete="off" required onchange="validateJS(event, 'complete')" value="<?php echo $editing ? $repuesto['nombre_repuesto'] : ''; ?>">
-                  <div class="valid-feedback">Válido.</div>
-                  <div class="invalid-feedback">El campo solo debe llevar texto</div>
-                </div>
-              </div>
 
-              <div class="mb-4">
-                <label class="form-label" for="nuevaDescripcionRepuesto">Descripción</label>
-                <textarea class="form-control" id="nuevaDescripcionRepuesto" name="nuevaDescripcionRepuesto" placeholder="Descripción del Repuesto" autocomplete="off" required onchange="validateJS(event, 'complete')"><?php echo $editing ? $repuesto['descripcion_repuesto'] : ''; ?></textarea>
-                <div class="valid-feedback">Válido.</div>
-                <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
-              </div>
 
-              <div class="row">
-                <div class="col-md-6 mb-4">
-                  <label class="form-label" for="nuevaMarcaRepuesto">Marca</label>
-                  <input type="text" class="form-control" id="nuevaMarcaRepuesto" name="nuevaMarcaRepuesto" placeholder="Marca de Repuesto" autocomplete="off" required onchange="validateJS(event, 'text')" value="<?php echo $editing ? $repuesto['marca_repuesto'] : ''; ?>">
-                  <div class="valid-feedback">Válido.</div>
-                  <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
-                </div>
-
-                <div class="col-md-6 mb-4">
+                <div class="col-md-4 mb-4">
                   <label class="form-label" for="agregarCategoria">Categoría</label>
                   <div class="input-group">
                     <select class="form-select" id="agregarCategoria" name="agregarCategoria" required>
@@ -76,28 +58,61 @@ if ($editing) {
                   <div class="valid-feedback">Válido.</div>
                   <div class="invalid-feedback">Por favor selecciona una categoría.</div>
                 </div>
+
+
+                <div class="col-md-6 mb-4">
+                  <label class="form-label" for="nuevoNombreRepuesto">Nombre</label>
+                  <input type="text" class="form-control" id="nuevoNombreRepuesto" name="nuevoNombreRepuesto" placeholder="Nombre de Repuesto" autocomplete="off" required onchange="validateJS(event, 'complete')" value="<?php echo $editing ? $repuesto['nombre_repuesto'] : ''; ?>">
+                  <div class="valid-feedback">Válido.</div>
+                  <div class="invalid-feedback">El campo solo debe llevar texto</div>
+                </div>
+
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label" for="nuevaDescripcionRepuesto">Descripción</label>
+                <textarea class="form-control" id="nuevaDescripcionRepuesto" name="nuevaDescripcionRepuesto" placeholder="Descripción del Repuesto" autocomplete="off" required onchange="validateJS(event, 'complete')"><?php echo $editing ? $repuesto['descripcion_repuesto'] : ''; ?></textarea>
+                <div class="valid-feedback">Válido.</div>
+                <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
               </div>
 
               <div class="row">
+                <div class="col-md-3 mb-4">
+                  <label class="form-label" for="nuevaMarcaRepuesto">Marca</label>
+                  <input type="text" class="form-control" id="nuevaMarcaRepuesto" name="nuevaMarcaRepuesto" placeholder="Marca de Repuesto" autocomplete="off" required onchange="validateJS(event, 'text')" value="<?php echo $editing ? $repuesto['fabricante_repuesto'] : ''; ?>">
+                  <div class="valid-feedback">Válido.</div>
+                  <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
+                </div>
+                <div class="col-md-3 mb-4">
+                  <label class="form-label" for="nuevoPrecioVentaRepuesto">Precio Venta</label>
+                  <input type="number" class="form-control" min="0" step="any" id="nuevoPrecioVentaRepuesto" name="nuevoPrecioVentaRepuesto" placeholder="00.00" autocomplete="off" required onchange="validateJS(event, 'decimal')" value="<?php echo $editing ? $repuesto['precio_repuesto'] : ''; ?>">
+                  <div class="valid-feedback">Válido.</div>
+                  <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
+                </div>
+                <div class="col-md-3 mb-4">
+                  <label class="form-label" for="nuevoStockRepuesto">Stock</label>
+                  <input type="number" class="form-control" id="nuevoStockRepuesto" name="nuevoStockRepuesto" placeholder="0" autocomplete="off" required onchange="validateJS(event, 'decimal')" value="<?php echo $editing ? $repuesto['stock_repuesto'] : ''; ?>">
+                  <div class="valid-feedback">Válido.</div>
+                  <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
+                </div>
+                <div class="col-md-3 mb-4">
+                  <label class="form-label" for="nuevoPrecioCompraRepuesto">Peso en Kg</label>
+                  <input type="number" class="form-control" min="0" step="any" id="pesoRepuesto" name="pesoRepuesto" placeholder="00.00" autocomplete="off" onchange="validateJS(event, 'decimal')" value="<?php echo $editing ? $repuesto['peso_repuesto'] : ''; ?>">
+                  <div class="valid-feedback">Válido.</div>
+                  <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
+                </div>
+
+              </div>
+
+              <!-- <div class="row">
                 <div class="col-md-4 mb-4">
                   <label class="form-label" for="nuevoPrecioCompraRepuesto">Precio Compra</label>
                   <input type="number" class="form-control" min="0" step="any" id="nuevoPrecioCompraRepuesto" name="nuevoPrecioCompraRepuesto" placeholder="00.00" autocomplete="off" required onchange="validateJS(event, 'decimal')" value="<?php echo $editing ? $repuesto['precio_compra'] : ''; ?>">
                   <div class="valid-feedback">Válido.</div>
                   <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
                 </div>
-                <div class="col-md-4 mb-4">
-                  <label class="form-label" for="nuevoPrecioVentaRepuesto">Precio Venta</label>
-                  <input type="number" class="form-control" min="0" step="any" id="nuevoPrecioVentaRepuesto" name="nuevoPrecioVentaRepuesto" placeholder="00.00" autocomplete="off" required onchange="validateJS(event, 'decimal')" value="<?php echo $editing ? $repuesto['precio_repuesto'] : ''; ?>">
-                  <div class="valid-feedback">Válido.</div>
-                  <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
-                </div>
-                <div class="col-md-4 mb-4">
-                  <label class="form-label" for="nuevoStockRepuesto">Stock</label>
-                  <input type="number" class="form-control" id="nuevoStockRepuesto" name="nuevoStockRepuesto" placeholder="0" autocomplete="off" required onchange="validateJS(event, 'decimal')" value="<?php echo $editing ? $repuesto['stock_repuesto'] : ''; ?>">
-                  <div class="valid-feedback">Válido.</div>
-                  <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
-                </div>
-              </div>
+
+              </div> -->
 
               <div class="row">
                 <div class="col-md-4 mb-4">
@@ -109,12 +124,15 @@ if ($editing) {
                       $item = null;
                       $valor = null;
                       $marcas = ControladorMarcas::ctrMostrarMarcas($item, $valor);
+                      
                       foreach ($marcas as $key => $value) {
                         $selected = $editing && $repuesto['id_marca'] == $value["id_marca"] ? 'selected' : '';
                         echo '<option value="' . $value["id_marca"] . '" ' . $selected . '>' . $value["nombre_marca"] . '</option>';
                       }
+                      print_r($marcas);
                       ?>
                     </select>
+                    
                     <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled" data-bs-toggle="modal" data-bs-target="#modal-marcas" aria-label="Add" data-bs-original-title="Add">
                       <i class="fa fa-plus"></i>
                     </button>
@@ -122,7 +140,7 @@ if ($editing) {
                   <div class="valid-feedback">Válido.</div>
                   <div class="invalid-feedback">Por favor selecciona una marca de vehículo.</div>
                 </div>
-
+                
                 <div class="col-md-4 mb-4">
                   <label class="form-label" for="agregarModeloVehiculo">Modelo de Vehículo</label>
                   <div class="input-group">
@@ -140,6 +158,8 @@ if ($editing) {
                       }
                       ?>
                     </select>
+
+
                     <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled" data-bs-toggle="modal" data-bs-target="#modal-modelos" aria-label="Add" data-bs-original-title="Add">
                       <i class="fa fa-plus"></i>
                     </button>

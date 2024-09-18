@@ -3,12 +3,12 @@ EDITAR MARCA
 =============================================*/
 $(".btnEditarMarca").click(function () {
   var idMarca = $(this).attr("idMarca");
-
+  //console.log("idMarca", idMarca);  
   var datos = new FormData();
   datos.append("idMarca", idMarca);
 
   $.ajax({
-    url: "ajax/marcas.ajax.php",
+    url: "/ajax/marcas.ajax.php",
     method: "POST",
     data: datos,
     cache: false,
@@ -16,7 +16,7 @@ $(".btnEditarMarca").click(function () {
     processData: false,
     dataType: "json",
     success: function (respuesta) {
-      
+      console.log("respuesta", respuesta);
       $("#editarMarca").val(respuesta["nombre_marca"]);
       $("#idMarca").val(respuesta["id_marca"]);
     },

@@ -2,6 +2,8 @@
 session_start();
 require_once "../controllers/listasVentas.controller.php";
 require_once "../models/listasVentas.model.php";
+require_once "../controllers/razonSocial.controller.php";
+require_once "../models/razonSocial.model.php";
 
 class TablaVentasRealizadas
 {
@@ -42,12 +44,13 @@ foreach ($routesArray as $key => $value) {
     $datosJson = '{"data": [';
 
     for ($i = 0; $i < count($ventas); $i++) {
-      $cliente = ControladorListasVentas::ctrMostrarCliente("id_cliente", $ventas[$i]["id_cliente"]);
-      $usuario = ControladorListasVentas::ctrMostrarUsuario("id_usuario", $ventas[$i]["id_usuario"]);
+      $cliente = ControladorRazonSocial::ctrMostrarRazonSocial("id_razon_social", $ventas[$i]["id_razon_social"]);
+      //print_r($cliente);
+      //$usuario = ControladorListasVentas::ctrMostrarUsuario("id_usuario", $ventas[$i]["id_usuario"]);
 
-      $nitCiCliente = $cliente ? $cliente["nit_ci_cliente"] : "ANONIMO";
-      $nombreCliente = $cliente ? $cliente["nombre_cliente"] : "ANONIMO";
-
+      $nitCiCliente = $cliente ? $cliente["nit_ci_razon_social"] : "ANONIMO";
+      $nombreCliente = $cliente ? $cliente["cliente_razon_social"] : "ANONIMO";
+      
       // Verificar si el usuario en la sesión es administrador
       $esAdministrador = isset($_SESSION["users"]["rol_usuario"]) && $_SESSION["users"]["rol_usuario"] === "administrador";
       $botonesAccion = "<div class='btn-group'>";
@@ -66,7 +69,7 @@ foreach ($routesArray as $key => $value) {
         "' . $ventas[$i]["monto_total_venta"] . '",
         "' . $nombreCliente . '",
         "' . $nitCiCliente . '",
-        "' . $usuario["nombre_usuario"] . '",
+        "' . $ventas[$i]["metodo_pago_venta"] . '",
         "' . $ventas[$i]["date_created_venta"] . '",
         "' . $botonesAccion . '"
       ],';

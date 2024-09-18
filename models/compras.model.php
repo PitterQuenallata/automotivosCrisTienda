@@ -4,6 +4,24 @@ require_once "conexion.php";
 
 class ModeloCompras
 {
+    /*=============================================
+    ACTUALIZAR STOCK DE REPUESTO
+=============================================*/
+    public static function mdlActualizarStock($idRepuesto, $cantidadComprada)
+    {
+        $stmt = Conexion::conectar()->prepare("UPDATE repuestos SET stock_repuesto = stock_repuesto + :cantidad WHERE id_repuesto = :id_repuesto");
+
+        $stmt->bindParam(":cantidad", $cantidadComprada, PDO::PARAM_INT);
+        $stmt->bindParam(":id_repuesto", $idRepuesto, PDO::PARAM_INT);
+
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+
+        $stmt = null;
+    }
 
     /*=============================================
     MOSTRAR COMPRAS
@@ -95,13 +113,12 @@ class ModeloCompras
     {
         try {
             $link = Conexion::conectar();
-            $stmt = $link->prepare("INSERT INTO $tabla (nombre_proveedor, nit_ci_proveedor, telefono_proveedor, direccion_proveedor, email_proveedor) VALUES (:nombre_proveedor, :nit_ci_proveedor, :telefono_proveedor, :direccion_proveedor, :email_proveedor)");
+            $stmt = $link->prepare("INSERT INTO $tabla (nombre_proveedor, nit_ci_proveedor, telefono_proveedor, direccion_proveedor) VALUES (:nombre_proveedor, :nit_ci_proveedor, :telefono_proveedor, :direccion_proveedor    )");
 
             $stmt->bindParam(":nombre_proveedor", $datos["nombre_proveedor"], PDO::PARAM_STR);
             $stmt->bindParam(":nit_ci_proveedor", $datos["nit_ci_proveedor"], PDO::PARAM_STR);
             $stmt->bindParam(":telefono_proveedor", $datos["telefono_proveedor"], PDO::PARAM_STR);
             $stmt->bindParam(":direccion_proveedor", $datos["direccion_proveedor"], PDO::PARAM_STR);
-            $stmt->bindParam(":email_proveedor", $datos["email_proveedor"], PDO::PARAM_STR);
 
             // Debug: Verificar datos antes de la ejecución
             // echo "<pre>";
@@ -247,17 +264,17 @@ class ModeloCompras
             return "error";
         }
     }
-    
+
     public static function mdlEliminarDetallesCompra($tabla, $idCompra)
-{
-    $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_compra = :id_compra");
-    $stmt->bindParam(":id_compra", $idCompra, PDO::PARAM_INT);
-    if ($stmt->execute()) {
-        return "ok";
-    } else {
-        return "error";
+    {
+        $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_compra = :id_compra");
+        $stmt->bindParam(":id_compra", $idCompra, PDO::PARAM_INT);
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
     }
-}
 
     public static function mdlEliminarCompra($tabla, $idCompra)
     {

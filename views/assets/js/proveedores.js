@@ -1,13 +1,13 @@
 /*=============================================
 EDITAR PROVEEDOR
 =============================================*/
-$(".btnEditarProveedor").click(function () {
+$(".btnEditarProveedores").click(function () {
   var idProveedor = $(this).attr("idProveedor");
   var datos = new FormData();
   datos.append("idProveedor", idProveedor);
-
+  console.log(idProveedor);
   $.ajax({
-    url: "ajax/proveedores.ajax.php",
+    url: "/ajax/proveedores.ajax.php",
     method: "POST",
     data: datos,
     cache: false,
@@ -19,6 +19,7 @@ $(".btnEditarProveedor").click(function () {
       $("#editarTelefonoProveedor").val(respuesta["telefono_proveedor"]);
       $("#editarDireccionProveedor").val(respuesta["direccion_proveedor"]);
       $("#idProveedor").val(respuesta["id_proveedor"]);
+      $("#nit_ci_proveedor").val(respuesta["nit_ci_proveedor"]);
     },
   });
 });

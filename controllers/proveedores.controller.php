@@ -20,7 +20,8 @@ class ControladorProveedores
       if (
         preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nombre_proveedor"]) &&
         preg_match('/^[0-9]+$/', $_POST["telefono_proveedor"]) &&
-        preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["direccion_proveedor"])
+        preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["direccion_proveedor"])&&
+        preg_match('/^[0-9]+$/', $_POST["nit_ci_proveedor"])
       ) {
 
         $tabla = "proveedores";
@@ -28,7 +29,8 @@ class ControladorProveedores
         $datos = array(
           "nombre_proveedor" => $_POST["nombre_proveedor"],
           "telefono_proveedor" => $_POST["telefono_proveedor"],
-          "direccion_proveedor" => $_POST["direccion_proveedor"]
+          "direccion_proveedor" => $_POST["direccion_proveedor"],
+          "nit_ci_proveedor" => $_POST["nit_ci_proveedor"]
         );
 
         $respuesta = ModeloProveedores::mdlIngresarProveedor($tabla, $datos);
@@ -64,7 +66,8 @@ class ControladorProveedores
       if (
         preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editarNombreProveedor"]) &&
         preg_match('/^[0-9]+$/', $_POST["editarTelefonoProveedor"]) &&
-        preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.,# ]+$/', $_POST["editarDireccionProveedor"])
+        preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.,# ]+$/', $_POST["editarDireccionProveedor"])&&
+        preg_match('/^[0-9]+$/', $_POST["nit_ci_proveedor"])
       ) {
 
         $tabla = "proveedores";
@@ -73,7 +76,8 @@ class ControladorProveedores
           "id_proveedor" => $_POST["idProveedor"],
           "nombre_proveedor" => $_POST["editarNombreProveedor"],
           "telefono_proveedor" => $_POST["editarTelefonoProveedor"],
-          "direccion_proveedor" => $_POST["editarDireccionProveedor"]
+          "direccion_proveedor" => $_POST["editarDireccionProveedor"],
+          "nit_ci_proveedor" => $_POST["nit_ci_proveedor"]
         );
 
         $respuesta = ModeloProveedores::mdlEditarProveedor($tabla, $datos);

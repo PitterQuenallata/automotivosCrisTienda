@@ -30,6 +30,7 @@
                     <th>Nombre</th>
                     <th>Contacto</th>
                     <th>Dirección</th>
+                    <th>Nit/Ci</th>
                     <th class="text-center" style="width: 100px;">Acciones</th>
                   </tr>
                 </thead>
@@ -46,6 +47,7 @@
             <td>' . $value["nombre_proveedor"] . '</td>
             <td>' . $value["telefono_proveedor"] . '</td>
             <td>' . $value["direccion_proveedor"] . '</td>
+            <td>' . $value["nit_ci_proveedor"] . '</td>
             <td class="text-center">
                 <div class="btn-group">
                     <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled btnEditarProveedores" idProveedor="' . $value["id_proveedor"] . '" data-bs-target="#modalEditarProveedor" data-bs-toggle="modal" aria-label="Edit" data-bs-original-title="Edit">
@@ -113,6 +115,15 @@
                   </div>
                 </div>
 
+                <div class="mb-4">
+                  <div class="input-group">
+                    <span class="input-group-text btn btn-outline-primary">Nit / Ci</span>
+                    <input type="text" class="form-control" id="nit_ci_proveedor" name="nit_ci_proveedor" onchange="validateJS(event,'integer')" required>
+                    <div class="valid-feedback">Válido.</div>
+                    <div class="invalid-feedback">Por favor llena este campo correctamente.</div>
+                  </div>
+                </div>
+
                 <div class="d-flex justify-content-end mb-4">
                   <button type="button" class="btn btn-alt-danger me-2" data-bs-dismiss="modal">
                     Cancelar
@@ -130,57 +141,66 @@
       </div>
     </div>
 
-<!-- Modal Editar Proveedor -->
-<div class="modal" id="modalEditarProveedor" tabindex="-1" role="dialog" aria-labelledby="modal-large" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <!-- Modal Editar Proveedor -->
+    <div class="modal" id="modalEditarProveedor" tabindex="-1" role="dialog" aria-labelledby="modal-large" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="block block-rounded shadow-none mb-0">
-                <div class="block-header block-header-default">
-                    <h3 class="block-title">Editar Proveedor</h3>
-                    <div class="block-options">
-                        <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
-                            <i class="fa fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-                <form method="post">
-                    <div class="block-content fs-sm">
-                        <div class="mb-4">
-                            <div class="input-group">
-                                <span class="input-group-text btn btn-outline-primary">Nombre</span>
-                                <input type="text" class="form-control" id="editarNombreProveedor" name="editarNombreProveedor">
-                                <input type="hidden" id="nombreActual" name="nombreActual">
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <div class="input-group">
-                                <span class="input-group-text btn btn-outline-primary">Teléfono</span>
-                                <input type="text" class="form-control" id="editarTelefonoProveedor" name="editarTelefonoProveedor">
-                                <input type="hidden" id="telefonoActual" name="telefonoActual">
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <div class="input-group">
-                                <span class="input-group-text btn btn-outline-primary">Dirección</span>
-                                <input type="text" class="form-control" id="editarDireccionProveedor" name="editarDireccionProveedor">
-                                <input type="hidden" id="direccionActual" name="direccionActual">
-                            </div>
-                        </div>
-                        <input type="hidden" id="idProveedor" name="idProveedor">
-                    </div>
-                    <div class="block-content block-content-full block-content-sm text-end border-top">
-                        <button type="button" class="btn btn-alt-secondary" data-bs-dismiss="modal">Salir</button>
-                        <button type="submit" class="btn btn-alt-primary">Guardar Cambios</button>
-                    </div>
-                    <?php
-                    $editarProveedor = new ControladorProveedores();
-                    $editarProveedor->ctrEditarProveedor();
-                    ?>
-                </form>
+          <div class="block block-rounded shadow-none mb-0">
+            <div class="block-header block-header-default">
+              <h3 class="block-title">Editar Proveedor</h3>
+              <div class="block-options">
+                <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
+                  <i class="fa fa-times"></i>
+                </button>
+              </div>
             </div>
+            <form method="post">
+              <div class="block-content fs-sm">
+                <div class="mb-4">
+                  <div class="input-group">
+                    <span class="input-group-text btn btn-outline-primary">Nombre</span>
+                    <input type="text" class="form-control" id="editarNombreProveedor" name="editarNombreProveedor">
+                    <input type="hidden" id="nombreActual" name="nombreActual">
+                  </div>
+                </div>
+                <div class="mb-4">
+                  <div class="input-group">
+                    <span class="input-group-text btn btn-outline-primary">Teléfono</span>
+                    <input type="text" class="form-control" id="editarTelefonoProveedor" name="editarTelefonoProveedor">
+                    <input type="hidden" id="telefonoActual" name="telefonoActual">
+                  </div>
+                </div>
+                <div class="mb-4">
+                  <div class="input-group">
+                    <span class="input-group-text btn btn-outline-primary">Dirección</span>
+                    <input type="text" class="form-control" id="editarDireccionProveedor" name="editarDireccionProveedor">
+                    <input type="hidden" id="direccionActual" name="direccionActual">
+                  </div>
+                </div>
+
+                <div class="mb-4">
+                  <div class="input-group">
+                    <span class="input-group-text btn btn-outline-primary">Nit / Ci</span>
+                    <input type="text" class="form-control" id="nit_ci_proveedor" name="nit_ci_proveedor" onchange="validateJS(event,'integer')" required>
+                    <input type="hidden" id="nit_ci_proveedor_actual" name="nit_ci_proveedor_actual">
+                  </div>
+                </div>
+
+                <input type="hidden" id="idProveedor" name="idProveedor">
+              </div>
+              <div class="block-content block-content-full block-content-sm text-end border-top">
+                <button type="button" class="btn btn-alt-secondary" data-bs-dismiss="modal">Salir</button>
+                <button type="submit" class="btn btn-alt-primary">Guardar Cambios</button>
+              </div>
+              <?php
+              $editarProveedor = new ControladorProveedores();
+              $editarProveedor->ctrEditarProveedor();
+              ?>
+            </form>
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
 
 

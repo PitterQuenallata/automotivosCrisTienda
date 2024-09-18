@@ -38,12 +38,11 @@ $(document).ready(function () {
       { data: "0", className: "text-center" },
       { data: "1", className: "text-center" },
       { data: "2", className: "text-truncate" },
-      { data: "3", className: "text-truncate" },
+      { data: "3", className: "text-center" },
       { data: "4", className: "text-center" },
-      { data: "5", className: "text-center" },
+      { data: "5", className: "text-truncate" },
       { data: "6", className: "text-truncate" },
-      { data: "7", className: "text-truncate" },
-      { data: "8", className: "text-center" },
+      { data: "7", className: "text-center" },
     ],
     destroy: true, // Asegura la destrucción previa de la tabla
   });
@@ -217,85 +216,209 @@ $(document).ready(function () {
         total: $(precio[i]).val(),
       });
     }
-    console.log("lista", listaRepuestos);
+    //console.log("lista", listaRepuestos);
     $("#listaRepuestosVenta").val(JSON.stringify(listaRepuestos));
-  }
-
-  // Función para obtener el nuevo código de venta
-  function obtenerNuevoCodigoVenta() {
-    $.ajax({
-      url: "ajax/ventas.ajax.php",
-      method: "POST",
-      data: { action: "obtenerNuevoCodigoVenta" },
-      dataType: "json",
-      success: function (respuesta) {
-        if (respuesta.codigoVenta) {
-          $("#codigoVenta").val(respuesta.codigoVenta);
-        }
-      },
-      error: function () {
-        fncSweetAlert(
-          "error",
-          "Hubo un problema al obtener el nuevo código de venta."
-        );
-      },
-    });
   }
 
   // Llamar a obtenerNuevoCodigoVenta al cargar la página para establecer el código inicial
   obtenerNuevoCodigoVenta();
-  // Guardar venta
+
+  // Verificar si el NIT ya existe en la tabla razon_social y autocompletar los datos
+  $("#nitCliente").on("blur", function () {
+    var nitCliente = $(this).val();
+
+    if (nitCliente !== "") {
+      $.ajax({
+        url: "ajax/ventas.ajax.php", // Cambia esta URL al archivo que maneja la verificación del NIT
+        method: "POST",
+        data: { accion: "verificarNit", nitCliente: nitCliente },
+        dataType: "json",
+        success: function (respuesta) {
+          if (respuesta.status === "success") {
+            // Autocompletar los campos con los datos de la razón social si existe
+            $("#nombreCliente").val(respuesta.datos.cliente_razon_social);
+            $("#celularCliente").val(respuesta.datos.telefono_razon_social);
+          }
+        },
+      });
+    }
+  });
+
+  // Guardar venta cuando se haga clic en el botón "Guardar"
   $("#guardarVenta").click(function (e) {
     e.preventDefault(); // Evitar el envío del formulario por defecto
 
-    var datosVenta = $("#formIniciarVenta").serialize();
-    console.log(datosVenta);
+    var metodoPago = $("#metodoPago").val(); // Obtener el método de pago seleccionado
 
-    $.ajax({
-      url: "ajax/ventas.ajax.php", // URL del archivo PHP que manejará la solicitud
-      method: "POST",
-      data: datosVenta,
-      dataType: "json",
-      success: function (respuesta) {
-        if (respuesta.status === "success") {
-          // Mostrar el mensaje de cliente registrado
-          if (respuesta.messageCliente) {
-            if (
-              respuesta.messageCliente === "Cliente registrado con éxito" ||
-              respuesta.messageCliente === "Cliente actualizado con éxito"
-            ) {
-              fncToastr("success", respuesta.messageCliente);
-            } else {
-              fncToastr("info", respuesta.messageCliente);
-            }
-          }
-          // Mostrar el mensaje de venta guardada
-          fncSweetAlert("success", respuesta.messageVenta, "", function () {
-            // Recargar la tabla
-            $("#tablaVentas").DataTable().ajax.reload();
-            // Limpiar el formulario
-            $("#formIniciarVenta")[0].reset();
-            // Limpiar los repuestos seleccionados
-            $(".nuevaVenta").empty();
-            // Obtener y actualizar el nuevo código de venta
-            obtenerNuevoCodigoVenta();
-          });
-        } else {
-          fncSweetAlert("error", respuesta.message, "", function () {
-            location.reload(); // Recargar la página en caso de error
-          });
-        }
-      },
-      error: function () {
-        fncSweetAlert(
-          "error",
-          "Hubo un problema con la petición.",
-          "",
-          function () {
-            location.reload(); // Recargar la página también en caso de error
-          }
-        );
-      },
-    });
+    if (metodoPago === "qr") {
+      generarQR(); // Generar QR si el método de pago es QR
+    } else if (metodoPago === "efectivo") {
+      guardarVentaEfectivo(); // Guardar venta directamente si es en efectivo
+    } else {
+      fncSweetAlert("error", "Seleccione un método de pago válido.");
+    }
   });
+
+  $("#modalQr").modal({
+    backdrop: "static", // Evita que se cierre al hacer clic fuera
+    keyboard: false, // Evita que se cierre con "Esc"
+  });
+  //var intervalId;
+  // // Detener la verificación del estado de pago si se cierra el modal
+  // $("#modalQr").on("hidden.bs.modal", function () {
+  //   clearInterval(intervalId); // Detener la verificación
+  // });
 });
+
+// Función para generar QR y mostrarlo en el modal
+function generarQR() {
+  var datosVenta = $("#formIniciarVenta").serialize() + "&accion=qr"; // Añadimos la acción "qr"
+
+  $.ajax({
+    url: "ajax/ventas.ajax.php",
+    method: "POST",
+    data: datosVenta, // Enviamos los datos de la venta y la acción 'qr'
+    dataType: "json",
+    success: function (respuesta) {
+      if (respuesta.status === "success") {
+        // Mostrar el QR en el modal
+        $("#modalQr").modal("show");
+        $("#qrImage").attr("src", "data:image/png;base64," + respuesta.qr);
+
+        // Guardar movimiento_id para luego verificar el estado del pago
+        $("#movimientoId").val(respuesta.movimiento_id);
+
+        // Iniciar la verificación del pago cada 10 segundos
+        verificarEstadoQR();
+      } else {
+        fncSweetAlert("error", respuesta.message);
+      }
+    },
+    error: function () {
+      fncSweetAlert("error", "Hubo un problema con la generación del QR.");
+    },
+  });
+}
+
+// Función para verificar el pago de QR cada 10 segundos
+function verificarEstadoQR() {
+  var movimientoId = $("#movimientoId").val(); // Obtener el movimiento_id guardado
+
+  if (!movimientoId) {
+    fncSweetAlert(
+      "error",
+      "No se ha encontrado el movimiento ID para verificar el pago."
+    );
+    return;
+  }
+
+  $.ajax({
+    url: "ajax/verificarPago.ajax.php", // AJAX para manejar la verificación del pago
+    method: "POST",
+    data: { movimiento_id: movimientoId },
+    dataType: "json",
+    success: function (respuesta) {
+      if (respuesta.status === "success" && respuesta.estado === "Completado") {
+        // Si el pago se completó correctamente
+        //fncToastr("success", "Pago completado con éxito.");
+        console.log("Pago completado con éxito.");
+        // Cerrar el modal de QR
+        $(".modalQr").modal("hide");
+        //clearInterval(intervalId); // Detener la verificación una vez que se completó el pago
+        guardarVentaQR(); // Llamar a la función para guardar la venta con QR
+      } else if (respuesta.status === "pendiente") {
+        // Si el pago aún no se ha completado
+        //fncToastr("info", "El pago aún no se ha completado. Verificando nuevamente...");
+        console.log("Pago pendiente, mostrando Toast...");
+      } else {
+        // Si hubo un error en la verificación del estado
+        fncSweetAlert("error", respuesta.message);
+        //clearInterval(intervalId); // Detener verificación en caso de error
+      }
+    },
+    error: function () {
+      fncSweetAlert(
+        "error",
+        "Hubo un problema al verificar el estado del pago."
+      );
+      //clearInterval(intervalId); // Detener verificación en caso de error
+    },
+  });
+}
+
+// Función para guardar la venta después de confirmar el pago con QR
+function guardarVentaQR() {
+  var datosVenta = $("#formIniciarVenta").serialize() + "&accion=guardarQr";
+
+  $.ajax({
+    url: "ajax/ventas.ajax.php",
+    method: "POST",
+    data: datosVenta,
+    dataType: "json",
+    success: function (respuesta) {
+      if (respuesta.status === "success") {
+        fncSweetAlert("success", respuesta.messageVenta, "", function () {
+          // Recargar la tabla y restablecer el formulario
+          $("#tablaVentas").DataTable().ajax.reload();
+          $("#formIniciarVenta")[0].reset();
+          $(".nuevaVenta").empty();
+          obtenerNuevoCodigoVenta();
+        });
+      } else {
+        fncSweetAlert("error", respuesta.message);
+      }
+    },
+    error: function () {
+      fncSweetAlert("error", "Hubo un problema al guardar la venta.");
+    },
+  });
+}
+
+// Función para guardar la venta en efectivo
+function guardarVentaEfectivo() {
+  var datosVenta = $("#formIniciarVenta").serialize() + "&accion=efectivo";
+
+  $.ajax({
+    url: "ajax/ventas.ajax.php", // URL del archivo PHP que manejará la solicitud
+    method: "POST",
+    data: datosVenta,
+    dataType: "json",
+    success: function (respuesta) {
+      if (respuesta.status === "success") {
+        fncSweetAlert("success", respuesta.messageVenta, "", function () {
+          // Recargar la tabla y restablecer el formulario
+          $("#tablaVentas").DataTable().ajax.reload();
+          $("#formIniciarVenta")[0].reset();
+          $(".nuevaVenta").empty();
+          obtenerNuevoCodigoVenta();
+        });
+      } else {
+        fncSweetAlert("error", respuesta.message);
+      }
+    },
+    error: function () {
+      fncSweetAlert("error", "Hubo un problema con la petición.");
+    },
+  });
+}
+
+// Función para obtener el nuevo código de venta
+function obtenerNuevoCodigoVenta() {
+  $.ajax({
+    url: "ajax/ventas.ajax.php",
+    method: "POST",
+    data: { action: "obtenerNuevoCodigoVenta" },
+    dataType: "json",
+    success: function (respuesta) {
+      if (respuesta.codigoVenta) {
+        $("#codigoVenta").val(respuesta.codigoVenta);
+      }
+    },
+    error: function () {
+      fncSweetAlert(
+        "error",
+        "Hubo un problema al obtener el nuevo código de venta."
+      );
+    },
+  });
+}

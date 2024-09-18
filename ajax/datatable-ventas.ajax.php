@@ -32,11 +32,10 @@ class TablaRepuestosVentas {
         "'.($i+1).'",
         "'.$repuestos[$i]["codigo_tienda_repuesto"].'",
         "'.$repuestos[$i]["nombre_repuesto"].'",
-        "'.$repuestos[$i]["descripcion_repuesto"].'",
         "'.$repuestos[$i]["precio_repuesto"].'",
         "'.$stock.'",
         "'.$repuestos[$i]["nombre_categoria"].'",
-        "'.$repuestos[$i]["marca_repuesto"].'",
+        "'.$repuestos[$i]["fabricante_repuesto"].'",
         "'.$botones.'"
       ],';
     }

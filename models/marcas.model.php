@@ -28,34 +28,38 @@ class ModeloMarcas
 		$stmt = null;
 	}
 
-	/*=============================================
-	MOSTRAR MarcaS
-	=============================================*/
+/*=============================================
+MOSTRAR Marcas
+=============================================*/
 
-	static public function mdlMostrarMarcas($tabla, $item, $valor)
-	{
+static public function mdlMostrarMarcas($tabla, $item, $valor)
+{
+    if ($item != null) {
+        // Preparar la consulta con el filtro del item
+        $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
 
-		if ($item != null) {
+        // Vincular el parámetro
+        $stmt->bindParam(":" . $item, $valor, PDO::PARAM_STR);
 
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = :$item");
+        // Ejecutar la consulta
+        $stmt->execute();
 
-			$stmt->bindParam(":" . $item, $valor, PDO::PARAM_STR);
+        // Usar fetch() para devolver un solo resultado
+        return $stmt->fetch(PDO::FETCH_ASSOC); // Cambiar de fetchAll() a fetch() para obtener un solo resultado
+    } else {
+        // Preparar la consulta para obtener todos los registros
+        $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
 
-			$stmt->execute();
+        // Ejecutar la consulta
+        $stmt->execute();
 
-			return $stmt->fetch();
-		} else {
+        // Retornar todos los resultados en caso de que se soliciten todas las marcas
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
-
-			$stmt->execute();
-
-			return $stmt->fetchAll();
-		}
-
-
-		$stmt = null;
-	}
+    // Cerrar la conexión
+    $stmt = null;
+}
 
 	/*=============================================
 	EDITAR Marca

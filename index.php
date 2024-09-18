@@ -12,6 +12,7 @@ require_once "controllers/repuestos.controller.php";
 require_once "controllers/ventas.controller.php";
 require_once "controllers/clientes.controller.php";
 require_once "controllers/listasVentas.controller.php";
+require_once "controllers/razonSocial.controller.php";
 
 require_once "models/user.model.php";
 require_once "models/categorias.model.php";
@@ -25,6 +26,7 @@ require_once "models/repuestos.model.php";
 require_once "models/ventas.model.php";
 require_once "models/clientes.model.php";
 require_once "models/listasVentas.model.php";
+require_once "models/razonSocial.model.php";
 
 $index = new TemplateController();
 $index->index();

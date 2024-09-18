@@ -1,4 +1,4 @@
-$(document).ready(function () {
+  $(document).ready(function () {
 
    // Cargar el código automáticamente al cargar la página
    obtenerCodigoRepuesto();
@@ -67,6 +67,8 @@ $(document).ready(function () {
 =============================================*/
 $(document).on("click", ".btnEliminarRepuesto", function() {
   var idRepuesto = $(this).attr("idRepuesto");
+  var hola="hola";
+  console.log(hola);
 
   Swal.fire({
       title: '¿Está seguro de eliminar este repuesto?',
@@ -79,7 +81,7 @@ $(document).on("click", ".btnEliminarRepuesto", function() {
   }).then((result) => {
       if (result.isConfirmed) {
           $.ajax({
-              url: "ajax/repuestos.ajax.php",
+              url: "/ajax/repuestos.ajax.php",
               method: "POST",
               data: { idRepuestoEliminar: idRepuesto },
               success: function(respuesta) {
@@ -153,6 +155,12 @@ $(document).on("click", ".btnEliminarRepuesto", function() {
   =============================================*/
 
   function obtenerCodigoRepuesto() {
+    // Verificar si estamos en modo de edición (es decir, si ya existe un código en el campo)
+    if ($("#nuevoCodigoRepuesto").val()) {
+        // Si ya hay un valor en el campo (estás en modo de edición), no generamos un nuevo código
+        return;
+    }
+
     $.ajax({
       url: "ajax/repuestos.codigo.ajax.php",
       method: "POST",
@@ -162,12 +170,12 @@ $(document).on("click", ".btnEliminarRepuesto", function() {
       processData: false,
       dataType: "json",
       success: function (respuesta) {
-        console.log(respuesta);
+        //console.log(respuesta);
         if (respuesta && respuesta["codigo_tienda_repuesto"]) {
           // Extraer el número del último código "R-XXXX"
           var ultimoCodigo = respuesta["codigo_tienda_repuesto"];
           var numeroCodigo = parseInt(ultimoCodigo.split('-')[1]);
-  
+
           // Generar el nuevo código incrementando el número
           var nuevoCodigo = "R-" + (numeroCodigo + 1);
           $("#nuevoCodigoRepuesto").val(nuevoCodigo);
@@ -178,11 +186,12 @@ $(document).on("click", ".btnEliminarRepuesto", function() {
         }
       },
       error: function (jqXHR, textStatus, errorThrown) {
-        console.log("Error al asignar código de repuesto: " + textStatus + " - " + errorThrown);
+        //console.log("Error al asignar código de repuesto: " + textStatus + " - " + errorThrown);
         alert("Hubo un error al generar el código de repuesto.");
       }
     });
-  }
+}
+
 /*=============================================
 Cargar modelos al seleccionar marca
 =============================================*/

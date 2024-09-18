@@ -13,7 +13,7 @@ class ControladorCompras
     }
     /*=============================================
     CREAR COMPRA
-    =============================================*/
+=============================================*/
     public static function ctrCrearCompra($datos)
     {
         if (empty($datos["codigoCompra"]) || empty($datos["montoTotal"]) || empty($datos["idUsuario"]) || empty($datos["lista_repuestos"])) {
@@ -31,7 +31,6 @@ class ControladorCompras
 
         // Si se proporcionan datos del proveedor manualmente, primero inserta el proveedor
         if ($datos["proveedorManual"]) {
-
             $idProveedor = self::ctrCrearProveedor($datos["proveedorManual"]);
             if ($idProveedor == "error") {
                 return "error_crear_proveedor";
@@ -52,7 +51,13 @@ class ControladorCompras
             $respuestaDetalles = self::ctrCrearDetallesCompra($idCompra, $listaRepuestos);
 
             if ($respuestaDetalles == "ok") {
-                return "ok";
+                // Actualizar el stock de los repuestos
+                $respuestaStock = self::ctrActualizarStock($listaRepuestos);
+                if ($respuestaStock == "ok") {
+                    return "ok";
+                } else {
+                    return "error_actualizar_stock";
+                }
             } else {
                 return "error_detalles";
             }
@@ -60,6 +65,26 @@ class ControladorCompras
             return "error_compra";
         }
     }
+    
+/*=============================================
+    ACTUALIZAR STOCK
+=============================================*/
+public static function ctrActualizarStock($listaRepuestos)
+{
+    foreach ($listaRepuestos as $repuesto) {
+        $idRepuesto = $repuesto["id_repuesto"];
+        $cantidadComprada = $repuesto["cantidad_detalleCompra"];
+
+        // Llamar al modelo para actualizar el stock
+        $respuesta = ModeloCompras::mdlActualizarStock($idRepuesto, $cantidadComprada);
+
+        if ($respuesta != "ok") {
+            return "error";
+        }
+    }
+    return "ok";
+}
+
 
     /*=============================================
     CREAR PROVEEDOR
@@ -68,7 +93,7 @@ class ControladorCompras
     {
         $tablaProveedores = "proveedores";
 
-        if (empty($datosProveedor["nombre"]) || empty($datosProveedor["nit"]) || empty($datosProveedor["direccion"]) || empty($datosProveedor["email"]) || empty($datosProveedor["celular"])) {
+        if (empty($datosProveedor["nombre"]) || empty($datosProveedor["nit"]) || empty($datosProveedor["direccion"]) || empty($datosProveedor["celular"])) {
             return "error_campos_vacios";
         }
 
@@ -76,16 +101,10 @@ class ControladorCompras
             "nombre_proveedor" => $datosProveedor["nombre"],
             "nit_ci_proveedor" => $datosProveedor["nit"],
             "telefono_proveedor" => $datosProveedor["celular"],
-            "direccion_proveedor" => $datosProveedor["direccion"],
-            "email_proveedor" => $datosProveedor["email"]
+            "direccion_proveedor" => $datosProveedor["direccion"]
         );
 
         $idProveedor = ModeloCompras::mdlCrearProveedor($tablaProveedores, $datos);
-        // Debug: Ver contenido de $idProveedor
-        // echo "<pre>";
-        // print($idProveedor);
-        // echo "</pre>";
-        //exit(); // Detener ejecución para ver el resultado
         return $idProveedor;
     }
 
@@ -190,7 +209,8 @@ class ControladorCompras
     /*=============================================
     ACTUALIZAR MONTO TOTAL DE COMPRA
     =============================================*/
-    public static function ctrActualizarMontoTotalCompra($idCompra) {
+    public static function ctrActualizarMontoTotalCompra($idCompra)
+    {
         $montoTotal = ModeloDetallesCompras::mdlCalcularMontoTotalCompra($idCompra);
         return ModeloCompras::mdlActualizarMontoTotalCompra("compras", $idCompra, $montoTotal);
     }
@@ -202,21 +222,21 @@ class ControladorCompras
         $tabla = "compras";
         return ModeloCompras::mdlObtenerCompra($tabla, $idCompra);
     }
-    
+
     public static function ctrEditarCompra($datos)
     {
         $tabla = "compras";
         return ModeloCompras::mdlEditarCompra($tabla, $datos);
     }
-    
+
     public static function ctrEliminarCompra($idCompra)
     {
         $tabla = "compras";
         $tablaDetalles = "detalles_compras";
-    
+
         // Eliminar detalles de compra primero
         $eliminarDetalles = ModeloCompras::mdlEliminarDetallesCompra($tablaDetalles, $idCompra);
-    
+
         if ($eliminarDetalles == "ok") {
             // Si se eliminaron los detalles correctamente, eliminar la compra
             return ModeloCompras::mdlEliminarCompra($tabla, $idCompra);
@@ -224,13 +244,10 @@ class ControladorCompras
             return "error";
         }
     }
-    
+
     public static function ctrListarProveedores()
     {
         $tabla = "proveedores";
         return ModeloProveedores::mdlMostrarProveedores($tabla, null, null);
     }
-    
-    
-
 }

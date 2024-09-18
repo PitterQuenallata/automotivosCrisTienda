@@ -44,6 +44,7 @@ class ControladorMarcas
     $tabla = "marcas";
 
     $respuesta = ModeloMarcas::mdlMostrarMarcas($tabla, $item, $valor);
+    // print_r($respuesta);
 
     return $respuesta;
   }

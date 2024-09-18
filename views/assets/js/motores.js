@@ -43,26 +43,28 @@ $(document).ready(function () {
 Editar
 =============================================*/
 // Función para llenar el formulario de edición de motor
-$(".btnEditarMotor").click(function () {
+$(document).on("click", ".btnEditarMotor", function() {
   var idMotor = $(this).attr("idMotor");
-  var datos = new FormData();
-  datos.append("idMotor", idMotor);
 
+  // Realizar la petición AJAX para obtener los datos del motor
   $.ajax({
-    url: "ajax/motores.ajax.php",
-    method: "POST",
-    data: datos,
-    cache: false,
-    contentType: false,
-    processData: false,
-    dataType: "json",
-    success: function (respuesta) {
-      console.log("respuesta", respuesta);
-      $("#editarMotor").val(respuesta["nombre_motor"]);
-      $("#editarCilindrada").val(respuesta["cilindrada_motor"]);
-      $("#editarEspecificaciones").val(respuesta["especificaciones_motor"]);
-      $("#idMotor").val(respuesta["id_motor"]);
-    },
+      url: "ajax/motores.ajax.php",
+      method: "POST",
+      data: { idMotor: idMotor },
+      dataType: "json",
+      success: function(respuesta) {
+          // Llenar los campos del modal con los datos del motor
+          $("#idMotor").val(respuesta.id_motor);
+          $("#editarMotor").val(respuesta.nombre_motor);
+          $("#editarCilindrada").val(respuesta.cilindrada_motor);
+          $("#editarEspecificaciones").val(respuesta.especificaciones_motor);
+          
+          // Llenar los inputs ocultos con los valores originales
+          $("#nombreMotorActual").val(respuesta.nombre_motor);
+          $("#cilindradaActual").val(respuesta.cilindrada_motor);
+          $("#especificacionesActuales").val(respuesta.especificaciones_motor);
+          $("#idModeloActual").val(respuesta.id_modelo);
+      }
   });
 });
 

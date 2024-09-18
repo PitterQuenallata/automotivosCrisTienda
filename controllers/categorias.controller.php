@@ -99,14 +99,14 @@ class ControladorCategorias
 
   static public function ctrBorrarCategoria()
   {
-
+    print_r($_GET);
     if (isset($_GET["idCategoria"])) {
 
-      $tabla = "Categorias";
+      $tabla = "categorias";
       $datos = $_GET["idCategoria"];
-
+      //print_r($datos);
       $respuesta = ModeloCategorias::mdlBorrarCategoria($tabla, $datos);
-
+      //print_r($respuesta);
       if ($respuesta == "ok") {
 
         echo '<script>

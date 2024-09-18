@@ -2,7 +2,7 @@
 
 require_once "conexion.php";
 
-class ModeloVentas
+class   ModeloVentas
 {
 
   /*=============================================
@@ -49,23 +49,39 @@ class ModeloVentas
   /*=============================================
   REGISTRAR VENTA
   =============================================*/
-  public static function mdlRegistrarVenta($tabla, $datos)
+  public static function mdlRegistrarVenta($tabla, $datosVenta)
   {
-    $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(codigo_venta, id_usuario, id_cliente, monto_total_venta) VALUES (:codigo, :id_usuario, :id_cliente, :total)");
-
-    $stmt->bindParam(":codigo", $datos["codigo"], PDO::PARAM_STR);
-    $stmt->bindParam(":id_usuario", $datos["id_usuario"], PDO::PARAM_INT);
-    $stmt->bindParam(":id_cliente", $datos["id_cliente"], PDO::PARAM_INT);
-    $stmt->bindParam(":total", $datos["total"], PDO::PARAM_STR);
-
-    if ($stmt->execute()) {
-      return "ok";
-    } else {
-      return "error";
-    }
-
-    $stmt = null;
+      try {
+          $link = Conexion::conectar(); // Asegúrate de usar la misma conexión en todo el flujo
+          $stmt = $link->prepare("
+              INSERT INTO $tabla 
+              (codigo_venta, monto_total_venta, metodo_pago_venta, id_usuario, id_razon_social, estado_venta) 
+              VALUES (:codigo, :monto_total, :metodo_pago, :id_usuario, :id_razon_social, :estado)
+          ");
+  
+          $stmt->bindParam(":codigo", $datosVenta["codigo"], PDO::PARAM_STR);
+          $stmt->bindParam(":monto_total", $datosVenta["total"], PDO::PARAM_STR);
+          $stmt->bindParam(":metodo_pago", $datosVenta["metodo_pago"], PDO::PARAM_STR);
+          $stmt->bindParam(":id_usuario", $datosVenta["id_usuario"], PDO::PARAM_INT);
+          $stmt->bindParam(":id_razon_social", $datosVenta["id_razon_social"], PDO::PARAM_INT);
+          $stmt->bindParam(":estado", $datosVenta["estado"], PDO::PARAM_STR);
+  
+          if ($stmt->execute()) {
+              // Retornar el ID de la venta registrada
+              return $link->lastInsertId(); 
+          } else {
+              return "error";
+          }
+  
+      } catch (Exception $e) {
+          return "error";
+      }
+  
+      $stmt = null;
   }
+  
+  
+  
 
   /*=============================================
   REGISTRAR DETALLE DE VENTA

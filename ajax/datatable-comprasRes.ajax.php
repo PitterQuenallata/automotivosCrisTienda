@@ -41,7 +41,7 @@ class TablaRepuestosCompra {
         "codigo_tienda_repuesto": "' . $repuestos[$i]["codigo_tienda_repuesto"] . '",
         "nombre_repuesto": "' . $repuestos[$i]["nombre_repuesto"] . '",
         "nombre_categoria": "' . $categoria["nombre_categoria"] . '",
-        "marca_repuesto": "' . $repuestos[$i]["marca_repuesto"] . '",
+        "marca_repuesto": "' . $repuestos[$i]["fabricante_repuesto"] . '",
         "stock_repuesto": "' . $stock . '",
         "precio_repuesto": "' . $repuestos[$i]["precio_repuesto"] . '",
         "acciones": "' . $acciones . '"

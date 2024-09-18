@@ -1,4 +1,3 @@
-
 <!-- Main Container -->
 <main id="main-container">
   <!-- Page Content -->
@@ -23,10 +22,33 @@
                       <label class="form-label" for="codigoCompra">COD.</label>
                       <input type="text" class="form-control" id="codigoCompra" name="codigoCompra" value="" readonly>
                     </div>
-                    <div class="col-md-2 mb-4">
+                    <div class="col-md-4 mb-4">
                       <label class="form-label" for="usuario">Usuario</label>
                       <input type="text" class="form-control" id="usuario" name="usuario" value="<?php echo $_SESSION["users"]["nombre_usuario"] ?>" readonly>
                       <input type="hidden" id="idUsuario" name="idUsuario" value="<?php echo $_SESSION["users"]["id_usuario"] ?>">
+                    </div>
+
+                    <div class="col-md-5 mb-4">
+                      <label class="form-label" for="agregarProveedor">Proveedor</label>
+                      <div class="input-group">
+                        <select class="form-select" id="agregarProveedor" name="agregarProveedor" required>
+                          <option selected value="">Elije un Proveedor</option>
+                          <?php
+                          $item = null;
+                          $valor = null;
+                          $proveedores = ControladorProveedores::ctrMostrarProveedores($item, $valor);
+                          foreach ($proveedores as $key => $value) {
+                            echo '<option value="' . $value["id_proveedor"] . '">' . $value["nombre_proveedor"] . '</option>';
+                          }
+                          ?>
+                        </select>
+                        <!-- Botón para agregar proveedor manualmente -->
+                        <button type="button" class="btn btn-sm btn-secondary js-bs-tooltip-enabled" id="toggleDatosProveedor" data-bs-toggle="tooltip" aria-label="Añadir Proveedor Manual" data-bs-original-title="Añadir Proveedor Manual">
+                          <i class="fa fa-plus"></i>
+                        </button>
+                      </div>
+                      <div class="valid-feedback">Válido.</div>
+                      <div class="invalid-feedback">Por favor selecciona un proveedor.</div>
                     </div>
 
 
@@ -38,23 +60,21 @@
                         <label class="form-label" for="nombreProveedor">Nombre Proveedor</label>
                         <input type="text" class="form-control" id="nombreProveedor" name="nombreProveedor" disabled>
                       </div>
-                      <div class="col-md-3 mb-1">
+                      <div class="col-md-6 mb-1">
                         <label class="form-label" for="nitProveedor">NIT/CI</label>
                         <input type="text" class="form-control" id="nitProveedor" name="nitProveedor">
                       </div>
-                      <div class="col-md-3 mb-1 ">
-                        <label class="form-label" for="celularProveedor">Celular</label>
-                        <input type="text" class="form-control" id="celularProveedor" name="celularProveedor">
-                      </div>
+
                     </div>
                     <div class="row">
                       <div class="col-md-6 mb-4">
                         <label class="form-label" for="direccionProveedor">Dirección</label>
                         <input type="text" class="form-control" id="direccionProveedor" name="direccionProveedor">
                       </div>
-                      <div class="col-md-6 mb-4">
-                        <label class="form-label" for="gmailProveedor">Gmail</label>
-                        <input type="text" class="form-control" id="gmailProveedor" name="gmailProveedor">
+
+                      <div class="col-md-6 mb-1 ">
+                        <label class="form-label" for="celularProveedor">Celular</label>
+                        <input type="text" class="form-control" id="celularProveedor" name="celularProveedor">
                       </div>
                     </div>
                   </div>
@@ -73,7 +93,7 @@
                     </div>
                   </div>
                   <input type="hidden" id="listaRepuestos" name="listaRepuestos">
-                  
+
                   <input type="hidden" id="idProveedor" name="idProveedor">
                   <div class="block-content block-content-full block-content-sm text-end border-top">
                     <button type="button" class="btn btn-alt-primary" id="guardarCompra">Guardar Compra</button>

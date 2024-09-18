@@ -66,21 +66,22 @@ MOSTRAR MODELOS POR MOTOR
   }
 
 
-  /*=============================================
+/*=============================================
   CREAR MOTOR
   =============================================*/
   static public function mdlIngresarMotor($tabla, $datos)
   {
-
     try {
       $link = Conexion::conectar();
       $link->beginTransaction();
 
-      $stmt = $link->prepare("INSERT INTO $tabla (nombre_motor, cilindrada_motor, especificaciones_motor) VALUES (:nombre_motor, :cilindrada_motor, :especificaciones_motor)");
+      // Insertamos el motor junto con su id_modelo
+      $stmt = $link->prepare("INSERT INTO $tabla (nombre_motor, cilindrada_motor, especificaciones_motor, id_modelo) VALUES (:nombre_motor, :cilindrada_motor, :especificaciones_motor, :id_modelo)");
 
       $stmt->bindParam(":nombre_motor", $datos["nombre_motor"], PDO::PARAM_STR);
       $stmt->bindParam(":cilindrada_motor", $datos["cilindrada_motor"], PDO::PARAM_STR);
       $stmt->bindParam(":especificaciones_motor", $datos["especificaciones_motor"], PDO::PARAM_STR);
+      $stmt->bindParam(":id_modelo", $datos["id_modelo"], PDO::PARAM_INT);
 
       if ($stmt->execute()) {
         $idMotor = $link->lastInsertId();
@@ -98,100 +99,61 @@ MOSTRAR MODELOS POR MOTOR
     }
   }
 
-  /*=============================================
-  REGISTRAR MODELO Y MOTOR
-  =============================================*/
-  static public function mdlRegistrarModeloMotor($tabla, $idModelo, $idMotor)
-  {
-
-    $stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (id_modelo, id_motor) VALUES (:id_modelo, :id_motor)");
-
-    $stmt->bindParam(":id_modelo", $idModelo, PDO::PARAM_INT);
-    $stmt->bindParam(":id_motor", $idMotor, PDO::PARAM_INT);
-
-    if ($stmt->execute()) {
-      return "ok";
-    } else {
-      return "error";
-    }
-
-    $stmt = null;
-  }
-
-  /*=============================================
-  EDITAR MOTOR
-  =============================================*/
-
-  static public function mdlEditarMotor($tabla, $datos)
-  {
-    $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET nombre_motor = :nombre_motor, cilindrada_motor = :cilindrada_motor, especificaciones_motor = :especificaciones_motor WHERE id_motor = :id_motor");
-
-    $stmt->bindParam(":nombre_motor", $datos["nombre_motor"], PDO::PARAM_STR);
-    $stmt->bindParam(":cilindrada_motor", $datos["cilindrada_motor"], PDO::PARAM_STR);
-    $stmt->bindParam(":especificaciones_motor", $datos["especificaciones_motor"], PDO::PARAM_STR);
-    $stmt->bindParam(":id_motor", $datos["id_motor"], PDO::PARAM_INT);
-
-    if ($stmt->execute()) {
-      return "ok";
-    } else {
-      return "error";
-    }
-
-    $stmt = null;
-  }
 
 
 
-  /*=============================================
-    ACTUALIZAR MODELO-MOTOR
-    =============================================*/
-  static public function mdlActualizarModeloMotor($tabla, $idModelo, $idMotor)
-  {
-    $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET id_modelo = :id_modelo WHERE id_motor = :id_motor");
-
-    $stmt->bindParam(":id_modelo", $idModelo, PDO::PARAM_INT);
-    $stmt->bindParam(":id_motor", $idMotor, PDO::PARAM_INT);
-
-    if ($stmt->execute()) {
-      return "ok";
-    } else {
-      return "error";
-    }
-
-    $stmt = null;
-  }
-
-  /*=============================================
-ELIMINAR MOTOR
+/*=============================================
+EDITAR MOTOR
 =============================================*/
-  static public function mdlBorrarMotor($tabla, $idMotor)
-  {
-    $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_motor = :id_motor");
-    $stmt->bindParam(":id_motor", $idMotor, PDO::PARAM_INT);
+public static function mdlEditarMotor($tabla, $datos)
+{
+    try {
+        // Conectar a la base de datos
+        $stmt = Conexion::conectar()->prepare("UPDATE $tabla 
+            SET nombre_motor = :nombre_motor, cilindrada_motor = :cilindrada_motor, especificaciones_motor = :especificaciones_motor, id_modelo = :id_modelo 
+            WHERE id_motor = :id_motor");
 
-    if ($stmt->execute()) {
-      return "ok";
-    } else {
-      return "error";
+        // Vincular parámetros
+        $stmt->bindParam(":nombre_motor", $datos["nombre_motor"], PDO::PARAM_STR);
+        $stmt->bindParam(":cilindrada_motor", $datos["cilindrada_motor"], PDO::PARAM_STR);
+        $stmt->bindParam(":especificaciones_motor", $datos["especificaciones_motor"], PDO::PARAM_STR);
+        $stmt->bindParam(":id_modelo", $datos["id_modelo"], PDO::PARAM_INT);
+        $stmt->bindParam(":id_motor", $datos["id_motor"], PDO::PARAM_INT);
+
+        // Ejecutar la consulta y verificar si fue exitosa
+        if ($stmt->execute()) {
+            return "ok";
+        } else {
+            return "error";
+        }
+
+        // Cerrar conexión
+        $stmt = null;
+    } catch (PDOException $e) {
+        return "error";
     }
-
-    $stmt = null;
-  }
-
-  /*=============================================
-ELIMINAR RELACIONES DE MODELOS CON EL MOTOR
-=============================================*/
-  static public function mdlBorrarModeloMotor($tabla, $idMotor)
-  {
-    $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_motor = :id_motor");
-    $stmt->bindParam(":id_motor", $idMotor, PDO::PARAM_INT);
-
-    if ($stmt->execute()) {
-      return "ok";
-    } else {
-      return "error";
-    }
-
-    $stmt = null;
-  }
 }
+
+
+
+/*=============================================
+  ELIMINAR MOTOR
+=============================================*/
+static public function mdlBorrarMotor($tabla, $idMotor) {
+  $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id_motor = :id_motor");
+
+  $stmt->bindParam(":id_motor", $idMotor, PDO::PARAM_INT);
+
+  if ($stmt->execute()) {
+    return "ok";
+  } else {
+    return "error";
+  }
+
+  $stmt = null;
+}
+
+ }
+
+
+
